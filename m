@@ -1,287 +1,262 @@
-Return-Path: <linux-wireless+bounces-38821-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38822-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YbjwLYGKT2rMjAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-38821-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 13:48:17 +0200
+	id NEU/GLKLT2qVjQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-38822-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 13:53:22 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F07730946
-	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 13:48:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC754730B07
+	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 13:53:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=YmJ0DgEn;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=f9o+ZPdT;
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38821-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38821-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=sipsolutions.net header.s=mail header.b=ZdkiDX7q;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38822-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38822-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 74568309D660
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2026 11:43:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 45800302012E
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2026 11:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC78409631;
-	Thu,  9 Jul 2026 11:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF053A6B81;
+	Thu,  9 Jul 2026 11:50:46 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E27410D01
-	for <linux-wireless@vger.kernel.org>; Thu,  9 Jul 2026 11:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD2E3F44CB;
+	Thu,  9 Jul 2026 11:50:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783597378; cv=none; b=k7fEiYblEuCr0yj7KaOruShMez6JihODxyBpqOHCWhxWvWn98ZaebZ/36LvYj/AU05Jd+8es4Gcn2ZltU6K87hjOV3G95OhFdNCQUeQ8dMZfVLGX83VV9W99m4969gLo23VFWBzmGqsmA6u0G1ffHm338oLnJrmQoLkDcR/aJbQ=
+	t=1783597845; cv=none; b=fMZ40c3psyHCQ73vBlo6onn4eXxxHyJUY0M5FB9rMEdiYP3PzNu1IgITH3fcUIDyezn/Cp1YY7TRfw0KnfHpr0A2Q1HiiE5fJ6p2yKj0w5/opSt+Kq7aSQbPDHxzqxvbS2rBr9lCJscOYUVUHXImb/W0Be5VkUk+DlsViwYkDkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783597378; c=relaxed/simple;
-	bh=wcx0mnST8SlDk6rmebO+ZZL6CGN2pWeuykJFB1qQ8Zc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RLobB8Ceimy0N9UxfGat64tnP1l9ojocBrpMfyk9xkQV8A6iQ7KVlLdgPi2vrQEkigfwZs0EHgF/ctYnNPR5MZ3Md4z9Otu+Af2SghHPN5uCvd4UdmN/qFny/Fbhd/lpujbE3VuT8EIQvaZoC483rwYJPQbrEXim3xTU9P6TxpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YmJ0DgEn; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=f9o+ZPdT; arc=none smtp.client-ip=205.220.180.131
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 669BNN571575673
-	for <linux-wireless@vger.kernel.org>; Thu, 9 Jul 2026 11:42:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=e5hJ4gjjLT8
-	WL7TNY/WnrwapNHTi3JeTi2/uXVaLhrI=; b=YmJ0DgEnUvhkcAJaFyo5zc4a1IW
-	boTBEXaxRjhswA6Qs6TQeDlTGUm1pPhRZqqVQc/3rstfShxzruAICrIa3zbRGYN1
-	m8ivQNVZyC8m2dKTyvY1+yijsnAi6khmVFZqDf0fNYKk7UsSK6PYN7M/90+oseaW
-	0AUINnXodCqRN5PXVD6FWsBtQG+pw1E/M6l/w82r5eQ7H6G9d14A7b52YHHbPHGr
-	E8fw4fKOQoWcsBkiFccK8sNJtW/Qeovy8N/5SAyphqkn6yu8r+etHxY49Pd99ohO
-	mGbd9rdc3usHIdJB5o3ZmDLXq6uQ4UBvv1qxgL+FOEvp6YqT0JD0rNK/zjg==
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f9sqwc04g-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 09 Jul 2026 11:42:56 +0000 (GMT)
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-ca7c1e22995so2272077a12.3
-        for <linux-wireless@vger.kernel.org>; Thu, 09 Jul 2026 04:42:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783597375; x=1784202175; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=e5hJ4gjjLT8WL7TNY/WnrwapNHTi3JeTi2/uXVaLhrI=;
-        b=f9o+ZPdTIzkeXC/9RG/q5MhpbwpluCohnTOfE7jmbd79xmVLssOb8zPHpLWja2W28P
-         UEF5O8MMRBFH7lJKWexlttogknSrs92wdM340TXH+LeBvKJwHIOaaV6zOGgnvKE3zuZG
-         GMEV9a6qETH/sSJv6bL1j5WonmH0cqUKeZ6BDziO4F5Id72nYQscQW9Pybm8YRRVoOan
-         COLhhTRtfAoxCQX2iEjhLp+8Fc8fw3r7tqgeV4bS0uLGeGoUa6a/XhuLKcr+eSBred+g
-         AlHVChYwMADk9bRDSIOQSm2Q8TfxGYXtHch8JuU4rVZ0q38DRAQGreNSLGT2e+lb2/UC
-         e4PQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783597375; x=1784202175;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=e5hJ4gjjLT8WL7TNY/WnrwapNHTi3JeTi2/uXVaLhrI=;
-        b=DMne/qRZp5IDnQMl7MNj98T00qVpiStB/vEZJvVxGAeBWjHDuhRswDl7Cy0ValVw5B
-         MeyeLSGFJI4rTPdoqwR2wv67/ky78KPnmrk9QpSZDLzwCy9L7cfVHp2m3iB4RNiU9VJM
-         TZVtpwVdkRZDNudTq06BqdU5Cq4rYNBjD0LMKRzs9S5RaIc5tuXAp0lreTf6NsdcRQWz
-         0myfIQ7QwOxof/R9xSQsmIP6HgCu4J2+svSfaEnH0jvCKYoY53z+CzfafutPukhXQxAR
-         7whaODLZxYyGNK0WF/VLyp2wEKgVsaeKu1VxZEN14tgZQjZA06M11RBdVrXs03HfrmEh
-         XW3Q==
-X-Gm-Message-State: AOJu0Yx+tmEThzEq8eO31qWXYDTnnqNUgnsJ1B0pDMpmHAwvjMaWiwKH
-	paov1oe2kX5tecNeXo9TeeyE7CZk3JYm/t/EmwFUSyJYcBWE9yxZoyX5nrC8CKGYwME0NmxssmB
-	bHCM+CV7Lf/OV2LgKskm9pwny3OJJQepyvgER1+f6HECJMm9cVt7ufBy7STgprHQM9yaZRdw01X
-	R/Fg==
-X-Gm-Gg: AfdE7cnmzjjc/v1DyHBY7ZmMn81WYr4wadPHxpr99z69HqteOIDZqR46SyB9u5yECs7
-	8TCSu1wBHUzpU23oOmx0ni9cT7V2i/bkfhxQGagRk2WGVgOZJzAfdCNan7EnMNujG9dZxC+gn6v
-	6anFVtY7AZcNbmF4DslUVUsV+3STaHkWFYeGHKT+0BVjsaK69F2B0p+TcYcHBMuRPi0834u7uBp
-	SjQwjR3VSsx/eddT92XkEx0irURENrC9Hlbf2kGLMMe9s0PXARKWzxhAolcCpMP9ewa5yBuhL1l
-	nq8x5HwtKPutffwc0Uhloy1ijV3JtTK/Q/+HC9ZNDJu2M13QUdlhh0Dh0fLa5LYHHRdhIHCtv0e
-	nCq1qTbhGh2bF1Rvi1M83xu/Csc0Y7RvsPZY=
-X-Received: by 2002:a05:6a20:a10e:b0:398:7df5:2dae with SMTP id adf61e73a8af0-3c0bcf49b71mr8002851637.9.1783597375072;
-        Thu, 09 Jul 2026 04:42:55 -0700 (PDT)
-X-Received: by 2002:a05:6a20:a10e:b0:398:7df5:2dae with SMTP id adf61e73a8af0-3c0bcf49b71mr8002810637.9.1783597374574;
-        Thu, 09 Jul 2026 04:42:54 -0700 (PDT)
-Received: from hu-pritiwa-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b6594f9a0sm31772753c88.4.2026.07.09.04.42.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 04:42:53 -0700 (PDT)
-From: Priyansha Tiwari <priyansha.tiwari@oss.qualcomm.com>
-X-Google-Original-From: Priyansha Tiwari <pritiwa@qti.qualcomm.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org, veerendranath.jakkam@oss.qualcomm.com
-Subject: [PATCH wireless-next v6 4/4] wifi: mac80211_hwsim: report TX status link_id
-Date: Thu,  9 Jul 2026 17:12:28 +0530
-Message-Id: <20260709114228.672317-3-pritiwa@qti.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260709114228.672317-1-pritiwa@qti.qualcomm.com>
-References: <20260709114228.672317-1-pritiwa@qti.qualcomm.com>
+	s=arc-20240116; t=1783597845; c=relaxed/simple;
+	bh=Scy4+rg0vTIxg3wclvZ0S92t2IkxBSw1KAgIWFTDo+A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iiMqxxKpZ1oKBsy6f1QK+3RAMeRlMivrQWwpZVY/9qu+GM5ln8eRn70zTR/3u2sWev65RZPqQRZxvbL549iDsmWTVJNdQ30RS59LgPa+uw/ct6VGAo3qjZJouRbc1+ebi2bH5ager8YBQwD9nlfpD/+GM4ACJs/vxEBFIoql3qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ZdkiDX7q; arc=none smtp.client-ip=168.119.38.16
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=1j6EbskDt+ptlASb+nlO0QX7KVjd5G3o+MA0oNSOxlk=; t=1783597844; x=1784807444; 
+	b=ZdkiDX7qSSC7w1faIIO8G/HXrS9oJZ8iVk73HcVijcP/ozQZD9dTOysMzsTKw1JNBUZjUs/t3rP
+	lYkJucKxA9cL8vlVT2CLUepOmv9FMPpHcdTphUwxF64GPS1afQp8K0TrsfC6aHPbh1oBK+soYCqjW
+	1kE4o16IgAixIpwfpV8d17W2/rGB4hcch6xbaqeX+37zoU/JymaZXzD2waPclna6mSTyHpiQXQn14
+	Bz5nSQBs5cQ/YaEJHvTH14K9u7Ub3W7US9bCM9Z8og4OnULCdMxd2vsYcWc4MCy2yf20jb97jJ1jL
+	3XqBJh8G1qxGwi4CO0S916ZYVz/PJe83+jRg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1whnH7-00000008YpN-0AuP;
+	Thu, 09 Jul 2026 13:50:41 +0200
+From: Johannes Berg <johannes@sipsolutions.net>
+To: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Subject: [GIT PULL] wireless-2026-07-09
+Date: Thu,  9 Jul 2026 13:49:05 +0200
+Message-ID: <20260709115038.243870-3-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDExMyBTYWx0ZWRfX+vnoHRQ0yorV
- OQKrByJwkUd+SA6nE9lLUbATGKVjRV5hNUfJDBSMpL7A9IKToqzzta9JfhPLLO280XAqGTZpnE1
- psDJT1aKKutcFVGvoRxOe9jzvMnQRMEEuSFxY7kAD+kduwPO8B3QZbQRbC1K/h3JfPTmNXSfzYj
- 3dRfImJAmQV+az176v4sMSJUzNusujjzM6EgBW2S+ZhStvnY06E0VJmJyYhw3elMYQQokRv7P7U
- ZGQz4sELVmg+QeQHSeycxYP6jfv3gT5FGlkcomHnphjjr97JmRf6mamkQbVTSqDa4bbox3GeP8q
- kK5AWOUeBwNzMFSh61A32rwgZ5F++f+N6QUYcUpbMcy8s6ChxLVlUd57NZCEfIIXoHp3XApBZ4j
- JW4LZnLI4GZvV18bVVehI3dc0DzhO44pxJ2AkXu2DdA6Z5KJgVWJqrze+QwSqTIS7iT2RqciOAD
- vd05+ut09D8tPtOdGOw==
-X-Proofpoint-GUID: Wf4JUGJpV1ZtflTA1aaTjqCm4xr4TvWY
-X-Authority-Analysis: v=2.4 cv=fMIJG5ae c=1 sm=1 tr=0 ts=6a4f8940 cx=c_pps
- a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22 a=EUspDBNiAAAA:8
- a=NjFlLJTsBWwvL5VAOx4A:9 a=x9snwWr2DeNwDh03kgHS:22
-X-Proofpoint-ORIG-GUID: Wf4JUGJpV1ZtflTA1aaTjqCm4xr4TvWY
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDExMyBTYWx0ZWRfX4J0jPW3VVieI
- F5U+uDzfyv41HXhKf4CK8/XAw+38jPq6n2jZL/F8wkdEbHoDBCCi4ITeHJyXPrM3uxsizg3Y1QQ
- cn5ltYs9BOaqmgZrJslH1cp8bH/+B5o=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-09_02,2026-07-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 bulkscore=0 phishscore=0 clxscore=1015 impostorscore=0
- spamscore=0 priorityscore=1501 malwarescore=0 lowpriorityscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607090113
+X-malware-bazaar: not-scanned
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38821-lists,linux-wireless=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:veerendranath.jakkam@oss.qualcomm.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[priyansha.tiwari@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[priyansha.tiwari@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,qti.qualcomm.com:mid,qualcomm.com:email,qualcomm.com:dkim];
-	TO_DN_NONE(0.00)[];
+	FORGED_SENDER(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
+	RCPT_COUNT_TWO(0.00)[2];
+	TAGGED_FROM(0.00)[bounces-38822-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,sipsolutions.net:from_mime,sipsolutions.net:dkim,sipsolutions.net:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 34F07730946
+X-Rspamd-Queue-Id: BC754730B07
 
-From: Priyansha Tiwari <priyansha.tiwari@oss.qualcomm.com>
+Hi,
 
-Populate link_valid/link_id in mac80211_hwsim TX status so the
-transmitted link is reported to mac80211.
+Sorry, I meant to send this yesterday, hoping it'd get
+in/out before netdevconf and all that, because it's
+actually really big. Mostly I've now collected many
+random LLM-induced robustness fixes (I can't really
+call most of them security fixes, though there likely
+are a few).
 
-Set the link information in both the direct TX status path and the
-wmediumd/netlink TX status path.
+Please pull and let us know if there's any problem.
 
-Signed-off-by: Priyansha Tiwari <priyansha.tiwari@oss.qualcomm.com>
----
- .../wireless/virtual/mac80211_hwsim_main.c    | 43 +++++++++++++++++--
- 1 file changed, 40 insertions(+), 3 deletions(-)
+Thanks,
+johannes
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_main.c b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-index 0dd8a6c85953..61fd8d8ba1a0 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-@@ -2103,6 +2103,7 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
- 	bool ack, unicast_data;
- 	enum nl80211_chan_width confbw = NL80211_CHAN_WIDTH_20_NOHT;
- 	u32 _portid, i;
-+	int tx_link_id = -1;
- 
- 	if (WARN_ON(skb->len < 10)) {
- 		/* Should not happen; just a sanity check for addr1 use */
-@@ -2160,6 +2161,9 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
- 								 hdr, &link_sta);
- 		}
- 
-+		if (bss_conf)
-+			tx_link_id = bss_conf->link_id;
-+
- 		if (unlikely(!bss_conf)) {
- 			/* if it's an MLO STA, it might have deactivated all
- 			 * links temporarily - but we don't handle real PS in
-@@ -2271,6 +2275,12 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
- 
- 	if (!(txi->flags & IEEE80211_TX_CTL_NO_ACK) && ack)
- 		txi->flags |= IEEE80211_TX_STAT_ACK;
-+
-+	if (tx_link_id >= 0) {
-+		txi->status.link_valid = 1;
-+		txi->status.link_id = tx_link_id;
-+	}
-+
- 	ieee80211_tx_status_irqsafe(hw, skb);
- }
- 
-@@ -6092,6 +6102,7 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
- 
- 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
- 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_PUNCT);
-+	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_PROBE_AP);
- 
- 	for (i = 0; i < ARRAY_SIZE(data->link_data); i++) {
- 		hrtimer_setup(&data->link_data[i].beacon_timer, mac80211_hwsim_beacon,
-@@ -6317,6 +6328,27 @@ static void hwsim_register_wmediumd(struct net *net, u32 portid)
- 	spin_unlock_bh(&hwsim_radio_lock);
- }
- 
-+static int mac80211_hwsim_get_link_id(struct ieee80211_vif *vif,
-+				      struct ieee80211_hdr *hdr)
-+{
-+	int i;
-+
-+	if (!vif || !ieee80211_vif_is_mld(vif))
-+		return -1;
-+
-+	for (i = 0; i < IEEE80211_MLD_MAX_NUM_LINKS; i++) {
-+		struct ieee80211_bss_conf *link_conf;
-+
-+		link_conf = rcu_dereference(vif->link_conf[i]);
-+		if (!link_conf)
-+			continue;
-+		if (ether_addr_equal(link_conf->addr, hdr->addr2))
-+			return i;
-+	}
-+
-+	return -1;
-+}
-+
- static int hwsim_tx_info_frame_received_nl(struct sk_buff *skb_2,
- 					   struct genl_info *info)
- {
-@@ -6397,13 +6429,18 @@ static int hwsim_tx_info_frame_received_nl(struct sk_buff *skb_2,
- 
- 	txi->status.ack_signal = nla_get_u32(info->attrs[HWSIM_ATTR_SIGNAL]);
- 
-+	hdr = (struct ieee80211_hdr *)skb->data;
-+	i = mac80211_hwsim_get_link_id(txi->control.vif, hdr);
-+	if (i >= 0) {
-+		txi->status.link_valid = 1;
-+		txi->status.link_id = i;
-+	}
-+
- 	if (!(hwsim_flags & HWSIM_TX_CTL_NO_ACK) &&
- 	   (hwsim_flags & HWSIM_TX_STAT_ACK)) {
--		if (skb->len >= 16) {
--			hdr = (struct ieee80211_hdr *) skb->data;
-+		if (skb->len >= 16)
- 			mac80211_hwsim_monitor_ack(data2->channel,
- 						   hdr->addr2);
--		}
- 		txi->flags |= IEEE80211_TX_STAT_ACK;
- 	}
- 
--- 
-2.34.1
 
+
+The following changes since commit 87320be9f0d24fce67631b7eef919f0b79c3e45c:
+
+  Merge tag 'net-7.2-rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-07-02 06:01:12 -1000)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2026-07-09
+
+for you to fetch changes up to cb8afea4655ff004fa7feee825d5c79783525383:
+
+  wifi: cfg80211: bound element ID read when checking non-inheritance (2026-07-07 14:00:35 +0200)
+
+----------------------------------------------------------------
+Too many robustness fixes to list. Mostly for
+ - slight out-of-bounds reads of SKBs,
+ - leaks on error conditions, and
+ - malformed netlink input rejection.
+
+----------------------------------------------------------------
+Abdun Nihaal (1):
+      wifi: ipw2100: fix potential memory leak in ipw2100_pci_init_one()
+
+Arnd Bergmann (1):
+      wifi: mac80211: allocate backup ieee80211_nan_sched_cfg off stack
+
+Bryam Vargas (1):
+      wifi: mac80211_hwsim: clamp virtio RX length before skb_put
+
+Cen Zhang (3):
+      wifi: cfg80211: cancel sched scan results work on unregister
+      wifi: mac80211: free AP_VLAN bc_buf SKBs outside IRQ lock
+      wifi: cfg80211: use wiphy work for socket owner autodisconnect
+
+Christophe JAILLET (1):
+      wifi: cfg80211: Fix an error handling path in cfg80211_wext_siwscan()
+
+Corentin Labbe (1):
+      wifi: ralink: RT2X00: init EEPROM properly
+
+Dawei Feng (2):
+      wifi: libertas: fix memory leak in helper_firmware_cb()
+      wifi: mac80211: fix memory leak in ieee80211_register_hw()
+
+HE WEI (ギカク) (1):
+      wifi: cfg80211: bound element ID read when checking non-inheritance
+
+Haofeng Li (1):
+      wifi: cfg80211: validate EHT MLE before MLD ID read
+
+Maoyi Xie (3):
+      wifi: libertas_tf: fix use-after-free in lbtf_free_adapter()
+      wifi: mac80211: defer link RX stats percpu free to RCU
+      wifi: brcmfmac: cyw: fix heap overflow on a short auth frame
+
+Pagadala Yesu Anjaneyulu (1):
+      wifi: mac80211: ibss: wait for in-flight TX on disconnect
+
+Peddolla Harshavardhan Reddy (1):
+      wifi: cfg80211: convert pmsr_free_wk to wiphy_work to fix deadlock
+
+Pengpeng Hou (5):
+      wifi: rsi: avoid reading TKIP MIC keys for non-TKIP ciphers
+      wifi: libertas: reject short monitor TX frames
+      wifi: rsi: bound background scan probe request copy
+      wifi: libipw: fix key index receive bound checks
+      wifi: rsi: validate beacon length before fixed buffer copy
+
+Rafael Beims (2):
+      wifi: mwifiex: fix roaming to different channel in host_mlme mode
+      wifi: mwifiex: fix permanently busy scans after multiple roam iterations
+
+Runyu Xiao (2):
+      wifi: rt2x00: avoid full teardown before work setup in probe
+      wifi: brcmfmac: initialize SDIO data work before cleanup
+
+Shahar Tzarfati (1):
+      wifi: mac80211: recalculate rx_nss on IBSS peer capability update
+
+Xiang Mei (3):
+      wifi: mac80211: fix unsol_bcast_probe_resp double free on alloc failure
+      wifi: mac80211: fix fils_discovery double free on alloc failure
+      wifi: p54: validate RX frame length in p54_rx_eeprom_readback()
+
+Yousef Alhouseen (1):
+      wifi: mac80211_hwsim: avoid treating MCS as legacy rate index
+
+Zhao Li (14):
+      wifi: nl80211: free RNR data on MBSSID mismatch
+      wifi: mac80211: validate extension-frame layout before RX
+      wifi: cfg80211: derive S1G beacon TSF from S1G fields
+      wifi: ieee80211: validate MLE common info length
+      wifi: nl80211: validate nested MBSSID IE blobs
+      wifi: nl80211: constrain MBSSID TX link ID range
+      wifi: cfg80211: validate PMSR measurement type data
+      wifi: cfg80211: validate PMSR FTM preamble range
+      wifi: cfg80211: reject unsupported PMSR FTM location requests
+      wifi: cfg80211: reject empty PMSR peer lists
+      wifi: mac80211: avoid non-S1G AID fallback for S1G assoc
+      wifi: mac80211: validate deauth frame length before reason access
+      wifi: cfg80211: validate rx/tx MLME callback frame lengths before access
+      wifi: cfg80211: validate assoc response length before status and IE access
+
+Zhiling Zou (1):
+      wifi: mac80211: free ack status frame on TX header build failure
+
+ .../broadcom/brcm80211/brcmfmac/cyw/core.c         |   6 ++
+ .../wireless/broadcom/brcm80211/brcmfmac/sdio.c    |   2 +-
+ drivers/net/wireless/intel/ipw2x00/ipw2100.c       |   8 +-
+ drivers/net/wireless/intel/ipw2x00/libipw_rx.c     |   4 +-
+ drivers/net/wireless/intersil/p54/txrx.c           |   8 ++
+ drivers/net/wireless/marvell/libertas/firmware.c   |   1 +
+ drivers/net/wireless/marvell/libertas/tx.c         |   7 ++
+ drivers/net/wireless/marvell/libertas_tf/main.c    |   2 +-
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c    |   2 +-
+ drivers/net/wireless/marvell/mwifiex/join.c        |   1 -
+ drivers/net/wireless/ralink/rt2x00/rt2400pci.c     |   2 +-
+ drivers/net/wireless/ralink/rt2x00/rt2500pci.c     |   2 +-
+ drivers/net/wireless/ralink/rt2x00/rt2800pci.c     |   2 +-
+ drivers/net/wireless/ralink/rt2x00/rt2x00dev.c     |  12 ++-
+ drivers/net/wireless/ralink/rt2x00/rt61pci.c       |   2 +-
+ drivers/net/wireless/rsi/rsi_91x_hal.c             |   8 ++
+ drivers/net/wireless/rsi/rsi_91x_mgmt.c            |  12 ++-
+ drivers/net/wireless/virtual/mac80211_hwsim_main.c |  16 +++-
+ include/linux/ieee80211-eht.h                      |  12 +--
+ include/net/cfg80211.h                             |   4 +-
+ net/mac80211/cfg.c                                 |  11 ++-
+ net/mac80211/ibss.c                                |  13 +--
+ net/mac80211/iface.c                               |   8 +-
+ net/mac80211/main.c                                |   3 +-
+ net/mac80211/mlme.c                                |  12 ++-
+ net/mac80211/nan.c                                 |  35 +++----
+ net/mac80211/rx.c                                  |  34 ++++++-
+ net/mac80211/sta_info.c                            |  15 ++-
+ net/mac80211/tx.c                                  |  17 +++-
+ net/mac80211/util.c                                |   3 +
+ net/wireless/core.c                                |  14 +--
+ net/wireless/core.h                                |   4 +-
+ net/wireless/mlme.c                                | 105 +++++++++++++++------
+ net/wireless/nl80211.c                             |  25 +++--
+ net/wireless/pmsr.c                                |  34 +++++--
+ net/wireless/scan.c                                |  18 ++--
+ net/wireless/sme.c                                 |   6 +-
+ 37 files changed, 336 insertions(+), 134 deletions(-)
 
