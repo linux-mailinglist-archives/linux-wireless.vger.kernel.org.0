@@ -1,201 +1,295 @@
-Return-Path: <linux-wireless+bounces-38818-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38819-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GFHFJ0d8T2rIhwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-38818-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 12:47:35 +0200
+	id ODgHD1uJT2pgjAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-38819-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 13:43:23 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F11572FD69
-	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 12:47:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D5E730850
+	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 13:43:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YFs3LkH9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38818-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38818-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=nRMxdgCh;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=DzE6YLi5;
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38819-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38819-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EF09830A8DEF
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2026 10:32:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1716930015B4
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2026 11:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7468F405C42;
-	Thu,  9 Jul 2026 10:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0C2404BC2;
+	Thu,  9 Jul 2026 11:42:55 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0E4405C21
-	for <linux-wireless@vger.kernel.org>; Thu,  9 Jul 2026 10:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1933F44CB
+	for <linux-wireless@vger.kernel.org>; Thu,  9 Jul 2026 11:42:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783593123; cv=none; b=sAYj0cvh/xxEypbDfl6iP111SgPQfDiuu3fzA9vp2+W8IuUN3UpVP212oAXWE80YqSswR1urPow2bYEhbJlc+7gnTrShJfFQHzOZ9winX+c7lzu8+qntpSb9P4J3nsGWAc7TQBHAJ7BEpA7OzvIW/dyZTt0P70XOYr42IMZntjg=
+	t=1783597375; cv=none; b=c6Vik2zQjCoDe6UNqjRmIjk1w5++T2JVUbXirzCTPfWWgyzyZtjqiryricc+Of0QSjL34VFMQJ9IGVWoumKwwSwRkhh+xbK8z80aKBmkN7heRJyuXAqlW0QJdcS9LpPXUWH6kw6t3aMZ9Ft04uWHxbpiTEWdUwtGtn31yaGebUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783593123; c=relaxed/simple;
-	bh=NNmvmMFiSvKuSmWWjBp9FoknxILTLef0Ak79f4ZlafM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tUH4R7T/MtceF58tnQefsHKQYohiU0N4UEaX0+grcX0cULEUaIeSUC6yQT578n6liE4s3RHrQEeb0//GfTuX02pckoKYoI876aPFyYsDbA/osiD3krz3/DJjyV9E1twzvBZTUUPHSl8lPwQHJoTJJKyuy3BHJV/+lfB9WgPJl2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YFs3LkH9; arc=none smtp.client-ip=209.85.221.53
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-47ddf7b09e5so1504416f8f.1
-        for <linux-wireless@vger.kernel.org>; Thu, 09 Jul 2026 03:32:01 -0700 (PDT)
+	s=arc-20240116; t=1783597375; c=relaxed/simple;
+	bh=QtEESnB+7PF3OmY+yROXo9LRoczPIev7WpO0fY+EKDE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=r7dbHPWP8L7BXu7LOxWiym0JXc7tJEqXDh7t0Zmg3J07AX/A+EPvBFq7wnD3TB9MNABvxZNrOsGovRO/binQQr0Plw90DEs0XffywIMa/PIo22Bmh7k7wikBKC7UR8u6sGiE0tKJGZzYONZUl9Yk+QRJTT0I2il5FyM8khwMgEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nRMxdgCh; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=DzE6YLi5; arc=none smtp.client-ip=205.220.180.131
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 669BNNei1667697
+	for <linux-wireless@vger.kernel.org>; Thu, 9 Jul 2026 11:42:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=GWzAlHF/nMoKB+7qHlNtLW
+	AtVHlFXp8YpjqPsRuAlUM=; b=nRMxdgChcz1NVEGtRFZ3udgo0adLSPabtY1L2K
+	26Ng33t6Jl0vq/+a/cR4lVq6u8kZdeyucsFgqLRGd7XKOczQOSeT3VViyEVhB1y6
+	Uw6PR5HRkFx5EJA/xpha6AFtpM4j9A1rQNXxGGGkEmLvhPEUUt0ex2CrNMnLwD6Y
+	Rb6RCfmlfGJi+AzU4vUoXl/6JWBTm9YWriNmYwFnSsBwSSKwM1Rpz3wn8ncVh9nb
+	v4P9cczdhKe9ZsxgBpIYpGNVnR18X/ZfxLJCQnrKp3t9WaN3OuOCGYbLpze3goi2
+	hV/lUj53lWFKTvlpfgfi0E9q95Yx6Y9clclxD+2EB8uo6YRQ==
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f9ug6kgtu-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 09 Jul 2026 11:42:51 +0000 (GMT)
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-37e5ef8299fso2070260a91.2
+        for <linux-wireless@vger.kernel.org>; Thu, 09 Jul 2026 04:42:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783593120; x=1784197920; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zH3UvIyJssKv6bfHE7xFicyRPn7SV1QlAreFeCCuxRo=;
-        b=YFs3LkH9QXgDdAgQ+kxVlP2KJLRfG834DTeftZlYsAbsn6S/Z2KOgLWx5jAbwR6xUM
-         y19zE9/RXk58+HNfrIiEK82VuKFOIxID5vJHz+MXVUmRFf51CK/oKKCxkA6fY5iMG0ad
-         fmn/afIPrjUbGmjujU23dFlJAhNOsc2T85nTv5SdE95Kragm4Osc7rJsRW6fZE9EZ3WY
-         jII0x7UuvjWyYTcpaevjmXl0sstjI9fpI/75nZgDzqKbQt8mrU6OblngN/JhF9z3ebpq
-         VsjgXwil4e6CPaj9lwjDfOsBLRkFON3y3cQDHWR/NZ1agec6CHuoCQz5KErQcyg8mSOw
-         Sguw==
+        d=oss.qualcomm.com; s=google; t=1783597371; x=1784202171; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GWzAlHF/nMoKB+7qHlNtLWAtVHlFXp8YpjqPsRuAlUM=;
+        b=DzE6YLi57fd08ujg3md49MVr8y2qBbFxH5sehl+jYv9oXGuhUdy8e+rCqYCGLSvrkq
+         lW2VvGWPmCy57LbyO6OPtI+rfCP72AH/+hhJ2IFWr3dcB7fmi7EwZ1G6hnyi7z8qSXBY
+         dwVi0wICYGF6fyNwMRIXaarzCu72Ux2f/NF+5zYx+/Z41KnyvZk47jjbUHAOT0q3n55/
+         aiwly+50yx/AzqcXwLsqK8nZdH4r0wMlouPlzOk93lWa86/e+PyCkvjoCbAkCz88SvJK
+         Z33aETNJiTJSOFwf+vEvwUHusaVSI5sxrPC+5eTNbHOkoZ2Dum604Zpk8bajz0IEgfqR
+         vNYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783593120; x=1784197920;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zH3UvIyJssKv6bfHE7xFicyRPn7SV1QlAreFeCCuxRo=;
-        b=pF1tflv8vqC+ZdbEocEDuUXAzjA+vgku+JkX3W3rOwyFlfPHQGs2Er/AH6BzqV3iXe
-         lHaWGy+sFsu8JDPxS1VLXmhfn4yOUpChfqNmTpf717jv0F3tXCAbFjOzyrOGK9BditfL
-         3BfQ1Ltc/RT2vRo3ms2u94F8/aR2EP5zqhuUmlY545eaApx8KeydDQxRPQOO3HcGoZtx
-         UFMZyEC6utgBljc3zbdo8+/g1nNvD9jL4p/7D6RyHfcZPdw5U3iHwbrx7+BD85gxJcRk
-         03SghjoguCCP/lDWYbpwQr11/6Ba3LdIxTS8Bq05rbOu+1m2YSl2J/uVtzcehlu4BVvp
-         p/AQ==
-X-Gm-Message-State: AOJu0YwKO6OyHugacbt8jgtPelSppD9KYAKFuEGXImsdRMCtCcnQ58kN
-	kPLTQF3cr8LAQzPYX22RbzvtWhRx7c1Orph8MrBrXauTYgZtf7PE0y+OBS03bGru0vc=
-X-Gm-Gg: AfdE7cl5UHQxunou4XVXERygqA1ybH8JpLD1NmESz2lWocGYURure4lQwzGnCiDPiUs
-	55jQszaPhSU71xCZUYy7nPveKFNUUs77slH4IoDW6ZX0wUhErKwyWYJP4wc/hjTpTU4gZpujNLL
-	0ifhqZq+cJOZiP+YtKE4tV0navkYhBVe/aWdeGp6cvC0SEnMmcQEJRgvmDSSxrfhvXpgb5eni+e
-	h0l1mfHA527V7hVQrvgHGRwhaimUm4xCcqCs0c9pYGqMF+KSIQ+R1TgRY2Q4evSDIFmJGbulryp
-	31Pr6UxjytFNtwXaCzHMOhU58ky1TyWXWc9vBE9tCmoaf5QEO1yxOo0Xdh5y2i7TqolTUTvnYT0
-	NSUnd4/Z9TJcBxEBt7ws20f0uKLwrEZU72uMSR3lAoS2WDK6kUYqPR/UCQxX8tT7IRc+JUwMr0C
-	d6BNv+IzKPvUhjxOQu0qLPQxZx4kBkGM5Ll6/k
-X-Received: by 2002:a05:6000:1a86:b0:478:65a8:2635 with SMTP id ffacd0b85a97d-47df0714967mr7380351f8f.11.1783593120154;
-        Thu, 09 Jul 2026 03:32:00 -0700 (PDT)
-Received: from localhost ([102.128.173.0])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0f21543sm46816067f8f.35.2026.07.09.03.31.58
+        d=1e100.net; s=20251104; t=1783597371; x=1784202171;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GWzAlHF/nMoKB+7qHlNtLWAtVHlFXp8YpjqPsRuAlUM=;
+        b=O/pi1f209wpCnsAp5vgcaw9bhPudeUe8edc9sOMJ+hRyAj1+YWlZp7+JdwoBE+IsiD
+         pYIuWjkwFaIzW8CQ5oJAYD434NYronc6r9q3d1OeTDiMAw2J/t623wRKV0SfUiH6Fsud
+         4SqzrcrwCiq1ZY7Oma9vUqxsYUve6nmJCklcdChu8/MynZmVj4Rh1FzqIIitFH+wr/dd
+         gJ0pZnt+Prim7cBbJmj9JhSenhbJZ5oWo8SRI6fUABpaEWjxkpMq8ev02ESQbJPh0989
+         tobgHzmvtYl8iAPK9lPSoQkDEdHubOMprIuVGM8CpCgD0PAaChgDVr68SM9wLcNoROSd
+         jkBQ==
+X-Gm-Message-State: AOJu0YzTvquDEQsX6fmS21Wgjk+ifLbigN7RXEinp9i+DU9BRFXeRjfJ
+	zt4XbgA1svjbmjD33bpd41BWawHQnlXrDnYbQjayMBSyOh9fT18KYiBZBZr05/7jjwK4VnSCI2l
+	9iCgC3Y91cLmeq6Vlhh4vZPtTaodWr0jyauqy10QPPn9dXGbefNihsGr0OJJFtXkvGhjQHw==
+X-Gm-Gg: AfdE7cnguwnXgBPV0HxHNpJIFqSCnYXbcGlVGeQ3AfD/walhVNGUv6hqz3DPepIlO1G
+	B79Aq1Kp5zVX3DVRW+Qz8PWlU0otXs+64C/Rd4rjwzsqhRQuYibXG/bPX4dcVX8yD2uPvf8Dag9
+	LcCcOAM2Wgw7IjYNYGSY7P8uLo6LCrNA+tE163m9AGkRTAH+tBNSs/AZsfMu0gGW3RVGeXfWI5t
+	4DcwgY9iGHVnohsoxQ5OdHM6khwGCj519/6JRVuNeqERFZ065ydA+jDp6cknmYYM/FUsDv57Ivn
+	YQieUyJqOXwU3193H8aG6n+W3RAvRo7RK515WjP1FzgghWtsyCTFWuDDAKKK8F6qFF+Holju/tm
+	rbSs1fJahK6R8IrbITCfEfgR1IaRs+ss2Glw=
+X-Received: by 2002:a05:6a20:a124:b0:3c0:9c1a:8947 with SMTP id adf61e73a8af0-3c0bd257a74mr8893883637.63.1783597370666;
+        Thu, 09 Jul 2026 04:42:50 -0700 (PDT)
+X-Received: by 2002:a05:6a20:a124:b0:3c0:9c1a:8947 with SMTP id adf61e73a8af0-3c0bd257a74mr8893838637.63.1783597370020;
+        Thu, 09 Jul 2026 04:42:50 -0700 (PDT)
+Received: from hu-pritiwa-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b6594f9a0sm31772753c88.4.2026.07.09.04.42.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 03:31:59 -0700 (PDT)
-From: Louis Kotze <loukot@gmail.com>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	loukot@gmail.com
-Subject: [PATCH v2] wifi: rtw89: advertise EML capabilities for 8922a
-Date: Thu,  9 Jul 2026 12:31:56 +0200
-Message-ID: <20260709103156.1271328-1-loukot@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        Thu, 09 Jul 2026 04:42:48 -0700 (PDT)
+From: Priyansha Tiwari <priyansha.tiwari@oss.qualcomm.com>
+X-Google-Original-From: Priyansha Tiwari <pritiwa@qti.qualcomm.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org, veerendranath.jakkam@oss.qualcomm.com
+Subject: [PATCH wireless-next v6 0/4] wifi: nl80211: introduce PROBE_PEER for AP and STA
+Date: Thu,  9 Jul 2026 17:12:26 +0530
+Message-Id: <20260709114228.672317-1-pritiwa@qti.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDExNCBTYWx0ZWRfXwNuY7Y34qO+o
+ N9gWONuCyiTvKPK1RbaOekI0UcLUBB6SgIvH3Aeo/wP0VViGztCtOcXFYT7vQnl8bKzKuwZ/Qfp
+ jVHBbRF3kma1GyjuI2+kO6yww+eQ84Y=
+X-Proofpoint-GUID: emucJZ6g_0mItoORERpuij03kqIBv8-9
+X-Authority-Analysis: v=2.4 cv=cL3QdFeN c=1 sm=1 tr=0 ts=6a4f893b cx=c_pps
+ a=vVfyC5vLCtgYJKYeQD43oA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=EUspDBNiAAAA:8 a=X4KHw_DkP3j3RvtXBt4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=rl5im9kqc5Lf4LNbBjHf:22
+X-Proofpoint-ORIG-GUID: emucJZ6g_0mItoORERpuij03kqIBv8-9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDExNCBTYWx0ZWRfX26B/m364CxjT
+ anc/Qgj4UOmM0to0jAtnajzOAE4+7y9HvFHtOMg0tAcIXYIpzYAnS70w2bmTJGqNINEuL7ofBwm
+ nWb5e4tpFlpt43qXPTFZL4xdm92YbnypNejlhJvKF52rrweR1wPiLSchtYOcH96GzYNNR5f9nu1
+ J3SQ1qa2KmOnyz+AyTRgxFo2KVbzeg/EZpivGRbg/iEA29Ojp67bei7X3rpvWxA64vzzbzBG5eE
+ 5/LlgsSefVUPaNlNWme7iLSIey6bZvGCVzG7FIc1jO81GLpnlE7nGt/Zzp/D5vnPR4+FPshQy9J
+ MToUwW9R8TwtYxrWcK+FU6VsYrSW84qedv2nPiSPeDdpAG85WE61aPOztxueUKDdxJsOZ7tNMUQ
+ TqgoLiuOAn/CY5fzK8hOvvJdblIA+BfTnpfY+VFWkCbHtN8xTTS+7s6BCPqFGkuGaRJAdLBwNhN
+ B5+PWIvyF7v3a4OnJLw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-09_02,2026-07-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 suspectscore=0 adultscore=0 spamscore=0
+ phishscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1015 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607090114
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-38818-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38819-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:veerendranath.jakkam@oss.qualcomm.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:loukot@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[loukot@gmail.com,linux-wireless@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[priyansha.tiwari@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim,oss.qualcomm.com:from_mime,oss.qualcomm.com:dkim,qti.qualcomm.com:mid];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[loukot@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[priyansha.tiwari@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9F11572FD69
+X-Rspamd-Queue-Id: 33D5E730850
 
-The driver implements the EMLSR operating mode for 8922a and selects
-it when an interface has more than one active link (enum
-rtw89_mlo_mode, rtw89_ops_vif_cfg_changed()), but leaves
-eml_capabilities = 0 in the STA iftype-ext-cap. mac80211 therefore
-advertises no EML capabilities in the Multi-Link element, so an
-EMLSR-capable AP cannot negotiate EMLSR with this STA.
+From: Priyansha Tiwari <priyansha.tiwari@oss.qualcomm.com>
 
-Populate eml_capabilities with IEEE80211_EML_CAP_EMLSR_SUPP, an EML
-padding delay of 256 us and an EMLSR transition delay of 32 us,
-following the same layout iwlwifi uses (iwlwifi advertises 32 us and
-64 us). These values have run stably on my RTL8922AU since late
-April; if Realtek has recommended values for this silicon I am happy
-to adjust them.
+This series introduces a unified mechanism to probe connected peers.
+It generalizes the legacy AP-only PROBE_CLIENT functionality by adding
+NL80211_CMD_PROBE_PEER and enabling (feature-gated) STA-side probing.
+With this, AP/GO continues to probe associated stations as before, and
+STA/P2P-client can probe the connected AP for faster link health checks.
+For MLO connections, mac80211 supports per-link STA probing to obtain
+link-specific ACK information.
 
-In A/B testing against a TP-Link Deco BE63 (EMLSR-capable Wi-Fi 7
-AP), ML association without this change came up with a single link;
-with it, both the 5 GHz and 6 GHz links are set up (debugfs shows
-link-1 and link-2 with active_links behaving as expected for EMLSR),
-stable across 60+ hour soaks with no kernel or wpa_supplicant
-errors.
+Patch 1 renames NL80211_CMD_PROBE_CLIENT to NL80211_CMD_PROBE_PEER in
+the UAPI enum (keeping PROBE_CLIENT as a compatibility alias) and renames
+the .probe_client cfg80211_ops callback to .probe_peer. All in-tree users
+(wil6210, mwifiex, mac80211) are updated so the tree builds after this
+patch. This is a pure rename with no behaviour change; documentation is
+intentionally left unchanged.
 
-EMLMR is deliberately not advertised: the chip has a single shared
-2T2R RF block (rf_path_num = 2) and the driver has no EMLMR mode, so
-EMLSR is the architectural ceiling for this silicon. Realtek's Wi-Fi
-Alliance certification of RTL8922AE (WFA129313) likewise lists EMLSR
-but not EMLMR; the certification was obtained with the Windows
-driver, so it is cited only as evidence of silicon and firmware
-capability.
+Patch 2 updates the @probe_peer documentation in cfg80211_ops to describe
+the STA-mode semantics, adds NL80211_EXT_FEATURE_PROBE_AP to advertise
+STA-side support, extends cfg80211_probe_status() to carry an optional
+peer address and a link_id (-1 for non-MLO), and extends the nl80211
+handler to accept STA/P2P-client interfaces when the driver advertises
+the feature (MAC attribute must be omitted; the AP is implied by the
+association). All callers of cfg80211_probe_status() are updated.
 
-Signed-off-by: Louis Kotze <loukot@gmail.com>
+Patch 3 adds per-link PROBE_PEER support in mac80211 for STA/P2P-client
+mode. For STA/P2P-client, it uses IEEE80211_LINK_UNSPECIFIED together
+with the associated AP/GO address and lets the driver select the link.
+For non-MLO connections, mac80211 still fills info->band from the
+current chanctx so legacy transmissions continue to carry the correct
+band information. The link_valid/link_id bitfields added to
+ieee80211_tx_info.status are filled by the driver in the TX status
+callback and read back in ieee80211_report_ack_skb() to report the
+actual link_id to userspace. AP/GO behaviour is unchanged.
+
+Patch 4 makes mac80211_hwsim populate link_valid/link_id in TX status
+for both the direct TX status path and the wmediumd/netlink TX status
+path.
+
 ---
-Changes in v2 (was patch 1/4 of "advertise WFA-certified EHT
-capabilities for 8922a"):
-- Narrowed the series to this single patch; see the reply on the v1
-  thread for why the other three capabilities are deferred.
-- Dropped Restricted TWT from this patch: no in-tree driver
-  advertises it for a STA yet and I cannot verify the firmware side.
-- Dropped the WFA certificate Link: trailer; the certification was
-  obtained with the Windows driver, so it is cited in the body only
-  as silicon-side evidence.
-- Stated the advertised delay values and their testing basis
-  explicitly, and switched to the __bf_shf() layout iwlwifi uses.
-- Rebased onto wireless-next; also applies cleanly on rtw-next
-  (2b7858891b10).
- drivers/net/wireless/realtek/rtw89/core.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Changes in v6:
+  - Patch 3:
+    * Dropped the remaining rcu_read_lock()/rcu_read_unlock() — the
+      function now runs entirely under wiphy_lock, so sta_info_get_bss()
+      is called without an explicit RCU lock and goto unlock is replaced
+      with direct return statements.
+    * Restructured the MLD branch: flipped the condition to
+      fromds && !sta->sta.mlo for the AP-mode non-MLO client case,
+      making the STA/MLO path the default else branch.
+    * Added src_addr variable to unify address construction, replacing
+      the conditional memcpy blocks.
+    * Used skb_put_zero() to zero-initialise the frame, removing manual
+      field zeroing (duration_id, seq_ctrl).
+    * Simplified frame control and addr3 construction into single
+      expressions.
+    * Removed the pre-setting of info->status.link_valid/link_id in
+      ieee80211_probe_peer() before TX — status fields must be filled
+      by the driver in the TX status callback, not by the caller.
+      ieee80211_report_ack_skb() reads link_valid/link_id from the
+      driver-filled TX status to report the actual link_id to userspace.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 0f0e46cb4260..69eaae3586cb 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -217,7 +217,12 @@ static const struct wiphy_iftype_ext_capab rtw89_iftypes_ext_capa[] = {
- 		.extended_capabilities_mask = rtw89_ext_capa_sta,
- 		.extended_capabilities_len = sizeof(rtw89_ext_capa_sta),
- 		/* relevant only if EHT is supported */
--		.eml_capabilities = 0,
-+		.eml_capabilities =
-+			IEEE80211_EML_CAP_EMLSR_SUPP |
-+			IEEE80211_EML_CAP_EML_PADDING_DELAY_256US <<
-+				__bf_shf(IEEE80211_EML_CAP_EML_PADDING_DELAY) |
-+			IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY_32US <<
-+				__bf_shf(IEEE80211_EML_CAP_EML_TRANSITION_DELAY),
- 		.mld_capa_and_ops = 0,
- 	},
- };
+Changes in v5:
+  - Patch 3:
+    * Renamed peer_addr to dst_addr for clarity.
+    * Reworked ieee80211_probe_peer() to share more logic between
+      AP and STA modes by using ieee80211_vif_type_p2p(),
+      overriding the STA peer to the associated AP/GO address,
+      and pulling the common sta lookup/qos handling out of the
+      switch.
+    * Kept the remaining AP/STA difference limited to the DS bits,
+      while preserving the existing MLO/non-MLO address and band
+      handling.
 
-base-commit: ac798f757d6475dc6fee2ec899980d6740714596
+Changes in v4:
+  - Patch 3:
+    * Dropped guard(rcu)() from ieee80211_probe_peer() and used
+      wiphy_dereference() under the already held wiphy lock.
+    * Simplified STA/P2P-client probing to use
+      IEEE80211_LINK_UNSPECIFIED together with the associated
+      AP/GO address for both MLO and non-MLO cases.
+    * Kept the non-MLO band lookup via chanctx so legacy
+      transmissions still carry the correct band.
+    * Return -ENOLINK when the associated AP STA entry is missing,
+      instead of falling back to non-QoS probing.
+
+Changes in v3:
+  - Restructured patch split:
+    * Patch 1: pure rename (probe_client -> probe_peer), no doc changes
+    * Patch 2: documentation update for STA-mode semantics +
+               nl80211 API logic change + cfg80211_probe_status update
+    * Patch 3: mac80211 implementation
+  - Removed unnecessary bitfield padding (no pad2:3)
+  - Moved MAC-omission check for STA mode into cfg80211/nl80211
+    (not mac80211).
+  - Used switch statement in both nl80211_probe_peer() and
+    ieee80211_probe_peer().
+  - Used guard(rcu)() instead of manual rcu_read_lock/unlock
+  - Return -ENOLINK (not -ENOTCONN) for unconnected STA, consistent
+    with cfg80211 conventions
+
+Priyansha Tiwari (4):
+  wifi: nl80211/cfg80211: rename probe_client to probe_peer
+  wifi: cfg80211/nl80211: add STA-mode peer probing
+  wifi: mac80211: implement STA-mode peer probing
+  wifi: mac80211_hwsim: report TX status link_id
+
+ drivers/net/wireless/ath/wil6210/cfg80211.c   |  10 +-
+ .../net/wireless/marvell/mwifiex/cfg80211.c   |   8 +-
+ .../wireless/virtual/mac80211_hwsim_main.c    |  43 +++++-
+ include/net/cfg80211.h                        |  18 +--
+ include/net/mac80211.h                        |   7 +-
+ include/uapi/linux/nl80211.h                  |  23 ++--
+ net/mac80211/cfg.c                            | 123 +++++++++---------
+ net/mac80211/status.c                         |   5 +-
+ net/wireless/nl80211.c                        |  69 ++++++----
+ net/wireless/rdev-ops.h                       |  10 +-
+ net/wireless/trace.h                          |   2 +-
+ 11 files changed, 194 insertions(+), 124 deletions(-)
+
 -- 
-2.55.0
-
+2.34.1
 
