@@ -1,106 +1,62 @@
-Return-Path: <linux-wireless+bounces-38806-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38807-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aZFIO3usTmrMSAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-38806-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 08 Jul 2026 22:00:59 +0200
+	id mEYpKN4LT2raZgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-38807-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 04:47:58 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A1772A0D4
-	for <lists+linux-wireless@lfdr.de>; Wed, 08 Jul 2026 22:00:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 965FE72C24D
+	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 04:47:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JpeoUPX6;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38806-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38806-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FUaxzpFJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38807-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38807-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F3F17304305A
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jul 2026 20:00:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0B15C300F790
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2026 02:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63753E5598;
-	Wed,  8 Jul 2026 20:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F19737261A;
+	Thu,  9 Jul 2026 02:45:37 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC543E4C64
-	for <linux-wireless@vger.kernel.org>; Wed,  8 Jul 2026 20:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAAAEEC0;
+	Thu,  9 Jul 2026 02:45:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783540835; cv=none; b=Ky4PSu8imZZBsh+FPkJfzCyYsKuMVc6q7Gg9M3xrcRrHhcTXW17a9oWHXRq3kxQMSQNqirtEC7X8wqJsDTEFvnyg5YcrxWrnmg0ZBfO0qGVOdQKnWTpaqUwkfN1uE2HEjeL2BQn9HVwtuk9XkautTIbp8fQhw1cvnCuR//Nc1d0=
+	t=1783565137; cv=none; b=I/qIoY799w/nnYFhEHlB8+0WczaABcyllZWyuOl2R9wHkUjR6I/M/a7oILgqagNA7TlN4Ptmxwk7PVxWKPuAiHXLmBqmqYSTmkJCTbxCqp1ozKkgJRezkfK8kzm+iVCLuCMz85iVdUyPelC77GwAaFyByuLKaewm09M5zxMUEOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783540835; c=relaxed/simple;
-	bh=jXsNetM5zyhgHWCvL3yiRo00woCO9r0oqie0QzxXmjE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uFyeeOT9D6aXQlcvSJtTKgAxkbSHD1ApxcQ0PTGADGCIl4HLEuaEAyOOtEFsxQdwTEgiDcYeQNL0+JsG8FreWWjDliOJpE/FlZGN+Zj71MBCbq3+Cd+7Qq5r5PWh4gTm44ALKfnBHibOjXPuCj9PRsGCGA9GfaMi2uySsw9N84E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JpeoUPX6; arc=none smtp.client-ip=209.85.214.172
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cae1a3a744so8715295ad.3
-        for <linux-wireless@vger.kernel.org>; Wed, 08 Jul 2026 13:00:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783540830; x=1784145630; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jidlubEt1qEXlJeLtvIjppUFVqj2pNZjtUN9qoZK2zw=;
-        b=JpeoUPX6RTWVgFAeRIEc3b6KdseyTjUyLn/jS1aVhUQ7SnDEEPLHXuCugD/EA/ChFI
-         IEJm5hFWH8zz/ZmQfXdWe+K30fKLVLM06k0MS+Ne8XMx8TP577gDKT2R91C6sOJQYaks
-         vss2VW6IhhtTkkEt26s9nHHpbU586HJVJvN2WgGkibcNff+OJ9QEKGXuvKWKw72Yrg74
-         XsDSeyJb0kKgUjJ0wKvxJCOWkMCLuQ9WonfDYFZp4pt5QBgYcq634CxbCNR+XQ6Ds2D0
-         ZNVAdJdXvuDg3xVetHccS/LarVyd2qMs9xJrhorNNpZSNnGPiZ6+QVF1UfhyAyRgKgda
-         Be3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783540830; x=1784145630;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jidlubEt1qEXlJeLtvIjppUFVqj2pNZjtUN9qoZK2zw=;
-        b=gvfRRLFiixExD68G+52Awe27lKf7mSVVx23ARiyaTLKH8HqmRbO9JtuFoBLhfy/8He
-         dySiEawk2Yh5P14gd+lLCW8snoTJnTy5PQU6e3ptua7Qojpg5vfJZ+2nD7fUR+YEjwTM
-         dZUCBJVdFamdMwfRDm1RKMj/upuwR1JO4f0vlSgUfMK8GrljNM+IynELkuYtq0e7jCgY
-         aZQDNIjfusXRpmWaVbxj0GRUzcv+I9TlQecnKJZIASrGQMLKGUEJd3/ww8GUTsFTuESF
-         oVY2ZSaYVuHqUYMd4w3WFcb2SydsYdDxgpGSECbsA7ecVEQ9OAjk2jzn3xCNA0a4RxYI
-         obiA==
-X-Gm-Message-State: AOJu0Yy6gOKhpHDgHoOSl7nQKaIJrpPuABqCLg6Sjs1qSza9aWEor2t7
-	c3wbIOWgGWTcz9yrd0XMbC1mzPUIcjdLSgz4j+82ZxwKTwtLamHzXQlG/kWKvzTaT1T4ng==
-X-Gm-Gg: AfdE7ckrysV70pRUHLFGQ6YvvpBhIluiI6ygQnf9Par+op9IlxTvPFZqhb9h2PBclxR
-	OHUFgJc0oX5DekOOe5+77DeZuqT9OuwcFBxTOunk9RDhpnSz3oJNOwV6MOafDdhD+iMzc3aueA4
-	82cdDIeW6Oy+eC6Uhl4oKTGhDfpehZrG73rTx+iF5gXcPVbioJkXwfqfPrGAkifV13ygBk1sO2O
-	c0BLD0MIG4N02NYDGzvUU+KqrpWQ8I41iuDtPudXGf+qTDQfNmL51GE1BwwvdbRz8Dq3vPqXFwL
-	caV3cf75jxO0gQgxJTpbbEpTzgZawRd5vTiyDAxQC/6nVxnvld/hCI8IdZAldrJVdZcZzKuNqPC
-	aU+dmJVExTkg2QWv4XNQ2C1nCMbmmCYh73grE2N1udIjoo6fknXIipOmaAUc20PPRCfUqERtwv9
-	HUv49gyB6OmhVhrBOcmuY9k4TrsjVq50jiYVYoOguRS3xw+uc3kLIQPmlkozQkuqs=
-X-Received: by 2002:a05:6300:6ccd:20b0:3bf:49c8:f73 with SMTP id adf61e73a8af0-3c0bcbc1347mr3085582637.35.1783540829957;
-        Wed, 08 Jul 2026 13:00:29 -0700 (PDT)
-Received: from KRHW1CJW23.bytedance.net ([139.177.225.228])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31174a8f521sm22585395eec.22.2026.07.08.13.00.22
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 08 Jul 2026 13:00:29 -0700 (PDT)
-From: Zhao Li <enderaoelyther@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
+	s=arc-20240116; t=1783565137; c=relaxed/simple;
+	bh=B4sB5XWE7cSAeuarIdTc/s0UhzdgTJZD73Hdg4hcUKA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mrlw0MbAsOueEMKieirE/urHfjcWuNi8tLJYhTZPVTaLMRYH9ZGjnmUC1NI1f5fzHTDObA34ES3H1FVI4RMYkR6aDMZIhpZjtWlVB56mSfLzG9VxkGh7GCrPRrCo0y8vO7Q+nkrWPmm3LujUCi61IjzmC1KjVweWHzffx3MgVNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FUaxzpFJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCF51F000E9;
+	Thu,  9 Jul 2026 02:45:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783565136;
+	bh=jSlk9Z/FGzf1qqoSCxsV+iIQUjW/+mexmFdaAGfOUTc=;
+	h=From:To:Cc:Subject:Date;
+	b=FUaxzpFJdPh4gbaS+L+AaLHlCVKSiuVk3QeLkYeYXaHqXJutrCZWPFYj1HdKQi0cR
+	 MT4HrZRPLluA4G9RcVeMFuI26fo7j3V61J1z6U6sg6ulTXjJPSwxl8I6kBwcNbWPbu
+	 iGFcAE8lTBh/VCxXwFvAkLTw79pr2z0zvO3pWda1xfDxfE7WlVNwtAUrQesZmWdHBx
+	 w1Kdiimz9u261mxfn87wJlPvIQwFXeHSYTAX6DNQ3VHnGDwfbPZeSpRvLZtlA1o2mY
+	 P9NFSDfub1eOfuTi6isHmwOaHQEwf9XgrCQuzKDx7MZTSj80SrOkNj9a06YItzWpkH
+	 CwKG0+Cm8u1bg==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes@sipsolutions.net>,
-	Jaewan Kim <jaewan@google.com>,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	John Crispin <john@phrozen.org>,
-	Avinash Patil <patila@marvell.com>,
-	Cathy Luo <cluo@marvell.com>,
-	"John W. Linville" <linville@tuxdriver.com>,
-	Aloka Dixit <quic_alokad@quicinc.com>,
-	Zhao Li <enderaoelyther@gmail.com>
-Subject: [PATCH 8/8] wifi: nl80211: clean up color-change beacon data on errors
-Date: Thu,  9 Jul 2026 03:59:11 +0800
-Message-ID: <20260708195911.84365-9-enderaoelyther@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260708195911.84365-1-enderaoelyther@gmail.com>
-References: <20260708195911.84365-1-enderaoelyther@gmail.com>
+	Jouni Malinen <jouni.malinen@oss.qualcomm.com>
+Cc: linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Eric Biggers <ebiggers@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] wifi: mac80211: Fix cryptographic MAC comparison to be constant-time
+Date: Wed,  8 Jul 2026 22:44:43 -0400
+Message-ID: <20260709024443.58132-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -109,92 +65,69 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,chromium.org,dolcini.it,sipsolutions.net,google.com,oss.qualcomm.com,kernel.org,phrozen.org,marvell.com,tuxdriver.com,quicinc.com,gmail.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-38806-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:miriam.rachel.korenblit@intel.com,m:briannorris@chromium.org,m:francesco@dolcini.it,m:johannes@sipsolutions.net,m:jaewan@google.com,m:daniel.gabay@intel.com,m:emmanuel.grumbach@intel.com,m:benjamin.berg@intel.com,m:pagadala.yesu.anjaneyulu@intel.com,m:peddolla.reddy@oss.qualcomm.com,m:lorenzo@kernel.org,m:john@phrozen.org,m:patila@marvell.com,m:cluo@marvell.com,m:linville@tuxdriver.com,m:quic_alokad@quicinc.com,m:enderaoelyther@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:johannes@sipsolutions.net,m:jouni.malinen@oss.qualcomm.com,m:linux-crypto@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:ebiggers@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[enderaoelyther@gmail.com,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	TAGGED_FROM(0.00)[bounces-38807-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[ebiggers@kernel.org,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[enderaoelyther@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 65A1772A0D4
+X-Rspamd-Queue-Id: 965FE72C24D
 
-nl80211_color_change() calls nl80211_parse_beacon() for the beacon_next
-template, which can allocate params.beacon_next.mbssid_ies and .rnr_ies.
-The out: label frees those, but two error paths after that parse
-returned directly instead of jumping to it: nl80211_parse_beacon()
-itself failing, and the kzalloc_objs() of the attribute table failing.
-Both leaked whatever mbssid_ies/rnr_ies had been allocated in
-beacon_next.
+To prevent timing attacks, the comparison of cryptographic message
+authentication codes (MACs) needs to have data-independent timing.
+Replace the memcmp() with the correct function, crypto_memneq().
 
-Initialize tb to NULL and route both error paths through the out: label
-so the parsed beacon data is freed.
-
-Fixes: dc1e3cb8da8b ("nl80211: MBSSID and EMA support in AP mode")
-Assisted-by: Codex:gpt-5
-Assisted-by: Claude:opus-4.8
-Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
+Fixes: 39404feee691 ("mac80211: FILS AEAD protection for station mode association frames")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- net/wireless/nl80211.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/mac80211/fils_aead.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 5adcb6bd0fc56..7e796d7c1a661 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -18724,7 +18724,7 @@ static int nl80211_color_change(struct sk_buff *skb, struct genl_info *info)
- 	struct cfg80211_color_change_settings params = {};
- 	struct net_device *dev = info->user_ptr[1];
- 	struct wireless_dev *wdev = dev->ieee80211_ptr;
--	struct nlattr **tb;
-+	struct nlattr **tb = NULL;
- 	u16 offset;
- 	int err;
- 
-@@ -18754,11 +18754,13 @@ static int nl80211_color_change(struct sk_buff *skb, struct genl_info *info)
- 				   wdev->links[params.link_id].ap.chandef.chan,
- 				   info->extack);
- 	if (err)
--		return err;
-+		goto out;
- 
- 	tb = kzalloc_objs(*tb, NL80211_ATTR_MAX + 1);
--	if (!tb)
--		return -ENOMEM;
-+	if (!tb) {
-+		err = -ENOMEM;
-+		goto out;
-+	}
- 
- 	err = nla_parse_nested(tb, NL80211_ATTR_MAX,
- 			       info->attrs[NL80211_ATTR_COLOR_CHANGE_ELEMS],
+diff --git a/net/mac80211/fils_aead.c b/net/mac80211/fils_aead.c
+index d2f4a17eab99..00b91e6ed994 100644
+--- a/net/mac80211/fils_aead.c
++++ b/net/mac80211/fils_aead.c
+@@ -195,7 +195,7 @@ static int aes_siv_decrypt(const u8 *key, size_t key_len,
+ 	res = aes_s2v(key /* K1 */, key_len, num_elem, addr, len, check);
+ 	if (res)
+ 		return res;
+-	if (memcmp(check, frame_iv, AES_BLOCK_SIZE) != 0)
++	if (crypto_memneq(check, frame_iv, AES_BLOCK_SIZE))
+ 		return -EINVAL;
+ 	return 0;
+ }
+
+base-commit: 8cdeaa50eae8dad34885515f62559ee83e7e8dda
 -- 
-2.50.1 (Apple Git-155)
+2.55.0
+
 
