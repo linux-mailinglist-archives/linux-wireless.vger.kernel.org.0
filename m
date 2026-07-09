@@ -1,176 +1,346 @@
-Return-Path: <linux-wireless+bounces-38812-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38813-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RaqIIi5UT2pBegIAu9opvQ
-	(envelope-from <linux-wireless+bounces-38812-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 09:56:30 +0200
+	id N64AEUlbT2pifAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-38813-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 10:26:49 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D5BC72DFC4
-	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 09:56:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2670F72E411
+	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 10:26:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=mediatek.com header.s=dk header.b="nOfQGh/Z";
-	dmarc=pass (policy=quarantine) header.from=mediatek.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38812-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38812-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HIJq9V7B;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38813-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38813-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6F172300B1F8
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2026 07:56:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D35BE3020549
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2026 08:19:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18F6A3DDAFA;
-	Thu,  9 Jul 2026 07:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882544315F;
+	Thu,  9 Jul 2026 08:19:30 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FDC3E63A8
-	for <linux-wireless@vger.kernel.org>; Thu,  9 Jul 2026 07:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65333B4EA1
+	for <linux-wireless@vger.kernel.org>; Thu,  9 Jul 2026 08:19:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783583788; cv=none; b=sTfQKptv/6RAQR1G/IFXhJ4/5f08xoOy3OMUz1OMikaVsH6ERwAIY27EPkabaKJ28QsbfrSID6YNyRRIKOavHECdWQBICgMj2RztXS9MMa9Ix3MPgaUHTF+eK0r3Jc4SISVcOBCsy7/tkT9WOMwd060D0uVjzkJ+D53wF6ImLB8=
+	t=1783585170; cv=none; b=WpdGy6pGZPu6N5VDSVYdDr4rVavrZB3DpGaAiyd/892I0BXBGU2Losc6oc0DtKQqhY2+GZOsQNIN4KcXAkJVZjtkLa8O2R9P63LxRhnQFs2uAfAr7ZwQfvgFGgEVKsw6SD93bx7pvzYaW5XULBgVf/colQiRhNS+ONIMZqdk+Mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783583788; c=relaxed/simple;
-	bh=cBvowL2wrsDf2AxZrEeyKoVXCxRzCSbWwzAoUDAoZYg=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ez8tPEOwuHK0oAahI33TYyy6eqDvy2y+xw3z3hlor35xGQN4Wq6dvH02UuZMTczfGzhOKpE9Ew0SZ6nsHR02FuiKLrOCVt2V+cXOI4k//HnDBFWzyyaA+Ila1pKr1bBLddpzcjPiePouN+IsCH7vjXeiQQ7doUXmUNIIUGR+0s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=nOfQGh/Z; arc=none smtp.client-ip=210.61.82.184
-X-UUID: a8d424347b6b11f18dc8c9802ae25ab1-20260709
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=5EnLepiGJu5ynM7pzYiD8KQTaUm1oFDIVTsdGhvGkps=;
-	b=nOfQGh/Z9MeqQp6lZwP7m5byacn21h13okEVaETjRiOtaCcPxsDCoQgXjAE1b5ST0FQ6Dg6t1Sz0MoPe59GqSNyVmg9hYRQ8jYe/WWA6cXGxuO+S5K2TxHRY+N85+ywhmKr/ZzTQV/E7RxXiru06qQhTtypIDjZykI8q8ShJEt0=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.17,REQID:0ff483bf-01cf-48d1-8f02-214b62f21ead,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:d497b38,CLOUDID:79dea303-430e-43d5-9a6c-19a994ddbd60,B
-	ulkID:nil,BulkQuantity:0,SF:81|82|102|836|865|888|898,TC:-5,Content:0|15|5
-	0|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,
-	OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: a8d424347b6b11f18dc8c9802ae25ab1-20260709
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
-	(envelope-from <eason.lai@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 948769838; Thu, 09 Jul 2026 15:56:14 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 9 Jul 2026 15:56:13 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Thu, 9 Jul 2026 15:56:13 +0800
-From: Eason Lai <eason.lai@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-	<Yf.Luo@mediatek.com>, <kun.wu@mediatek.com>, <deren.wu@mediatek.com>,
-	<sean.wang@mediatek.com>, <quan.zhou@mediatek.com>, <ryder.lee@mediatek.com>,
-	<leon.yen@mediatek.com>, <litien.chang@mediatek.com>, <jb.tsai@mediatek.com>,
-	<eason.lai@mediatek.com>, Eason Lai <Eason.Lai@mediatek.com>
-Subject: [PATCH 3/3] wifi: mt76: mt792x: Restrict TX page pool to MT8196 platform
-Date: Thu, 9 Jul 2026 15:55:58 +0800
-Message-ID: <20260709075558.1654164-4-eason.lai@mediatek.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20260709075558.1654164-1-eason.lai@mediatek.com>
+	s=arc-20240116; t=1783585170; c=relaxed/simple;
+	bh=Nb3X8XXyedLFQuHttQ/1HNsb2UtcxCchriKUmJuv35Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qG/+B5a3uThqMpBrzIL1sO9cRJXGYOE06mVIr9vd+kv28UDQS6uC2HKBigt+Rs2i/8VvyOHYiyNNCBq1B2x2UAbsCELzt/YpAhpmsgpmLEwHqo9CXGN5AbGArZig+l0kwIq30WD2MyxN2YyFa8A+sgxfZID8PY7HolRSSPotVbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HIJq9V7B; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE341F00A3A;
+	Thu,  9 Jul 2026 08:19:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783585168;
+	bh=ZxDmTe0sj+JIlkFBQZfmMlzPCqsUQtZirHhOjh2bpf8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HIJq9V7BnK21MVgAkwO+zX9MLH4tp9avGFdxxEtFw5qY8w7ubrRLiAyb3uG4jH3e2
+	 nUQP32Dn36p5BK8poRCU1V/lBdpCGplg0xwn6wjLebZJaTYhf4InerOc+FaqVqSHgI
+	 //azNbL/3EOkGO6StZQfUQ285yKYZO4W4yUc5nx2gnP2nJnyPnM9EOGlp3EjHskthi
+	 HoKUIRX7lqmIfmVA8afwFI89YQ1rs6qRWrGdO5ODxAcWIzNgU7d/ttvIvF2JyRDUhq
+	 AEZSU5EHhi3gIp+FKoqVjfIQ50oBHnUfdmZik7PDB6iYuiplXjUssjhOrz/aNQzI5+
+	 d+X9X0nbqbfGg==
+Date: Thu, 9 Jul 2026 10:19:26 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Eason Lai <eason.lai@mediatek.com>
+Cc: nbd@nbd.name, linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org, Yf.Luo@mediatek.com,
+	kun.wu@mediatek.com, deren.wu@mediatek.com, sean.wang@mediatek.com,
+	quan.zhou@mediatek.com, ryder.lee@mediatek.com,
+	leon.yen@mediatek.com, litien.chang@mediatek.com,
+	jb.tsai@mediatek.com
+Subject: Re: [PATCH 1/3] wifi: mt76: Separate skb and page_pool_buf pointers
+ in mt76_txwi_cache
+Message-ID: <ak9Zjm-czxVIjrhX@lore-desk>
 References: <20260709075558.1654164-1-eason.lai@mediatek.com>
+ <20260709075558.1654164-2-eason.lai@mediatek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="F68GQNVjJ1S6xrZo"
+Content-Disposition: inline
+In-Reply-To: <20260709075558.1654164-2-eason.lai@mediatek.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-6.76 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-38812-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[eason.lai@mediatek.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,m:Yf.Luo@mediatek.com,m:kun.wu@mediatek.com,m:deren.wu@mediatek.com,m:sean.wang@mediatek.com,m:quan.zhou@mediatek.com,m:ryder.lee@mediatek.com,m:leon.yen@mediatek.com,m:litien.chang@mediatek.com,m:jb.tsai@mediatek.com,m:eason.lai@mediatek.com,m:Eason.Lai@mediatek.com,s:lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[eason.lai@mediatek.com,linux-wireless@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[mediatek.com:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER(0.00)[lorenzo@kernel.org,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FORGED_RECIPIENTS(0.00)[m:eason.lai@mediatek.com,m:nbd@nbd.name,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,m:Yf.Luo@mediatek.com,m:kun.wu@mediatek.com,m:deren.wu@mediatek.com,m:sean.wang@mediatek.com,m:quan.zhou@mediatek.com,m:ryder.lee@mediatek.com,m:leon.yen@mediatek.com,m:litien.chang@mediatek.com,m:jb.tsai@mediatek.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38813-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lorenzo@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mediatek.com:from_mime,mediatek.com:email,mediatek.com:mid,mediatek.com:dkim]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mediatek.com:email,lore-desk:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7D5BC72DFC4
+X-Rspamd-Queue-Id: 2670F72E411
 
-From: Eason Lai <Eason.Lai@mediatek.com>
+--F68GQNVjJ1S6xrZo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The TX page pool optimization significantly improves performance on
-MT8196 when IOMMU is enabled, but this benefit is platform-specific.
-Restrict this feature to MT8196 where it has been tested and validated.
+> From: Eason Lai <Eason.Lai@mediatek.com>
+>=20
+> Refactor mt76_txwi_cache structure to use separate skb and page_pool_buf
+> fields instead of a union with ptr. This improves type safety and makes
+> the code more explicit about which pointer type is being used in
+> different contexts.
+>=20
+> Also add skip_unmap flag to tx_info.buf to handle cases where DMA
+> unmapping should be skipped.
+>=20
+> Signed-off-by: Eason Lai <Eason.Lai@mediatek.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/dma.c      | 29 ++++++++++++-------
+>  drivers/net/wireless/mediatek/mt76/mt76.h     |  4 +--
+>  .../net/wireless/mediatek/mt76/mt7996/mac.c   | 10 +++----
+>  drivers/net/wireless/mediatek/mt76/tx.c       |  2 +-
+>  drivers/net/wireless/mediatek/mt76/wed.c      |  6 ++--
+>  5 files changed, 28 insertions(+), 23 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wirel=
+ess/mediatek/mt76/dma.c
+> index f8c2fe5f2f58..2716278788bd 100644
+> --- a/drivers/net/wireless/mediatek/mt76/dma.c
+> +++ b/drivers/net/wireless/mediatek/mt76/dma.c
+> @@ -43,7 +43,8 @@ mt76_alloc_rxwi(struct mt76_dev *dev)
+>  	if (!t)
+>  		return NULL;
+> =20
+> -	t->ptr =3D NULL;
+> +	t->skb =3D NULL;
+> +	t->page_pool_buf =3D NULL;
+>  	return t;
+>  }
+> =20
+> @@ -84,8 +85,11 @@ mt76_get_txwi(struct mt76_dev *dev)
+>  {
+>  	struct mt76_txwi_cache *t =3D __mt76_get_txwi(dev);
+> =20
+> -	if (t)
+> +	if (t) {
+> +		t->skb =3D NULL;
+> +		t->page_pool_buf =3D NULL;
+>  		return t;
+> +	}
+> =20
+>  	return mt76_alloc_txwi(dev);
+>  }
+> @@ -147,8 +151,8 @@ mt76_free_pending_rxwi(struct mt76_dev *dev)
+> =20
+>  	local_bh_disable();
+>  	while ((t =3D __mt76_get_rxwi(dev)) !=3D NULL) {
+> -		if (t->ptr)
+> -			mt76_put_page_pool_buf(t->ptr, false);
+> +		if (t->page_pool_buf)
+> +			mt76_put_page_pool_buf(t->page_pool_buf, false);
+>  		kfree(t);
+>  	}
+>  	local_bh_enable();
+> @@ -475,14 +479,14 @@ mt76_dma_get_rxdmad_c_buf(struct mt76_dev *dev, str=
+uct mt76_queue *q,
+>  	if (more)
+>  		*more =3D !FIELD_GET(RRO_RXDMAD_DATA1_LS_MASK, data1);
+> =20
+> -	buf =3D t->ptr;
+> +	buf =3D t->page_pool_buf;
+>  	ind_reason =3D FIELD_GET(RRO_RXDMAD_DATA2_IND_REASON_MASK, data2);
+>  	if (ind_reason =3D=3D MT_DMA_WED_IND_REASON_REPEAT ||
+>  	    ind_reason =3D=3D MT_DMA_WED_IND_REASON_OLDPKT) {
+>  		mt76_put_page_pool_buf(buf, false);
+>  		buf =3D ERR_PTR(-EAGAIN);
+>  	}
+> -	t->ptr =3D NULL;
+> +	t->page_pool_buf =3D NULL;
+>  	t->dma_addr =3D 0;
+> =20
+>  	mt76_put_rxwi(dev, t);
+> @@ -529,9 +533,9 @@ mt76_dma_get_buf(struct mt76_dev *dev, struct mt76_qu=
+eue *q, int idx,
+>  				SKB_WITH_OVERHEAD(q->buf_size),
+>  				page_pool_get_dma_dir(q->page_pool));
+> =20
+> -		buf =3D t->ptr;
+> +		buf =3D t->page_pool_buf;
+>  		t->dma_addr =3D 0;
+> -		t->ptr =3D NULL;
+> +		t->page_pool_buf =3D NULL;
+> =20
+>  		mt76_put_rxwi(dev, t);
+>  		if (drop)
+> @@ -694,6 +698,7 @@ mt76_dma_tx_queue_skb(struct mt76_phy *phy, struct mt=
+76_queue *q,
+>  			goto unmap;
+> =20
+>  		tx_info.buf[n].addr =3D addr;
+> +		tx_info.buf[n].skip_unmap =3D false;
+>  		tx_info.buf[n++].len =3D iter->len;
+>  	}
+>  	tx_info.nbuf =3D n;
+> @@ -718,9 +723,11 @@ mt76_dma_tx_queue_skb(struct mt76_phy *phy, struct m=
+t76_queue *q,
+>  				tx_info.info, tx_info.skb, t);
+> =20
+>  unmap:
+> -	for (n--; n > 0; n--)
+> -		dma_unmap_single(dev->dma_dev, tx_info.buf[n].addr,
+> -				 tx_info.buf[n].len, DMA_TO_DEVICE);
+> +	for (n--; n > 0; n--) {
+> +		if (!tx_info.buf[n].skip_unmap)
+> +			dma_unmap_single(dev->dma_dev, tx_info.buf[n].addr,
+> +					 tx_info.buf[n].len, DMA_TO_DEVICE);
+> +	}
+> =20
+>  free:
+>  #ifdef CONFIG_NL80211_TESTMODE
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wire=
+less/mediatek/mt76/mt76.h
+> index 527bef97e122..927c21536f4e 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> @@ -445,10 +445,8 @@ struct mt76_txwi_cache {
+>  	struct list_head list;
+>  	dma_addr_t dma_addr;
+> =20
+> -	union {
+>  		struct sk_buff *skb;
+> -		void *ptr;
+> -	};
+> +	void *page_pool_buf;
 
-On MT8196 with IOMMU enabled, DMA mapping overhead increases
-dramatically compared to IOMMU-disabled configurations:
+if you do not rename the pointer here, the patch would be much less intrusi=
+ve.
 
-dma_unmap_single() in mt76_connac_txp_skb_unmap_hw() (NAPI context):
-  - IOMMU disabled: 181.25 ns (avg over 20,000 calls)
-      - IOMMU enabled:  5216.19 ns (avg over 21,000 calls)
+Regards,
+Lorenzo
 
-dma_map_single() in mt76_dma_tx_queue_skb() (workqueue context):
-  - IOMMU disabled: 880.20 ns (avg over 20,000 calls)
-      - IOMMU enabled:  2106.65 ns (avg over 20,000 calls)
+> =20
+>  	u8 qid;
+>  	u8 phy_idx;
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7996/mac.c
+> index e2a83da3a09c..924b0dc0ff1e 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+> @@ -1775,12 +1775,12 @@ static void mt7996_rx_token_put(struct mt7996_dev=
+ *dev)
+>  		struct mt76_txwi_cache *t;
+> =20
+>  		t =3D mt76_rx_token_release(&dev->mt76, i);
+> -		if (!t || !t->ptr)
+> +		if (!t || !t->page_pool_buf)
+>  			continue;
+> =20
+> -		mt76_put_page_pool_buf(t->ptr, false);
+> +		mt76_put_page_pool_buf(t->page_pool_buf, false);
+>  		t->dma_addr =3D 0;
+> -		t->ptr =3D NULL;
+> +		t->page_pool_buf =3D NULL;
+> =20
+>  		mt76_put_rxwi(&dev->mt76, t);
+>  	}
+> @@ -1928,14 +1928,14 @@ void mt7996_rro_rx_process(struct mt76_dev *mdev,=
+ void *data)
+>  				goto next_page;
+> =20
+>  			qid =3D t->qid;
+> -			buf =3D t->ptr;
+> +			buf =3D t->page_pool_buf;
+>  			q =3D &mdev->q_rx[qid];
+>  			dma_sync_single_for_cpu(mdev->dma_dev, t->dma_addr,
+>  						SKB_WITH_OVERHEAD(q->buf_size),
+>  						page_pool_get_dma_dir(q->page_pool));
+> =20
+>  			t->dma_addr =3D 0;
+> -			t->ptr =3D NULL;
+> +			t->page_pool_buf =3D NULL;
+>  			mt76_put_rxwi(mdev, t);
+>  			if (!buf)
+>  				goto next_page;
+> diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wirele=
+ss/mediatek/mt76/tx.c
+> index 22f9690634c9..665156a7ea65 100644
+> --- a/drivers/net/wireless/mediatek/mt76/tx.c
+> +++ b/drivers/net/wireless/mediatek/mt76/tx.c
+> @@ -899,7 +899,7 @@ int mt76_rx_token_consume(struct mt76_dev *dev, void =
+*ptr,
+>  	token =3D idr_alloc(&dev->rx_token, t, 0, dev->rx_token_size,
+>  			  GFP_ATOMIC);
+>  	if (token >=3D 0) {
+> -		t->ptr =3D ptr;
+> +		t->page_pool_buf =3D ptr;
+>  		t->dma_addr =3D phys;
+>  	}
+>  	spin_unlock_bh(&dev->rx_token_lock);
+> diff --git a/drivers/net/wireless/mediatek/mt76/wed.c b/drivers/net/wirel=
+ess/mediatek/mt76/wed.c
+> index ed657d952de2..e1cf81d722b8 100644
+> --- a/drivers/net/wireless/mediatek/mt76/wed.c
+> +++ b/drivers/net/wireless/mediatek/mt76/wed.c
+> @@ -15,11 +15,11 @@ void mt76_wed_release_rx_buf(struct mtk_wed_device *w=
+ed)
+>  		struct mt76_txwi_cache *t;
+> =20
+>  		t =3D mt76_rx_token_release(dev, i);
+> -		if (!t || !t->ptr)
+> +		if (!t || !t->page_pool_buf)
+>  			continue;
+> =20
+> -		mt76_put_page_pool_buf(t->ptr, false);
+> -		t->ptr =3D NULL;
+> +		mt76_put_page_pool_buf(t->page_pool_buf, false);
+> +		t->page_pool_buf =3D NULL;
+> =20
+>  		mt76_put_rxwi(dev, t);
+>  	}
+> --=20
+> 2.45.2
+>=20
 
-The TX page pool mitigates this overhead by reusing DMA mappings,
-but should only be enabled on platforms where it has been verified
-to work correctly.
+--F68GQNVjJ1S6xrZo
+Content-Type: application/pgp-signature; name=signature.asc
 
-Signed-off-by: Eason Lai <Eason.Lai@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt792x_dma.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_dma.c b/drivers/net/wireless/mediatek/mt76/mt792x_dma.c
-index b341f1cb3ce0..6d5725a5b10f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_dma.c
-@@ -307,6 +307,7 @@ int mt792x_dma_tx_page_pool_init(struct mt792x_dev *dev)
- {
- 	struct mt76_dev *mdev = &dev->mt76;
- 	int i, ret, pool_count = 0;
-+	bool is_mt8196;
- 
- 	if (!iommu_get_domain_for_dev(mdev->dma_dev))
- 		return 0;
-@@ -314,6 +315,13 @@ int mt792x_dma_tx_page_pool_init(struct mt792x_dev *dev)
- 	if (!mt76_is_mmio(mdev))
- 		return 0;
- 
-+	is_mt8196 = of_machine_is_compatible("mediatek,mt8196");
-+	if (!is_mt8196) {
-+		dev_info(mdev->dev, "Not MT8196 platform, TX page pool optimization disabled\n");
-+		return 0;
-+	}
-+
-+	dev_info(mdev->dev, "MT8196 platform detected, enabling TX page pool optimization\n");
- 	mdev->tx_prealloc_enabled = true;
- 
- 	for (i = 0; i < ARRAY_SIZE(mdev->phy.q_tx); i++) {
--- 
-2.45.2
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCak9ZjgAKCRA6cBh0uS2t
+rA/nAQD/fVPT9UqPvUKf8fMd0wox/0BGNj2sq8OEfIb1UTE28QD7BnTiNsxjz1As
+CJtPdLwjdRIS6/v5zcVQnm2nOqVqKA4=
+=7j30
+-----END PGP SIGNATURE-----
 
+--F68GQNVjJ1S6xrZo--
 
