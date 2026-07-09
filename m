@@ -1,107 +1,107 @@
-Return-Path: <linux-wireless+bounces-38820-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38821-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pjcYJnuKT2rLjAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-38820-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 13:48:11 +0200
+	id YbjwLYGKT2rMjAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-38821-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 13:48:17 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2575473093F
-	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 13:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F07730946
+	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 13:48:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=ZEqDOnLO;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=CPH+cuzN;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=YmJ0DgEn;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=f9o+ZPdT;
 	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38820-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38820-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38821-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38821-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CEF953040DA3
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2026 11:42:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 74568309D660
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2026 11:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2D440FD87;
-	Thu,  9 Jul 2026 11:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC78409631;
+	Thu,  9 Jul 2026 11:42:58 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7634379C32
-	for <linux-wireless@vger.kernel.org>; Thu,  9 Jul 2026 11:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E27410D01
+	for <linux-wireless@vger.kernel.org>; Thu,  9 Jul 2026 11:42:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783597376; cv=none; b=C0CrVwQBTkcn2AWfpGHock4qVOnaysAeTjKmcXkrHCD3N2fn+GG1DP8Fj92aNQxNAL1VFFbFlK/TAU2LtmqUleTbhqAURZiRLrf6QwRw6nUiMTVM9ioZkPjU3Ci0nBUS9fcwdfH4wjnsPfPw6Q4oiXMlGqVi9tlvjg4qQmdQqxM=
+	t=1783597378; cv=none; b=k7fEiYblEuCr0yj7KaOruShMez6JihODxyBpqOHCWhxWvWn98ZaebZ/36LvYj/AU05Jd+8es4Gcn2ZltU6K87hjOV3G95OhFdNCQUeQ8dMZfVLGX83VV9W99m4969gLo23VFWBzmGqsmA6u0G1ffHm338oLnJrmQoLkDcR/aJbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783597376; c=relaxed/simple;
-	bh=u/6wZyWrjekW0OpzmFoUO7mvD5KHKVYC6QfdEV6pANk=;
+	s=arc-20240116; t=1783597378; c=relaxed/simple;
+	bh=wcx0mnST8SlDk6rmebO+ZZL6CGN2pWeuykJFB1qQ8Zc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mFhUs4VEgNXcy0EVuBVxg9fF5X5Y/Qc++h4GbV6p57jqkIeL3u4ihlf/jkAwYgy8g/rRH9oaCurTuV/+9sbTKZjdNiL1WiZMAOCxkdLoDREuzD+iNp5CBg7RygnVaygatr7l6N1Abp5jBBaOCVHk76hVWqWJ2IQy0hSsbYqS9Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ZEqDOnLO; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CPH+cuzN; arc=none smtp.client-ip=205.220.180.131
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 669BNMu11488878
-	for <linux-wireless@vger.kernel.org>; Thu, 9 Jul 2026 11:42:54 GMT
+	 MIME-Version; b=RLobB8Ceimy0N9UxfGat64tnP1l9ojocBrpMfyk9xkQV8A6iQ7KVlLdgPi2vrQEkigfwZs0EHgF/ctYnNPR5MZ3Md4z9Otu+Af2SghHPN5uCvd4UdmN/qFny/Fbhd/lpujbE3VuT8EIQvaZoC483rwYJPQbrEXim3xTU9P6TxpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YmJ0DgEn; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=f9o+ZPdT; arc=none smtp.client-ip=205.220.180.131
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 669BNN571575673
+	for <linux-wireless@vger.kernel.org>; Thu, 9 Jul 2026 11:42:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=jFZZnsSKIXc
-	OaSgJCGaiYfkE7gIVteZGdWc6yJg7JYk=; b=ZEqDOnLOVsW0qR+97JLRxlzASMx
-	YcJBU0DERZMoVUZYtxB64+BYvVtLKloJuRLaz5dncRU7FGDM/mv5DyolCjkKw2zs
-	gtFZZAgVWU57yB+JoR1L5J0wr5myQqDOYZXvIgL3VEbtORDmhz7Lp3o+1IVPNk/e
-	4j98geB2xYFImu0LAR32DtxQ9kB+XqAmfujAfhMVha2G48kM+QcaTUcJ2ocFHq0z
-	q7U4BNqYLB56BJo4qG9+NgrQj7Ip4kClRBVYzonNTtQMW+1CyyZ0V1D4HGQ86f5Z
-	ltMKee0wkF0rMZlU12aoOgJcVCIU7L36i3hg6+UG+2jC/TKCW3HPg0QH2fg==
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f9wwftycp-1
+	:mime-version:references:subject:to; s=qcppdkim1; bh=e5hJ4gjjLT8
+	WL7TNY/WnrwapNHTi3JeTi2/uXVaLhrI=; b=YmJ0DgEnUvhkcAJaFyo5zc4a1IW
+	boTBEXaxRjhswA6Qs6TQeDlTGUm1pPhRZqqVQc/3rstfShxzruAICrIa3zbRGYN1
+	m8ivQNVZyC8m2dKTyvY1+yijsnAi6khmVFZqDf0fNYKk7UsSK6PYN7M/90+oseaW
+	0AUINnXodCqRN5PXVD6FWsBtQG+pw1E/M6l/w82r5eQ7H6G9d14A7b52YHHbPHGr
+	E8fw4fKOQoWcsBkiFccK8sNJtW/Qeovy8N/5SAyphqkn6yu8r+etHxY49Pd99ohO
+	mGbd9rdc3usHIdJB5o3ZmDLXq6uQ4UBvv1qxgL+FOEvp6YqT0JD0rNK/zjg==
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f9sqwc04g-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 09 Jul 2026 11:42:53 +0000 (GMT)
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-c89704da8c7so1849094a12.0
-        for <linux-wireless@vger.kernel.org>; Thu, 09 Jul 2026 04:42:53 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Thu, 09 Jul 2026 11:42:56 +0000 (GMT)
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-ca7c1e22995so2272077a12.3
+        for <linux-wireless@vger.kernel.org>; Thu, 09 Jul 2026 04:42:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783597373; x=1784202173; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1783597375; x=1784202175; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=jFZZnsSKIXcOaSgJCGaiYfkE7gIVteZGdWc6yJg7JYk=;
-        b=CPH+cuzN9C2HP1FeQyPs1AgNH+vv0gwQHSh+orlXOux03i8nxcHMKEWZ4w+CevftIW
-         bVIBiLTS65wwPOONm3anauvswVJTQuhWPtxA5GOlA+na8KX491BddHNP2kEcPShQfQZO
-         u//jJWxSgLilCFc+tjuWgd7QeK/7LtfUKe8rmyq6899xXLbt6uj4tERGeSjPQpn/kZs8
-         tPb0DPFlwDsAAW/nKOUqs6yWCsHC2CZSTGVkXwoJHzUl3oTM56oLSb2nl02C8bFKQjZD
-         hr4lmpCqgWJjABdAJn38WR8GW/Ij2GLd5wTEMSzRdrUeLzUpVJMc5MeUx9f6eOKvMCfr
-         xGPg==
+        bh=e5hJ4gjjLT8WL7TNY/WnrwapNHTi3JeTi2/uXVaLhrI=;
+        b=f9o+ZPdTIzkeXC/9RG/q5MhpbwpluCohnTOfE7jmbd79xmVLssOb8zPHpLWja2W28P
+         UEF5O8MMRBFH7lJKWexlttogknSrs92wdM340TXH+LeBvKJwHIOaaV6zOGgnvKE3zuZG
+         GMEV9a6qETH/sSJv6bL1j5WonmH0cqUKeZ6BDziO4F5Id72nYQscQW9Pybm8YRRVoOan
+         COLhhTRtfAoxCQX2iEjhLp+8Fc8fw3r7tqgeV4bS0uLGeGoUa6a/XhuLKcr+eSBred+g
+         AlHVChYwMADk9bRDSIOQSm2Q8TfxGYXtHch8JuU4rVZ0q38DRAQGreNSLGT2e+lb2/UC
+         e4PQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783597373; x=1784202173;
+        d=1e100.net; s=20251104; t=1783597375; x=1784202175;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jFZZnsSKIXcOaSgJCGaiYfkE7gIVteZGdWc6yJg7JYk=;
-        b=iVQSEU9lKPWHyNl438TZg0kWxn5Uf9kB2jHtX8PqpARCu0GJsHbJD1INUXZOv6HwEt
-         nvamaKkrHu98hMIDR5ry2kK7TiNF6gEHoqpKxsQ0yeni2pr0MJVhzoeiYHTMbJGmlOkm
-         PLLmd/hitrKM4uCXkGQILJ8LDDQCdP9awrAu+iHwEYKt1VHGmHCDlOSxnxcA8zU252bx
-         pyX2WD9RkXv+RyBZW6nysHRSwMEPZB6T0V3y9pNBg+2veZSsBTZELxArVTGXuL5Govn4
-         9kR4Ao8Q+qH9Rr3x4yZOeIFahWfc4Mq/DPqW0SfY2iLqekdPPZNz0eUCQ91u4B3Qm2aL
-         l+PQ==
-X-Gm-Message-State: AOJu0YyI5ORQZ42gvxRXN13kyR3Q/9FipsX+MuasHefU8O4OVzNTa5y6
-	tVHAcq7zxZMXEoV4riGNd7JoaJBwVbGnCvqkfHS78MbvTdUMeBlgWoGS+tO0OA6UKs8J8jm6nYB
-	UnVy7GJw6vrbtxU78R9ujTIT580MyOiBXJoSre0FNmhX1+SVieUKj2204Nxx2cqfSY8i0WeDIJP
-	l92Q==
-X-Gm-Gg: AfdE7cl8+LWcDiw+RhFtAfBaDrJNXtaP0Hh5JzqTLBmO0aU6GVcKgbzILyqOBk1QzDD
-	hlBhTiiEkIN+iBtaHsjCDUmGRaHAgszyfPGBkrD0FhKIDLmoY4Rb+AaPdvjvT2WFEj7/vAP95Xv
-	8CqOAJNEk5Bi79eKwVN3dx2XP0EjbXUYS300fHFn2gorZauU7stRlMqVE3fczu1UterJK0jbfK1
-	05j0aZA4EItf2SA1i7vJTzTfS8Wap977Wyte+LxFmxSXQj1vX+N/zRPbSEH6xIe6D0fbjrHWvkF
-	yhYZhOW95Mjmz+q84OPvw/B4lGDdaxu+CfxJPEcMfCBg4HZZj12LhklxsAqLKqbMTY3oNSn8IoR
-	x9YrYVZ0wDIkYlPL8mYKYK4tn7eoo6wsGIgc=
-X-Received: by 2002:a05:6a21:9148:b0:3b3:f46:1eea with SMTP id adf61e73a8af0-3c0bcbe9c3fmr7935331637.7.1783597372834;
-        Thu, 09 Jul 2026 04:42:52 -0700 (PDT)
-X-Received: by 2002:a05:6a21:9148:b0:3b3:f46:1eea with SMTP id adf61e73a8af0-3c0bcbe9c3fmr7935298637.7.1783597372203;
-        Thu, 09 Jul 2026 04:42:52 -0700 (PDT)
+        bh=e5hJ4gjjLT8WL7TNY/WnrwapNHTi3JeTi2/uXVaLhrI=;
+        b=DMne/qRZp5IDnQMl7MNj98T00qVpiStB/vEZJvVxGAeBWjHDuhRswDl7Cy0ValVw5B
+         MeyeLSGFJI4rTPdoqwR2wv67/ky78KPnmrk9QpSZDLzwCy9L7cfVHp2m3iB4RNiU9VJM
+         TZVtpwVdkRZDNudTq06BqdU5Cq4rYNBjD0LMKRzs9S5RaIc5tuXAp0lreTf6NsdcRQWz
+         0myfIQ7QwOxof/R9xSQsmIP6HgCu4J2+svSfaEnH0jvCKYoY53z+CzfafutPukhXQxAR
+         7whaODLZxYyGNK0WF/VLyp2wEKgVsaeKu1VxZEN14tgZQjZA06M11RBdVrXs03HfrmEh
+         XW3Q==
+X-Gm-Message-State: AOJu0Yx+tmEThzEq8eO31qWXYDTnnqNUgnsJ1B0pDMpmHAwvjMaWiwKH
+	paov1oe2kX5tecNeXo9TeeyE7CZk3JYm/t/EmwFUSyJYcBWE9yxZoyX5nrC8CKGYwME0NmxssmB
+	bHCM+CV7Lf/OV2LgKskm9pwny3OJJQepyvgER1+f6HECJMm9cVt7ufBy7STgprHQM9yaZRdw01X
+	R/Fg==
+X-Gm-Gg: AfdE7cnmzjjc/v1DyHBY7ZmMn81WYr4wadPHxpr99z69HqteOIDZqR46SyB9u5yECs7
+	8TCSu1wBHUzpU23oOmx0ni9cT7V2i/bkfhxQGagRk2WGVgOZJzAfdCNan7EnMNujG9dZxC+gn6v
+	6anFVtY7AZcNbmF4DslUVUsV+3STaHkWFYeGHKT+0BVjsaK69F2B0p+TcYcHBMuRPi0834u7uBp
+	SjQwjR3VSsx/eddT92XkEx0irURENrC9Hlbf2kGLMMe9s0PXARKWzxhAolcCpMP9ewa5yBuhL1l
+	nq8x5HwtKPutffwc0Uhloy1ijV3JtTK/Q/+HC9ZNDJu2M13QUdlhh0Dh0fLa5LYHHRdhIHCtv0e
+	nCq1qTbhGh2bF1Rvi1M83xu/Csc0Y7RvsPZY=
+X-Received: by 2002:a05:6a20:a10e:b0:398:7df5:2dae with SMTP id adf61e73a8af0-3c0bcf49b71mr8002851637.9.1783597375072;
+        Thu, 09 Jul 2026 04:42:55 -0700 (PDT)
+X-Received: by 2002:a05:6a20:a10e:b0:398:7df5:2dae with SMTP id adf61e73a8af0-3c0bcf49b71mr8002810637.9.1783597374574;
+        Thu, 09 Jul 2026 04:42:54 -0700 (PDT)
 Received: from hu-pritiwa-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b6594f9a0sm31772753c88.4.2026.07.09.04.42.50
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b6594f9a0sm31772753c88.4.2026.07.09.04.42.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 04:42:51 -0700 (PDT)
+        Thu, 09 Jul 2026 04:42:53 -0700 (PDT)
 From: Priyansha Tiwari <priyansha.tiwari@oss.qualcomm.com>
 X-Google-Original-From: Priyansha Tiwari <pritiwa@qti.qualcomm.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org, veerendranath.jakkam@oss.qualcomm.com
-Subject: [PATCH wireless-next v6 3/4] wifi: mac80211: implement STA-mode peer probing
-Date: Thu,  9 Jul 2026 17:12:27 +0530
-Message-Id: <20260709114228.672317-2-pritiwa@qti.qualcomm.com>
+Subject: [PATCH wireless-next v6 4/4] wifi: mac80211_hwsim: report TX status link_id
+Date: Thu,  9 Jul 2026 17:12:28 +0530
+Message-Id: <20260709114228.672317-3-pritiwa@qti.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260709114228.672317-1-pritiwa@qti.qualcomm.com>
 References: <20260709114228.672317-1-pritiwa@qti.qualcomm.com>
@@ -112,31 +112,31 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDExMyBTYWx0ZWRfX5Gl0/hnE4FzG
- gmRpdwgm0bM6jdnqzH+EKCZEnRoo35YEtdOyGOS5TYRz/K27x+7+4fF1jav/8XaP+BWN3IAQokf
- DG3vjz3uoaaDyRIPCmIznjmjE91xwCJhMWkjw56aPvyAtzQIpwyUnjBsmdx/lvR1qmGXozL9wfg
- f2aIuMg5YntvjpSg1dl1vaJfI3ci2njnd1XjyLSjv1ZmrTfqe87RMgxVCsCanpDRMWyjzXFVFVD
- Fsmn3C5g0Wu+5gq6h1WVKAsCRbLcgnFYoDIoLX6XsC/80KeQOOsivbdSnlR9RNj9YRkvG95tjAX
- 51nP9XrnF8d9Kk9gLx8SXWk0XqU8da3pFM5GWSe877qTaD2O/ukga8LUK1bPfFx1Y/gu4lVNE6u
- HvlsRj41zwt4xQ6J8nT+qvBNt8z0DPlPgyJZbyHa3Dtk87Ns1Ohzko9hdsAq2kqck8fAwSdr1Kf
- xtfZqSWC+c2qZudcuLg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDExMyBTYWx0ZWRfXzAh717olnACq
- wlnuX5FE8zq9iBQncuBdHwmsV2YDJisybY6pbcCwoCn+qKkVPWmLG0EhTuaLto5hSlvBTqDgloQ
- yCQRjEwVOWNt9o2YwsWFRZREurO9yTU=
-X-Proofpoint-ORIG-GUID: bawcX9rQUEYjjIIO8i0fPM5DF_M6bKCa
-X-Proofpoint-GUID: bawcX9rQUEYjjIIO8i0fPM5DF_M6bKCa
-X-Authority-Analysis: v=2.4 cv=Krh9H2WN c=1 sm=1 tr=0 ts=6a4f893d cx=c_pps
- a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDExMyBTYWx0ZWRfX+vnoHRQ0yorV
+ OQKrByJwkUd+SA6nE9lLUbATGKVjRV5hNUfJDBSMpL7A9IKToqzzta9JfhPLLO280XAqGTZpnE1
+ psDJT1aKKutcFVGvoRxOe9jzvMnQRMEEuSFxY7kAD+kduwPO8B3QZbQRbC1K/h3JfPTmNXSfzYj
+ 3dRfImJAmQV+az176v4sMSJUzNusujjzM6EgBW2S+ZhStvnY06E0VJmJyYhw3elMYQQokRv7P7U
+ ZGQz4sELVmg+QeQHSeycxYP6jfv3gT5FGlkcomHnphjjr97JmRf6mamkQbVTSqDa4bbox3GeP8q
+ kK5AWOUeBwNzMFSh61A32rwgZ5F++f+N6QUYcUpbMcy8s6ChxLVlUd57NZCEfIIXoHp3XApBZ4j
+ JW4LZnLI4GZvV18bVVehI3dc0DzhO44pxJ2AkXu2DdA6Z5KJgVWJqrze+QwSqTIS7iT2RqciOAD
+ vd05+ut09D8tPtOdGOw==
+X-Proofpoint-GUID: Wf4JUGJpV1ZtflTA1aaTjqCm4xr4TvWY
+X-Authority-Analysis: v=2.4 cv=fMIJG5ae c=1 sm=1 tr=0 ts=6a4f8940 cx=c_pps
+ a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
  a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22 a=EUspDBNiAAAA:8
- a=j5NnyRWwbgm38xLfpi0A:9 a=_Vgx9l1VpLgwpw_dHYaR:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22 a=EUspDBNiAAAA:8
+ a=NjFlLJTsBWwvL5VAOx4A:9 a=x9snwWr2DeNwDh03kgHS:22
+X-Proofpoint-ORIG-GUID: Wf4JUGJpV1ZtflTA1aaTjqCm4xr4TvWY
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDExMyBTYWx0ZWRfX4J0jPW3VVieI
+ F5U+uDzfyv41HXhKf4CK8/XAw+38jPq6n2jZL/F8wkdEbHoDBCCi4ITeHJyXPrM3uxsizg3Y1QQ
+ cn5ltYs9BOaqmgZrJslH1cp8bH/+B5o=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-09_02,2026-07-09_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 suspectscore=0 bulkscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ adultscore=0 bulkscore=0 phishscore=0 clxscore=1015 impostorscore=0
+ spamscore=0 priorityscore=1501 malwarescore=0 lowpriorityscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
  definitions=main-2607090113
 X-Rspamd-Action: no action
@@ -152,7 +152,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38820-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38821-lists,linux-wireless=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:veerendranath.jakkam@oss.qualcomm.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -173,245 +173,114 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2575473093F
+X-Rspamd-Queue-Id: 34F07730946
 
 From: Priyansha Tiwari <priyansha.tiwari@oss.qualcomm.com>
 
-Add STA/P2P-client support to ieee80211_probe_peer(): when called
-for a station interface, send a null-data frame (TODS) to the
-associated AP and report the ACK via cfg80211_probe_status().
+Populate link_valid/link_id in mac80211_hwsim TX status so the
+transmitted link is reported to mac80211.
 
-For MLO connections the driver/firmware selects the link
-(IEEE80211_LINK_UNSPECIFIED); for non-MLO the single link is used.
+Set the link information in both the direct TX status path and the
+wmediumd/netlink TX status path.
 
 Signed-off-by: Priyansha Tiwari <priyansha.tiwari@oss.qualcomm.com>
 ---
- include/net/mac80211.h |   7 ++-
- net/mac80211/cfg.c     | 117 ++++++++++++++++++++---------------------
- net/mac80211/status.c  |   5 +-
- 3 files changed, 67 insertions(+), 62 deletions(-)
+ .../wireless/virtual/mac80211_hwsim_main.c    | 43 +++++++++++++++++--
+ 1 file changed, 40 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 4f95da023746..78beb6e3bdd4 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -1342,6 +1342,11 @@ ieee80211_rate_get_vht_nss(const struct ieee80211_tx_rate *rate)
-  * @status.tx_time: airtime consumed for transmission; note this is only
-  *	used for WMM AC, not for airtime fairness
-  * @status.flags: status flags, see &enum mac80211_tx_status_flags
-+ * @status.link_valid: if the link which is identified by @status.link_id is
-+ *	valid. This flag is set by the driver in the TX status callback when the
-+ *	connection is MLO and the driver knows which link was used for TX.
-+ * @status.link_id: id of the link used to transmit the packet. This is used
-+ *	along with @status.link_valid.
-  * @status.status_driver_data: driver use area
-  * @ack: union part for pure ACK data
-  * @ack.cookie: cookie for the ACK
-@@ -1396,7 +1401,7 @@ struct ieee80211_tx_info {
- 			u8 pad;
- 			u16 tx_time;
- 			u8 flags;
--			u8 pad2;
-+			u8 link_valid:1, link_id:4;
- 			void *status_driver_data[16 / sizeof(void *)];
- 		} status;
- 		struct {
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 9c311c8290f7..df68a5bdeb2f 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -4956,99 +4956,100 @@ static int ieee80211_probe_peer(struct wiphy *wiphy, struct net_device *dev,
- 	struct ieee80211_local *local = sdata->local;
- 	struct ieee80211_qos_hdr *nullfunc;
- 	struct sk_buff *skb;
--	int size = sizeof(*nullfunc);
- 	__le16 fc;
--	bool qos;
-+	bool qos, fromds;
-+	struct ieee80211_bss_conf *conf;
- 	struct ieee80211_tx_info *info;
- 	struct sta_info *sta;
- 	struct ieee80211_chanctx_conf *chanctx_conf;
--	struct ieee80211_bss_conf *conf;
- 	enum nl80211_band band;
--	u8 link_id;
-+	const u8 *dst_addr;
-+	const u8 *src_addr;
-+	int link_id;
-+	int size;
- 	int ret;
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_main.c b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
+index 0dd8a6c85953..61fd8d8ba1a0 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim_main.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
+@@ -2103,6 +2103,7 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
+ 	bool ack, unicast_data;
+ 	enum nl80211_chan_width confbw = NL80211_CHAN_WIDTH_20_NOHT;
+ 	u32 _portid, i;
++	int tx_link_id = -1;
  
- 	/* the lock is needed to assign the cookie later */
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
--	rcu_read_lock();
--	sta = sta_info_get_bss(sdata, peer);
--	if (!sta) {
--		ret = -ENOLINK;
--		goto unlock;
-+	switch (ieee80211_vif_type_p2p(&sdata->vif)) {
-+	case NL80211_IFTYPE_AP:
-+		fromds = true;
-+		break;
-+	case NL80211_IFTYPE_STATION:
-+		/* For STA, the peer is always the associated AP/GO */
-+		peer = sdata->vif.cfg.ap_addr;
-+		fromds = false;
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
- 	}
- 
-+	sta = sta_info_get_bss(sdata, peer);
-+	if (!sta)
-+		return -ENOLINK;
-+
- 	qos = sta->sta.wme;
-+	dst_addr = sta->sta.addr;
- 
- 	if (ieee80211_vif_is_mld(&sdata->vif)) {
--		if (sta->sta.mlo) {
--			link_id = IEEE80211_LINK_UNSPECIFIED;
--		} else {
-+		if (fromds && !sta->sta.mlo) {
- 			/*
--			 * For non-MLO clients connected to an AP MLD, band
--			 * information is not used; instead, sta->deflink is
--			 * used to send packets.
-+			 * AP mode, non-MLO client on AP MLD: use the
-+			 * per-link address for the client's link.
- 			 */
- 			link_id = sta->deflink.link_id;
--
--			conf = rcu_dereference(sdata->vif.link_conf[link_id]);
--
--			if (unlikely(!conf)) {
--				ret = -ENOLINK;
--				goto unlock;
--			}
-+			conf = wiphy_dereference(local->hw.wiphy,
-+						 sdata->vif.link_conf[link_id]);
-+			if (!conf)
-+				return -ENOLINK;
-+			src_addr = conf->addr;
-+		} else {
-+			/*
-+			 * MLO client (AP or STA mode), or STA mode:
-+			 * always use LINK_UNSPECIFIED and MLD address.
-+			 */
-+			link_id = IEEE80211_LINK_UNSPECIFIED;
-+			src_addr = sdata->vif.addr;
+ 	if (WARN_ON(skb->len < 10)) {
+ 		/* Should not happen; just a sanity check for addr1 use */
+@@ -2160,6 +2161,9 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
+ 								 hdr, &link_sta);
  		}
- 		/* MLD transmissions must not rely on the band */
- 		band = 0;
- 	} else {
--		chanctx_conf = rcu_dereference(sdata->vif.bss_conf.chanctx_conf);
--		if (WARN_ON(!chanctx_conf)) {
--			ret = -EINVAL;
--			goto unlock;
--		}
-+		chanctx_conf = wiphy_dereference(local->hw.wiphy,
-+						 sdata->vif.bss_conf.chanctx_conf);
-+		if (WARN_ON(!chanctx_conf))
-+			return -EINVAL;
- 		band = chanctx_conf->def.chan->band;
- 		link_id = 0;
-+		src_addr = sdata->vif.addr;
- 	}
  
--	if (qos) {
--		fc = cpu_to_le16(IEEE80211_FTYPE_DATA |
--				 IEEE80211_STYPE_QOS_NULLFUNC |
--				 IEEE80211_FCTL_FROMDS);
--	} else {
-+	size = sizeof(*nullfunc);
-+	fc = cpu_to_le16(IEEE80211_FTYPE_DATA |
-+			 (qos ? IEEE80211_STYPE_QOS_NULLFUNC
-+			      : IEEE80211_STYPE_NULLFUNC) |
-+			 (fromds ? IEEE80211_FCTL_FROMDS : IEEE80211_FCTL_TODS));
-+	if (!qos)
- 		size -= 2;
--		fc = cpu_to_le16(IEEE80211_FTYPE_DATA |
--				 IEEE80211_STYPE_NULLFUNC |
--				 IEEE80211_FCTL_FROMDS);
--	}
++		if (bss_conf)
++			tx_link_id = bss_conf->link_id;
++
+ 		if (unlikely(!bss_conf)) {
+ 			/* if it's an MLO STA, it might have deactivated all
+ 			 * links temporarily - but we don't handle real PS in
+@@ -2271,6 +2275,12 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
  
- 	skb = dev_alloc_skb(local->hw.extra_tx_headroom + size);
--	if (!skb) {
--		ret = -ENOMEM;
--		goto unlock;
--	}
-+	if (!skb)
-+		return -ENOMEM;
- 
- 	skb->dev = dev;
--
- 	skb_reserve(skb, local->hw.extra_tx_headroom);
- 
--	nullfunc = skb_put(skb, size);
-+	nullfunc = skb_put_zero(skb, size);
- 	nullfunc->frame_control = fc;
--	nullfunc->duration_id = 0;
--	memcpy(nullfunc->addr1, sta->sta.addr, ETH_ALEN);
--	if (ieee80211_vif_is_mld(&sdata->vif) && !sta->sta.mlo) {
--		memcpy(nullfunc->addr2, conf->addr, ETH_ALEN);
--		memcpy(nullfunc->addr3, conf->addr, ETH_ALEN);
--	} else {
--		memcpy(nullfunc->addr2, sdata->vif.addr, ETH_ALEN);
--		memcpy(nullfunc->addr3, sdata->vif.addr, ETH_ALEN);
--	}
--	nullfunc->seq_ctrl = 0;
- 
--	info = IEEE80211_SKB_CB(skb);
-+	memcpy(nullfunc->addr1, dst_addr, ETH_ALEN);
-+	memcpy(nullfunc->addr2, src_addr, ETH_ALEN);
-+	memcpy(nullfunc->addr3, fromds ? src_addr : dst_addr, ETH_ALEN);
- 
-+	info = IEEE80211_SKB_CB(skb);
- 	info->flags |= IEEE80211_TX_CTL_REQ_TX_STATUS |
- 		       IEEE80211_TX_INTFL_NL80211_FRAME_TX;
- 	info->band = band;
--
- 	info->control.flags |= u32_encode_bits(link_id,
- 					       IEEE80211_TX_CTRL_MLO_LINK);
- 	skb_set_queue_mapping(skb, IEEE80211_AC_VO);
-@@ -5059,18 +5060,14 @@ static int ieee80211_probe_peer(struct wiphy *wiphy, struct net_device *dev,
- 	ret = ieee80211_attach_ack_skb(local, skb, cookie, GFP_ATOMIC);
- 	if (ret) {
- 		kfree_skb(skb);
--		goto unlock;
-+		return ret;
- 	}
- 
- 	local_bh_disable();
- 	ieee80211_xmit(sdata, sta, skb);
- 	local_bh_enable();
- 
--	ret = 0;
--unlock:
--	rcu_read_unlock();
--
--	return ret;
-+	return 0;
+ 	if (!(txi->flags & IEEE80211_TX_CTL_NO_ACK) && ack)
+ 		txi->flags |= IEEE80211_TX_STAT_ACK;
++
++	if (tx_link_id >= 0) {
++		txi->status.link_valid = 1;
++		txi->status.link_id = tx_link_id;
++	}
++
+ 	ieee80211_tx_status_irqsafe(hw, skb);
  }
  
- static int ieee80211_cfg_get_channel(struct wiphy *wiphy,
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index c3d29aed93fe..d635490f59d3 100644
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -655,7 +655,10 @@ static void ieee80211_report_ack_skb(struct ieee80211_local *local,
- 								GFP_ATOMIC);
- 			else if (ieee80211_is_any_nullfunc(hdr->frame_control))
- 				cfg80211_probe_status(sdata->dev, hdr->addr1,
--						      cookie, -1, acked,
-+						      cookie,
-+						      info->status.link_valid ?
-+							info->status.link_id : -1,
-+						      acked,
- 						      info->status.ack_signal,
- 						      is_valid_ack_signal,
- 						      GFP_ATOMIC);
+@@ -6092,6 +6102,7 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 
+ 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
+ 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_PUNCT);
++	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_PROBE_AP);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(data->link_data); i++) {
+ 		hrtimer_setup(&data->link_data[i].beacon_timer, mac80211_hwsim_beacon,
+@@ -6317,6 +6328,27 @@ static void hwsim_register_wmediumd(struct net *net, u32 portid)
+ 	spin_unlock_bh(&hwsim_radio_lock);
+ }
+ 
++static int mac80211_hwsim_get_link_id(struct ieee80211_vif *vif,
++				      struct ieee80211_hdr *hdr)
++{
++	int i;
++
++	if (!vif || !ieee80211_vif_is_mld(vif))
++		return -1;
++
++	for (i = 0; i < IEEE80211_MLD_MAX_NUM_LINKS; i++) {
++		struct ieee80211_bss_conf *link_conf;
++
++		link_conf = rcu_dereference(vif->link_conf[i]);
++		if (!link_conf)
++			continue;
++		if (ether_addr_equal(link_conf->addr, hdr->addr2))
++			return i;
++	}
++
++	return -1;
++}
++
+ static int hwsim_tx_info_frame_received_nl(struct sk_buff *skb_2,
+ 					   struct genl_info *info)
+ {
+@@ -6397,13 +6429,18 @@ static int hwsim_tx_info_frame_received_nl(struct sk_buff *skb_2,
+ 
+ 	txi->status.ack_signal = nla_get_u32(info->attrs[HWSIM_ATTR_SIGNAL]);
+ 
++	hdr = (struct ieee80211_hdr *)skb->data;
++	i = mac80211_hwsim_get_link_id(txi->control.vif, hdr);
++	if (i >= 0) {
++		txi->status.link_valid = 1;
++		txi->status.link_id = i;
++	}
++
+ 	if (!(hwsim_flags & HWSIM_TX_CTL_NO_ACK) &&
+ 	   (hwsim_flags & HWSIM_TX_STAT_ACK)) {
+-		if (skb->len >= 16) {
+-			hdr = (struct ieee80211_hdr *) skb->data;
++		if (skb->len >= 16)
+ 			mac80211_hwsim_monitor_ack(data2->channel,
+ 						   hdr->addr2);
+-		}
+ 		txi->flags |= IEEE80211_TX_STAT_ACK;
+ 	}
+ 
 -- 
 2.34.1
 
