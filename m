@@ -1,91 +1,87 @@
-Return-Path: <linux-wireless+bounces-38817-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38818-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +603HOx8T2oViAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-38817-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 12:50:20 +0200
+	id GFHFJ0d8T2rIhwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-38818-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 12:47:35 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C8672FDF5
-	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 12:50:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F11572FD69
+	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 12:47:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="qYa46C/e";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YFs3LkH9;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38817-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38817-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38818-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38818-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D3EFB30B8405
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2026 10:31:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EF09830A8DEF
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2026 10:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3601F3FBB69;
-	Thu,  9 Jul 2026 10:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7468F405C42;
+	Thu,  9 Jul 2026 10:32:03 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A04D405C21
-	for <linux-wireless@vger.kernel.org>; Thu,  9 Jul 2026 10:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0E4405C21
+	for <linux-wireless@vger.kernel.org>; Thu,  9 Jul 2026 10:32:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783593106; cv=none; b=Q4Nh0laUhb9oiHh3hjMBXnDNulpst7QEt+l7nSXhLubPVfxxqOjct/0KHSDJwjIc+PNta4MCwQYcqiFM022rxfwSZad1S4UFggN/rDhX6RQbfkmQSAkC+zK1a4QLZ0ZmkR+tZ1bfe1TmMYQWRWV+fpLA5l/5ErAugDYpdTBCo34=
+	t=1783593123; cv=none; b=sAYj0cvh/xxEypbDfl6iP111SgPQfDiuu3fzA9vp2+W8IuUN3UpVP212oAXWE80YqSswR1urPow2bYEhbJlc+7gnTrShJfFQHzOZ9winX+c7lzu8+qntpSb9P4J3nsGWAc7TQBHAJ7BEpA7OzvIW/dyZTt0P70XOYr42IMZntjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783593106; c=relaxed/simple;
-	bh=bkGDrjyp7BoAJ8gSCUqiXYy8cBZwW2copI1MI2niZiA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vh8xwuXoqSClkAkhnttv7CiPQkVhAQrqe8J88xBZ3EsZLCifEnAYbFEP+XBSd8JzAlSSIiaZPOpphjuTCdfCQJtTCYIkWJP6NyUYD0PnhdWS7ZDhkAhY6pL2lpe/CnMI1118Zs2PJQmEKY1VjWg8jfbKY1YzQ1Rlbc3pzGtLEyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qYa46C/e; arc=none smtp.client-ip=209.85.128.46
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-493bab44440so4755365e9.0
-        for <linux-wireless@vger.kernel.org>; Thu, 09 Jul 2026 03:31:44 -0700 (PDT)
+	s=arc-20240116; t=1783593123; c=relaxed/simple;
+	bh=NNmvmMFiSvKuSmWWjBp9FoknxILTLef0Ak79f4ZlafM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tUH4R7T/MtceF58tnQefsHKQYohiU0N4UEaX0+grcX0cULEUaIeSUC6yQT578n6liE4s3RHrQEeb0//GfTuX02pckoKYoI876aPFyYsDbA/osiD3krz3/DJjyV9E1twzvBZTUUPHSl8lPwQHJoTJJKyuy3BHJV/+lfB9WgPJl2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YFs3LkH9; arc=none smtp.client-ip=209.85.221.53
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-47ddf7b09e5so1504416f8f.1
+        for <linux-wireless@vger.kernel.org>; Thu, 09 Jul 2026 03:32:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783593103; x=1784197903; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uiIX7H92MqDl259vct1uhevovCX0Rz9AvH1RwwqdTY8=;
-        b=qYa46C/e8WTfCdxbqnPukGd8QhRf2oUkeKLAg/qn0kk3WAHaUjdMCpZAOMnKQv/GJ8
-         ad/8+BhbgENZjskDtWT1wnxvqy/zZnr9BT7GvYvt68Naql1OsDikUBzmOXd0gyyv5BDh
-         tEdrjbzRjaPpsj7d4fbcP4jL7LwexKC50fz7Q0ucscyzXY4MBdzBEHyPsIGJHx6LKgsv
-         cF7XTUksAgPz2B9oKdc0Reuqdf6pbIRmHcOUhYBSFCE/8PsTNaisYbMhhIk2qkMMg3kK
-         FStEsWtbiUnLyPFfkSyMn1yopSXybEipmDQongTmXZ0wSfyehEjXF27vYy2g7q41+gqB
-         IzDA==
+        d=gmail.com; s=20251104; t=1783593120; x=1784197920; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zH3UvIyJssKv6bfHE7xFicyRPn7SV1QlAreFeCCuxRo=;
+        b=YFs3LkH9QXgDdAgQ+kxVlP2KJLRfG834DTeftZlYsAbsn6S/Z2KOgLWx5jAbwR6xUM
+         y19zE9/RXk58+HNfrIiEK82VuKFOIxID5vJHz+MXVUmRFf51CK/oKKCxkA6fY5iMG0ad
+         fmn/afIPrjUbGmjujU23dFlJAhNOsc2T85nTv5SdE95Kragm4Osc7rJsRW6fZE9EZ3WY
+         jII0x7UuvjWyYTcpaevjmXl0sstjI9fpI/75nZgDzqKbQt8mrU6OblngN/JhF9z3ebpq
+         VsjgXwil4e6CPaj9lwjDfOsBLRkFON3y3cQDHWR/NZ1agec6CHuoCQz5KErQcyg8mSOw
+         Sguw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783593103; x=1784197903;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uiIX7H92MqDl259vct1uhevovCX0Rz9AvH1RwwqdTY8=;
-        b=M4EA604Yi9yWhUUe5jhNaLZ687Wxbjy73LZIxaJjW7wIvOhcakNYIonyRk1rd4/+WE
-         X5gVPD1lM5j2ABaAlFYBOypmeaAwFN6SElhTFGjbfTZrGe48bG7SrU8JtofRCQNGm6MS
-         13qsVEsbFZw1sPkpvlluxOaVpIczgzOfhpU/ApEI03wvrWWENDMemIDTVg7k1mnKr+zY
-         k4xZOvpuDYBBZoNLekI7kJFfv6TtC1mk3DwhSLxKM4AZOg1ChqG4RqlbiDdOs3p3/tXe
-         KQkdepmVzUXg4l510FS88bs8A3wYUVx2KUEEZO7/LcucDdAFzjxW8OqvMOciOy02RNip
-         fSsw==
-X-Gm-Message-State: AOJu0YxE5IfTJCy+qJLq9Ahphm8MbfEQQeNcSE1HBjCz8ssExyXFKNh5
-	jWtpCqtKMWREin5NMkRj9xv3Q7KYvR5LLdCeMjtn9buXRgfqan3sidu+aVnREtTN0bs=
-X-Gm-Gg: AfdE7clq2xd7gkna0r/oVb+KqJ94bu3PX9at8tJmNRY/28WlFysUqEt1FY6L9PXRDbn
-	pmgLlmQJMa8hLGgeQaK2KTt3v9KPv3AJPPtFzX2oWzHlYKkMnhslaysIOTKNcmJCo2lAkLmkIkY
-	oTF1yNAZH1ciLXvTauxAt5VHBjayyimlaU7jxrBuWFJpb3dVmYCrMM/6WAYlHW/jrGNZT3ueh1V
-	xZpz/LOClcuXUoQaUZef8atfoU9n1CW9jnqEZe1NZIoVcbOw2Ma+IgACbs69+NztVqbEO8i6OAs
-	Tr2GUU+IdAxyxEYrWPZ+NDPgUl5hXA7G7qNMTiTdaW/pj4+N2dNfe4v2UHktG3+03l0G9IbOFwA
-	j4J1P/aFQu6VSwWEaJitiKIvblwOB8FdbIyVPh3FT+AKJC5ZXkKnzURzvm8KumeUrSKIL4Hi8Pc
-	REZlfhlX9ZX07S22fCfq88MTMseAsCh9fD25YV
-X-Received: by 2002:a05:600c:c3cb:10b0:490:af63:2cb1 with SMTP id 5b1f17b1804b1-493ec6611abmr16493495e9.7.1783593102637;
-        Thu, 09 Jul 2026 03:31:42 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783593120; x=1784197920;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zH3UvIyJssKv6bfHE7xFicyRPn7SV1QlAreFeCCuxRo=;
+        b=pF1tflv8vqC+ZdbEocEDuUXAzjA+vgku+JkX3W3rOwyFlfPHQGs2Er/AH6BzqV3iXe
+         lHaWGy+sFsu8JDPxS1VLXmhfn4yOUpChfqNmTpf717jv0F3tXCAbFjOzyrOGK9BditfL
+         3BfQ1Ltc/RT2vRo3ms2u94F8/aR2EP5zqhuUmlY545eaApx8KeydDQxRPQOO3HcGoZtx
+         UFMZyEC6utgBljc3zbdo8+/g1nNvD9jL4p/7D6RyHfcZPdw5U3iHwbrx7+BD85gxJcRk
+         03SghjoguCCP/lDWYbpwQr11/6Ba3LdIxTS8Bq05rbOu+1m2YSl2J/uVtzcehlu4BVvp
+         p/AQ==
+X-Gm-Message-State: AOJu0YwKO6OyHugacbt8jgtPelSppD9KYAKFuEGXImsdRMCtCcnQ58kN
+	kPLTQF3cr8LAQzPYX22RbzvtWhRx7c1Orph8MrBrXauTYgZtf7PE0y+OBS03bGru0vc=
+X-Gm-Gg: AfdE7cl5UHQxunou4XVXERygqA1ybH8JpLD1NmESz2lWocGYURure4lQwzGnCiDPiUs
+	55jQszaPhSU71xCZUYy7nPveKFNUUs77slH4IoDW6ZX0wUhErKwyWYJP4wc/hjTpTU4gZpujNLL
+	0ifhqZq+cJOZiP+YtKE4tV0navkYhBVe/aWdeGp6cvC0SEnMmcQEJRgvmDSSxrfhvXpgb5eni+e
+	h0l1mfHA527V7hVQrvgHGRwhaimUm4xCcqCs0c9pYGqMF+KSIQ+R1TgRY2Q4evSDIFmJGbulryp
+	31Pr6UxjytFNtwXaCzHMOhU58ky1TyWXWc9vBE9tCmoaf5QEO1yxOo0Xdh5y2i7TqolTUTvnYT0
+	NSUnd4/Z9TJcBxEBt7ws20f0uKLwrEZU72uMSR3lAoS2WDK6kUYqPR/UCQxX8tT7IRc+JUwMr0C
+	d6BNv+IzKPvUhjxOQu0qLPQxZx4kBkGM5Ll6/k
+X-Received: by 2002:a05:6000:1a86:b0:478:65a8:2635 with SMTP id ffacd0b85a97d-47df0714967mr7380351f8f.11.1783593120154;
+        Thu, 09 Jul 2026 03:32:00 -0700 (PDT)
 Received: from localhost ([102.128.173.0])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493eb74b3edsm57297315e9.15.2026.07.09.03.31.40
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0f21543sm46816067f8f.35.2026.07.09.03.31.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 03:31:41 -0700 (PDT)
+        Thu, 09 Jul 2026 03:31:59 -0700 (PDT)
 From: Louis Kotze <loukot@gmail.com>
 To: Ping-Ke Shih <pkshih@realtek.com>
 Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	loukot@gmail.com
-Subject: Re: [PATCH 0/4] wifi: rtw89: advertise WFA-certified EHT capabilities for 8922a
-Date: Thu,  9 Jul 2026 12:31:38 +0200
-Message-ID: <20260709103138.1269594-1-loukot@gmail.com>
+Subject: [PATCH v2] wifi: rtw89: advertise EML capabilities for 8922a
+Date: Thu,  9 Jul 2026 12:31:56 +0200
+Message-ID: <20260709103156.1271328-1-loukot@gmail.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <7e092f6cf82c4bb18b59ba5eca40dbb5@realtek.com>
-References: <cover.1777832019.git.loukot@gmail.com> <7e092f6cf82c4bb18b59ba5eca40dbb5@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -100,13 +96,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-38817-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38818-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -124,62 +120,82 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B4C8672FDF5
+X-Rspamd-Queue-Id: 9F11572FD69
 
-On Tue, 6 May 2026, Ping-Ke Shih wrote:
+The driver implements the EMLSR operating mode for 8922a and selects
+it when an interface has more than one active link (enum
+rtw89_mlo_mode, rtw89_ops_vif_cfg_changed()), but leaves
+eml_capabilities = 0 in the STA iftype-ext-cap. mac80211 therefore
+advertises no EML capabilities in the Multi-Link element, so an
+EMLSR-capable AP cannot negotiate EMLSR with this STA.
 
-> Wi-Fi Component Operating System: Windows
->
-> That means hardware is capable, but Linux driver might need more
-> implementation, not just declaration. I will ask internal to check them.
->
-> But I think it is not necessary to add this link as reference.
+Populate eml_capabilities with IEEE80211_EML_CAP_EMLSR_SUPP, an EML
+padding delay of 256 us and an EMLSR transition delay of 32 us,
+following the same layout iwlwifi uses (iwlwifi advertises 32 us and
+64 us). These values have run stably on my RTL8922AU since late
+April; if Realtek has recommended values for this silicon I am happy
+to adjust them.
 
-Agreed on both points, thanks for the correction. I went back over
-each capability with that lens, and it changed the series more than
-I expected:
+In A/B testing against a TP-Link Deco BE63 (EMLSR-capable Wi-Fi 7
+AP), ML association without this change came up with a single link;
+with it, both the 5 GHz and 6 GHz links are set up (debugfs shows
+link-1 and link-2 with active_links behaving as expected for EMLSR),
+stable across 60+ hour soaks with no kernel or wpa_supplicant
+errors.
 
-- TTLM (was 3/4): you are right. H2C_FUNC_MLO_TTLM is defined but
-  not wired anywhere in the driver, so advertising it would be
-  declaration without implementation. Dropped.
+EMLMR is deliberately not advertised: the chip has a single shared
+2T2R RF block (rf_path_num = 2) and the driver has no EMLMR mode, so
+EMLSR is the architectural ceiling for this silicon. Realtek's Wi-Fi
+Alliance certification of RTL8922AE (WFA129313) likewise lists EMLSR
+but not EMLMR; the certification was obtained with the Windows
+driver, so it is cited only as evidence of silicon and firmware
+capability.
 
-- Restricted TWT (was part of 1/4): no in-tree driver advertises
-  IEEE80211_EHT_MAC_CAP0_RESTRICTED_TWT for a STA today, and I
-  cannot verify what the firmware needs. Dropped.
+Signed-off-by: Louis Kotze <loukot@gmail.com>
+---
+Changes in v2 (was patch 1/4 of "advertise WFA-certified EHT
+capabilities for 8922a"):
+- Narrowed the series to this single patch; see the reply on the v1
+  thread for why the other three capabilities are deferred.
+- Dropped Restricted TWT from this patch: no in-tree driver
+  advertises it for a STA yet and I cannot verify the firmware side.
+- Dropped the WFA certificate Link: trailer; the certification was
+  obtained with the Windows driver, so it is cited in the body only
+  as silicon-side evidence.
+- Stated the advertised delay values and their testing basis
+  explicitly, and switched to the __bf_shf() layout iwlwifi uses.
+- Rebased onto wireless-next; also applies cleanly on rtw-next
+  (2b7858891b10).
+ drivers/net/wireless/realtek/rtw89/core.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-- Rx 1024/4096-QAM in less-than-242-tone RU (was 2/4): I had
-  mischaracterized this bit as generic multi-RU receive support;
-  it is specifically about high-order QAM on small RUs, which I
-  cannot verify at the PHY level. Dropped.
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 0f0e46cb4260..69eaae3586cb 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -217,7 +217,12 @@ static const struct wiphy_iftype_ext_capab rtw89_iftypes_ext_capa[] = {
+ 		.extended_capabilities_mask = rtw89_ext_capa_sta,
+ 		.extended_capabilities_len = sizeof(rtw89_ext_capa_sta),
+ 		/* relevant only if EHT is supported */
+-		.eml_capabilities = 0,
++		.eml_capabilities =
++			IEEE80211_EML_CAP_EMLSR_SUPP |
++			IEEE80211_EML_CAP_EML_PADDING_DELAY_256US <<
++				__bf_shf(IEEE80211_EML_CAP_EML_PADDING_DELAY) |
++			IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY_32US <<
++				__bf_shf(IEEE80211_EML_CAP_EML_TRANSITION_DELAY),
+ 		.mld_capa_and_ops = 0,
+ 	},
+ };
 
-- EHT OM Control (was 4/4): the drivers that set this for a STA
-  (iwlwifi, mt7925) also advertise HE OMI control on the STA
-  iftype, which rtw89 sets only for AP. Advertising the EHT
-  extension without the HE base looked inconsistent, so I dropped
-  it rather than widen the change to the shared HE path.
+base-commit: ac798f757d6475dc6fee2ec899980d6740714596
+-- 
+2.55.0
 
-If your internal check concludes any of these are supportable as-is,
-I am happy to bring them back as follow-ups with the right
-justification.
-
-> I'd like to know if these patches have explicit improvement to you?
-> Or you only test these without regression?
-
-Only the EML capabilities patch has an explicit improvement: in A/B
-testing on my RTL8922AU against a TP-Link Deco BE63, ML association
-without it came up with a single link, and with it both the 5 GHz
-and 6 GHz links are set up (debugfs link-1/link-2, active_links
-behaving as expected for EMLSR), stable across 60+ hour soaks. The
-other three were no-regression only, which is part of why v2 drops
-them.
-
-v2 is therefore that single patch, and follows.
-
-Louis
 
