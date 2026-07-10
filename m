@@ -1,154 +1,246 @@
-Return-Path: <linux-wireless+bounces-38839-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38840-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xwctGHZgUGopxwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-38839-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jul 2026 05:01:10 +0200
+	id dIEPAKODUGrX0QIAu9opvQ
+	(envelope-from <linux-wireless+bounces-38840-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jul 2026 07:31:15 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1CB0736DFE
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jul 2026 05:01:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8294737581
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jul 2026 07:31:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="GihWpVV/";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="eu05mGS/";
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38839-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38839-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38840-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38840-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C77333022DCD
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jul 2026 03:01:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BEA593002F64
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jul 2026 05:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2FB23246EB;
-	Fri, 10 Jul 2026 03:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F13366823;
+	Fri, 10 Jul 2026 05:31:09 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9609D2D0C82
-	for <linux-wireless@vger.kernel.org>; Fri, 10 Jul 2026 03:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129C6379C29
+	for <linux-wireless@vger.kernel.org>; Fri, 10 Jul 2026 05:31:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783652465; cv=none; b=TIqlxNptQbSMfupS05ZZUoKmAkO4Fv50LjE7vrZ6swemSiDF0/GHQ8WySX7yu4duySmg1/jkfxDV160DI599FWRUFMsbwhmRiSBi28Z3JD2/5es2bSw/JTJi5ksrI9jnsP8AV0yrEs9UW7yhh8x7sDSCB1NJTtqRTuwNdnWjXbA=
+	t=1783661469; cv=none; b=YlVNN/utFYEBfXlzRcsJbwBFBVFBcnUqutqVcQliaxewuFxW0ZEwtqS2g4/lQHfTmlKxTJzD156UvDpXYROIbuPf5TwVT+PJShdF1nC/5hPyGHWKy3FNEqNygzpaXcfS+wbRPH3p0IV4WejI4B3iTPBzvvuPcVRyfThUNgy6/Xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783652465; c=relaxed/simple;
-	bh=IvEjO9IZ/O0QfpZNF/4OZTFURIEb1x24OGcZo/YMsOQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZdzRpcBemKNCknoijFfQepIDbAj2Gq1EyrsYf/Md6s5oAjHN6c2OkRRtvZyiVloYZMwLNHCJVfKGZUlZVYD7n9pUQmirQ4k0wSoRjQVqTn0FzzSdWksXTipnIw7shlDtCiC1ZdmObDKdRHbXVfv+dUeJ1BenBsP8B62jO5SsO28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GihWpVV/; arc=none smtp.client-ip=209.85.214.179
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cc73e322dbso4253695ad.1
-        for <linux-wireless@vger.kernel.org>; Thu, 09 Jul 2026 20:01:04 -0700 (PDT)
+	s=arc-20240116; t=1783661469; c=relaxed/simple;
+	bh=HsaOXp3Gbc/tyE4LAuh9TAFbXeHBRMHcFLFSNwhuGnk=;
+	h=Date:Message-ID:From:To:Cc:Subject:MIME-Version:Content-Type; b=B4I6aOnzUvk6C4bYQm7zDki/eH1hFfGUR1IATzPuT1oXuemJVDgkOX+bhgomepSE4ZFrDycj15QfToA6Gt6IjVfGl4Kf6koKPBahInip/BVw4K1E8+oe7yayw18D+DOEloUNTevFMMnRh0yIvdGUKEdJO/jjwVZtcjVx06Nzu0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eu05mGS/; arc=none smtp.client-ip=209.85.221.44
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-472326ca506so370611f8f.2
+        for <linux-wireless@vger.kernel.org>; Thu, 09 Jul 2026 22:31:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783652464; x=1784257264; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Zv8omYlCd9ZTYlAI4MA9XWHTxkn1QtHYjYUUSoZMuN4=;
-        b=GihWpVV/vQ56GZVzw2bMt5aa5VTJzJhuNmGyr3HTfdPZrregb2WGli0SSuUfg25feg
-         PEpS119hUBvs7MrZpolo1/H8xuiTmmCnPA6qDSQ7NT4zlx3qY26PtRn0uWFKo7QmDbR7
-         yV+vE+IIyKWvZE0/+LC0XMS1yrqsi4Z/z4X8BD3Sp6af2RE8bOhibA+RGTfKQmh7oc3h
-         AHywKC3JMG2Zgip1bFD7pCBEhp1cmGM5QLAe0OU7GieoHR+rFwdfdYa6lvjyUyyCDor4
-         FNG884Ce64Q+fqb7WfjE7oCd2llLiWcu8z9BngBzCnHTTbjY0HLCciFhOyHFTUoAiSNC
-         sA5A==
+        d=gmail.com; s=20251104; t=1783661466; x=1784266266; darn=vger.kernel.org;
+        h=content-type:mime-version:subject:cc:to:from:message-id:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=hziWzN2b1CW2nGJylmIy7Hz070WbBDjNrgzOZWpihy4=;
+        b=eu05mGS/mlY5bjVzNpyR+Jo065qE5L48Fo4RDx19lTMOPc1FVAGDm2lrwPMMQEnEK0
+         ctHbB+agpbIouPWgAGt7/pX/fgNCR/+T7SZ1fbyEYJt3Kh57bqI2N5fIcz1ZIwCRvemW
+         GPnYcIFD4qf1rGYN3pHj7zfCeStGMQPJk0aqevVqxrFilCMWEIZeq6GTV8M7y8Kej81n
+         r7a2kg1uuUQ8WR5DTcHWlTqJsStz4P3okRhYZrNuTujwdEApvwExL4tE28N3vJ/tkKeR
+         zXssBhywLKur0TqJmiNp/qLiG+fRcVcLQxRgO/T3nfPsPl+oH1c28I7Z93hSLPzLKibu
+         d73w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783652464; x=1784257264;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Zv8omYlCd9ZTYlAI4MA9XWHTxkn1QtHYjYUUSoZMuN4=;
-        b=I9LWicGH1+q5PjcTQkocDaROPJXkkyAfmqK02UcgheswTNypqDUQOHQxWROJZdrIj7
-         LYjaFL60wIl1yQs2WnsQZpFZoFWhiNOMw+ycsopVUs0lfsyEf+u7rYLFHVMg4o/4Ifqp
-         NVdUQlfCGzzWkWPxMr71suxlp+B/NeOSTvr28jCfYibkpN8uSQAIgQ753ZxHgOUVYue6
-         TbSlHex71w6IMZuICsAeGA+D1VTUYzruYn1ta2DQFde1FyMOETr6NTYDTTS0yb459SMP
-         yQlzgchpKfH7F1HejmlZI14brOT9MU1ZW1/7cqiCU52BSadHsaS2b4oyaVpP5TDWSU8j
-         H/Pg==
-X-Gm-Message-State: AOJu0YxLRzTc19hKC9GY3oIlq/u6Kj0+oxeZA1uHz8tXH3ePpQeqbJ3R
-	rTBvZffqR+35ObWkoyWHwLq5D+/pMMv98RGYkzRKkgeZyFi2MvYKk3v3
-X-Gm-Gg: AfdE7cnLY5RQeViNtDulZOgDypzJYy/7PSbnMg3klUyKEbH1GmbIncUzvBEPftZ55zR
-	WWY14WFgGBMROKBy0HQ8uAKNbsG7Y+fCXlBouArWkHYaZXWwY2AkUhbzTBUteh6nJkswMhrHCDC
-	2qclGLPiGudDWf1G7AebCthZd/gDGJksBQEtq7+FL1PRFAzQ3lSTK5XW3BOcRcLEZ15/RaNVF/B
-	F389uv4oa90d4iTxZ68PYIdHUPOlQ7frwLS71NTO47AphvYkI+ROlQR/QDJUKw3phyYaFsWxCpR
-	/ahxlpleY24uZFY3MUhZSlKboA8NtO/Uo3fsiXtrHrG5G0EvPVwEDZDjCup65X4t+FOtlD7gkMA
-	Vt2dRKuNRon90QahylMCn3FvLH9IN0vB5aWqBJ1Liz08M1KgPD4SZfmkgvEuXA4ShdPIVcT9wq5
-	XiUTaDP8kI4wpeE6V+7w==
-X-Received: by 2002:a05:6a21:697:b0:3c0:9c19:659c with SMTP id adf61e73a8af0-3c0bd206a8fmr12006046637.68.1783652463800;
-        Thu, 09 Jul 2026 20:01:03 -0700 (PDT)
-Received: from embed-PC.. ([2406:b400:d4:326:ab07:2512:2621:e916])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3117d847e17sm33641616eec.18.2026.07.09.20.01.00
+        d=1e100.net; s=20251104; t=1783661466; x=1784266266;
+        h=content-type:mime-version:subject:cc:to:from:message-id:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=hziWzN2b1CW2nGJylmIy7Hz070WbBDjNrgzOZWpihy4=;
+        b=LR+5T8C4Nh9dqk1gmdawy16g2/rdI+fjfnkDoPW/tK0JxUNUXrdFW5aOKlf/VFNAyL
+         imSY51hMt2YY9ADJfplzKy35Ngx//Fqehtok3cIapzpeB1z2i7OaoQUkGL+BVY3cwtQF
+         j6F4rYKJ13GAhJJrCEV9QQqXfVbQajxoSINZjcf7hoIUWBfT7U6fRwr8/KR1JEmK/B1L
+         q3dR6j6iXZg/kV6dKSjZKgqwHLZudF80T2bqgU2VIjQ23yEQBFl0ULhwqR1dDlnNMT4B
+         eELVEoXP5bzZr5PzkuWB6MUgd3cp/l1ejchQGxPoP/+iT4eODzwmhNolmgsO//l3gSIX
+         Qm6Q==
+X-Gm-Message-State: AOJu0Yy6poxjKsAu9BO0KflXV8nlU6+sUGcbyF9os2Qycj9ZxhEilHSV
+	wbnq9qs0Apn0ILpaVjWh2xBcqPxLBRa+h+2eNDUW+jDYjplBsVyDI5F2
+X-Gm-Gg: AfdE7ckjj+Xxtxjtyp16e6roF1GdBx/hRbMT/c7mSXxVBgPeTP/nCvzkcDz8QK6B2RF
+	LdwOS+q/fEpxLSCNdimcHGxPKlkdoL76JnXIbCHri+gQsll6slR44yEPpt3jTZoDYjZWBngjCos
+	GzAkJIQpmm6AIvwb44L//ZelJ+z+wsnxYsQnnAm5yrGlhr+SN7WIy3/WTobvKceDJX0JG61EQg7
+	EUSViKDDBVd9W9JyVM7Q9WCTN6yiEIuy3c/88OTrRK5QRpqbCU8cxpLUwLodVK+w7s879ht3Lt9
+	tKyw1bpfrAPpCfNZeAoABVv7sNtItKC2g4pT9QbEhNBSYm5UWVb8ystSxTW1/bGrSaOkIS1lTPB
+	0ps5joqRSKweQWfRgu7yUV9byuQMV/uItKPkeTWT4H8KgCbo+X8AXLnfyKb1HP7mCo84TPHoHRh
+	IaSkD+jBHSL3QIpb/SKRL/t0OoftJclsXp6iPb
+X-Received: by 2002:a05:6000:2dca:b0:47d:e01c:c28 with SMTP id ffacd0b85a97d-47df076a672mr10417167f8f.36.1783661465998;
+        Thu, 09 Jul 2026 22:31:05 -0700 (PDT)
+Received: from localhost ([102.128.173.0])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa039afacsm54554612f8f.19.2026.07.09.22.31.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 20:01:02 -0700 (PDT)
-From: Abhishek Tamboli <abhishektamboli9@gmail.com>
-To: pkshih@realtek.com
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: rtw89: 8852au: Add support for Mercusys MA72XH
-Date: Fri, 10 Jul 2026 08:30:55 +0530
-Message-Id: <20260710030055.57438-1-abhishektamboli9@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Thu, 09 Jul 2026 22:31:05 -0700 (PDT)
+Date: Fri, 10 Jul 2026 07:31:02 +0200
+Message-ID: <d40613782874b5dbca1042257922c3e1@gmail.com>
+From: Louis Kotze <loukot@gmail.com>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: linux-wireless@vger.kernel.org, Bitterblue Smith <rtl8821cerfe2@gmail.com>, loukot@gmail.com
+Subject: rtw89: 8922a hw_scan on an MLO association blacks out traffic ~3 s per scan (45-62% loss under load, AP kicks STA with DISASSOC_LOW_ACK)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-38839-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-38840-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_SENDER(0.00)[abhishektamboli9@gmail.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,m:rtl8821cerfe2@gmail.com,m:loukot@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[abhishektamboli9@gmail.com,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TO_DN_NONE(0.00)[];
+	FORGED_SENDER(0.00)[loukot@gmail.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	RCVD_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[loukot@gmail.com,linux-wireless@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C1CB0736DFE
+X-Rspamd-Queue-Id: D8294737581
 
-Add the ID 2c4e:0124 to the rtw_8852au_id_table to
-support the Mercusys MA72XH usb adapter.
+Hi Ping-Ke,
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221738
+On an RTL8922AU station associated to a Wi-Fi 7 AP MLD, every full
+hw_scan takes the link off-channel for about 3.3 s essentially
+contiguously, with roughly 2 s of completely dead downlink per scan.
+Under moderate load with a periodic background scan this costs 45-62%
+of the traffic, and the AP sometimes deauthenticates the station with
+reason 34 (DISASSOC_LOW_ACK) a few seconds into the first scan. The
+same client and the same scan are fine on a non-MLO association, and
+an Intel client is fine on the same AP MLD, so the failure needs the
+rtw89 + MLO combination. Evidence below; I can provide full captures.
 
-Signed-off-by: Abhishek Tamboli <abhishektamboli9@gmail.com>
----
- drivers/net/wireless/realtek/rtw89/rtw8852au.c | 2 ++
- 1 file changed, 2 insertions(+)
+Environment
+-----------
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852au.c b/drivers/net/wireless/realtek/rtw89/rtw8852au.c
-index 29b7f7769370..1f93b3c89039 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852au.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852au.c
-@@ -64,6 +64,8 @@ static const struct usb_device_id rtw_8852au_id_table[] = {
- 	  .driver_info = (kernel_ulong_t)&rtw89_8852au_info },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x0141, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&rtw89_8852au_info },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x0124, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&rtw89_8852au_info },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3625, 0x010d, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&rtw89_8852au_info },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3625, 0x010f, 0xff, 0xff, 0xff),
---
-2.34.1
+- RTL8922AU (USB 0bda:8912), firmware 0.35.80.3 (8ef4f0cf), cmd
+  version 1, rtw8922a_fw-4.bin from linux-firmware 20260622.
+- Driver: rtw89 out-of-tree USB snapshot r1868 (morrownr; the
+  scan-offload H2C code matches current wireless-next). Kernel 7.1.3.
+- AP: TP-Link Deco BE65 v2 (Qualcomm), EHT AP MLD, 5+6 GHz.
+- Association: EHT160, tested both single-link (5 GHz) and EMLSR
+  dual-link (5+6 GHz anchor on 6 GHz). Same behavior.
+- Test: iperf3 UDP downlink to the STA, full "iw dev wlan0 scan
+  trigger" every 5-8 s, loss measured at the STA; AP-side per-station
+  tx_errors read from the AP where available.
 
+The differential (three-way control, 2026-06-19 campaign)
+---------------------------------------------------------
+
+Identical 100 Mbit/s downlink + full scan every 5 s, 60 s per cell:
+
+- rtw89 on the AP MLD (EHT160):     62.3% loss (repeats 60.4, 61.8),
+                                    AP tx_errors +282k, ~2 s dead
+                                    downlink on EVERY one of 12 scans.
+- Intel AX210 on the SAME AP MLD,
+  same channel, same test:          3.5% loss, tx_errors +4.7k,
+                                    0 dead seconds.
+- Same rtw89 client on a non-MLO
+  AP (Archer AX20, HE80), same
+  driver and scan:                  5.0% loss, no blackout.
+
+- No-scan controls on all cells:    ~0% loss.
+- A short scan (single channel, or
+  8 non-DFS 5 GHz channels) on the
+  AP MLD link:                      4.9-6.9% loss, 0 dead seconds.
+
+So off-channel DURATION is the driver: the full-scan ~3.3 s excursion
+is what kills the link, and only on the MLO association. The loss is
+direction-symmetric (uplink also loses ~62%, with AP tx_errors not
+moving, so this is not just an AP buffering question; the station is
+simply away too long in one stretch).
+
+Still present on current firmware (2026-07-10)
+----------------------------------------------
+
+Re-ran on fw 0.35.80.3 / driver r1868 / EMLSR dual-link, 18 Mbit/s
+downlink, full scan every 8 s, 40 s:
+
+- Control (no scans):  0.0% loss.
+- Run 1:               27.2% loss, and the AP deauthenticated the
+                       station with reason 34 (DISASSOC_LOW_ACK)
+                       about 3 s into the first scan.
+- Run 2:               45.3% loss across 5 scans.
+
+Why this looks like a firmware scan-scheduling issue on MLO
+-----------------------------------------------------------
+
+The BE scan-offload design should protect an associated link: the
+driver requests opmode=RTW89_SCAN_OPMODE_INTV with an op-channel
+revisit interval, num_opch=1 and txnull=1, and I confirmed with an
+instrumented H2C builder that this is armed with the correct link
+BSSID. RTW89_OFF_CHAN_TIME should cap contiguous off-channel time at
+about 100 ms. The C2H LEAVE/ENTER notifications do arrive at the
+driver during the scan. Yet the observed result on the MLO
+association is a ~3.3 s contiguous blackout per scan, as if the
+op-channel revisits do not give the link usable airtime.
+
+Two more over-the-air observations (AX210 in monitor mode):
+
+- The station's PM=1 nullfuncs are visible and roughly double during
+  scan periods, so PM signaling is not absent. But the AP sets TIM
+  for this station in only ~59 of ~624 beacons during the test,
+  versus ~98 of ~632 for the AX210 under the same load, and its
+  tx_errors climb throughout: the doze windows evidently do not
+  line up with the actual off-channel excursions.
+- As an experiment I had the driver send an additional PM=1 nullfunc
+  at each LEAVE_OP and PM=0 at ENTER_OP: downlink loss dropped from
+  ~37% to 0% and the AP buffered correctly. Not a viable fix (it
+  fights the firmware's own scan-time PM handling and eventually
+  destabilizes the connection), but it shows well-timed PM framing
+  fully protects the downlink on this AP.
+
+Questions for the firmware team
+-------------------------------
+
+1. On an MLO/EMLSR association, does the BE scan-offload firmware
+   actually perform the periodic op-channel revisit (INTV opmode)
+   during a full multi-band scan, or does it batch the whole scan as
+   one long excursion?
+2. Is the per-excursion txnull PM frame sent at the right time and
+   on the right link for an MLD association (and with the associated
+   link address)?
+3. Is there anything the driver should be doing differently for MLO
+   scans (splitting the channel list, different opch policy) that
+   would bound the off-channel time?
+
+Practical impact: any periodic background scan (wpa_supplicant or
+NetworkManager bgscan, roaming scans) triggers this; on APs with an
+aggressive low-ack policy it escalates to the AP kicking the station
+mid-scan.
+
+I am happy to share the full capture campaign (client iperf3 JSON,
+monitor-mode pcaps, AP-side tx_errors series, per-second traces), the
+H2C instrumentation patch, and to test debug firmware or patches on
+this setup.
+
+Best regards,
+Louis Kotze
 
