@@ -1,170 +1,149 @@
-Return-Path: <linux-wireless+bounces-38853-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38854-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dYHhC2MQUWqc+wIAu9opvQ
-	(envelope-from <linux-wireless+bounces-38853-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jul 2026 17:31:47 +0200
+	id vQz9EtkVUWq//AIAu9opvQ
+	(envelope-from <linux-wireless+bounces-38854-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jul 2026 17:55:05 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD97173C445
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jul 2026 17:31:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3236C73C67F
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jul 2026 17:55:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nEcDWhxq;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38853-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38853-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BGgUvZeV;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38854-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38854-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0F85F3008C22
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jul 2026 15:31:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 53C88300253B
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jul 2026 15:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444FF426D03;
-	Fri, 10 Jul 2026 15:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0BDC3FADFD;
+	Fri, 10 Jul 2026 15:54:59 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4AF2F7462
-	for <linux-wireless@vger.kernel.org>; Fri, 10 Jul 2026 15:31:42 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783697504; cv=pass; b=qWNOrGPbBD2P+TNxOh8oTCDwXJ8aDKGndMwxDnybaLy6ZWsSIgYP9L2iw0FeAAZ5DNFN8zIPt3XaR14YfWfg2s7HuvraFESzo1+ZTh2dmahR9Znwa+XTylGDvg+7nv99CshxHFmUUMYbm8cofi8GoW4yKKItJSSSxmlO4AyujF4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783697504; c=relaxed/simple;
-	bh=6QRP5tVHaK0fAMiLSsPeuvkbRrGnGPqfBvxeG53+SqA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W5WYcc+f/eDuMJPVDFZRXNw9JcbyKH31S9UznhUD/Rgi/Vc0YD53Euxu7VUwp6JAAhJWsWEFFgjecqAm+117y7B39wViTofXZKWzmYOP7JwzQWqd/GBFhYlJUKiVu/DE1aAz4YxfrCgjFAbX4FAJdP4CuV7irXw63Q78f2/75rY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nEcDWhxq; arc=pass smtp.client-ip=74.125.224.41
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-6626b5ace23so3164229d50.0
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Jul 2026 08:31:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783697502; cv=none;
-        d=google.com; s=arc-20260327;
-        b=T7PeyfzOrpl7mTCkaQ1m+zetNEWJtrWjdTn6FbfWOYeVXI//y2+tWy6VhLrUHNVMU8
-         iYGJrfIBZfFaeYw98SlUB/jrCj/QTlmm6thhdwVqTb7HPj5Ien15o0ChAsNtYZmRb3+B
-         XvmVm4JguiQsLI7oi1Lx1xpcxduj6Wsr8OqhpWVUNqgysvMM99tnrqNz3+sn9b6vuV3Q
-         PNbVjcLTEF/koWYYuHCdScudml73GV22nNSLdPEX11TKhWmhv5knvuKPgxbPyaGL4B4+
-         5Ph7N0LZDenZivET2ECW/Q4uNdN0kicZlzlozC531xlyIQ44w2Oo37Nw9dnawQhCvyh9
-         9ukg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6QRP5tVHaK0fAMiLSsPeuvkbRrGnGPqfBvxeG53+SqA=;
-        fh=0ZAJxLL5hxn+FnaFOKqHZy9K8PX42AabhL3axjy+yEw=;
-        b=L/TSWf3YbaTSv6wOzROGi7P9POEE20VqYIr82andOh48efdWYU/42MRzA28LFaUPGj
-         wdUBNAmplyiM8WJ+Ap3pPq0vhqpc5SYYIJHzxNLnhiOpDWm2H83iZ2Simlwma8v2oSjl
-         /gSDOjNPC6rsD6LjV0O23z7a+BsEYg27ouO4Rkg9mnWmreKd6V+Q2haLg5+3vxbSHP0f
-         v7bewvxN/OVychYG79xQcjMBkdIOqL4Dm7QVo1rwjwEQHD7XB4Em4+3N7OFTDkJK0B+6
-         npqnIYlNqF9A6/8a+0lUxbnABsFUtAIi9GV8fI4lUK8fn8gKdBuKk91dEJLDRARFsSwH
-         oeMA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783697502; x=1784302302; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6QRP5tVHaK0fAMiLSsPeuvkbRrGnGPqfBvxeG53+SqA=;
-        b=nEcDWhxqPRIReKCY5hgJN4Vx8YxwkZwoWSYLEROSPCVJCfVuZcBBYS8Hnem5maPQ6J
-         tp33E5HjbimtHmjNHWlRkx37PHWUEtbYUwUIVpMjFYqh2VzcClJSS8GZD/WBeLtHOlsm
-         XzGSwB7HGwQHvH6Addc7/IFMipNDsvlz5KXK647ag9dY/7gPEcvvHWcjgphYakp2HzoS
-         xmrHPQW4ytC0ykrnZY1xbZml162MhLTmOQ6naI8jn381si0W3gNRgZBg4zony1PNCsoZ
-         PQ52jMI8Vi5KeMBlxGUu0rSXG+l5wwkbrclT6kzZpKejWgFofaNG9bnbs1EK5rgoA069
-         ThCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783697502; x=1784302302;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6QRP5tVHaK0fAMiLSsPeuvkbRrGnGPqfBvxeG53+SqA=;
-        b=EUqmKD8ManNKhZE4lUtUzpB/7hte/REY2saYpk0k4B5oyc1OOTeQHm/TX+RfXuZmiU
-         MzVN08s3WjwaUwCjlNNwz0LnKBS80V3ACGCYQg7LQsE1v5GHJyQYfDIaxplcdDEVOIUr
-         vynY0VFExyQB8j43kN4KM1pCFHObqPcLBWcgw90KRyEJULuaZwjjnEQnXuVEknnIH3Fg
-         up+iffvIA6SHKhF1m07mKTVRM6togmrLXCQmcrzpZ2ghI4acQEh1fLtz5R9Vy3pDoImE
-         C3GVTPlTQT3z5d9JXAUD/EuVYWF/jIbL8CyHPZqSINaRw8enaZMjMK7Rx8sEKfYXCCIi
-         P7WQ==
-X-Gm-Message-State: AOJu0YycaHWbMSXyUapLkEP8X2VVSwiOuAmkLm5LTr5nIXiMfFJQ3/PG
-	VhuEyiyQQBaklS43LugTvTA6dPMiNDv+1XgfP8tplkeGmeZz+VcsbW24ZhqPs+ED+IYDE4MiLeu
-	JAJ/RTJ9DGwZtjQo111bPeD+7kcekJOU=
-X-Gm-Gg: AfdE7ckseKXFGvFpxuZ4DXVqgXAl4j3Nh7k3NcDYx8Dqx0/5QTHOy5i8QxnE05DvOMr
-	OPhbgsvZ2FdXV/M1l7aOZIakSnOOkaoLlJjXgmrtUd805F6eRrPYaUl5t7KjIeS1SFOvXehCCFt
-	zzZxwLIqfsWAIcHoGAPwk9rSmebV7k/RE15LpuVY8C2zIeki4culV+1isVR28iJp8nESaj1vi9i
-	bRNyMaAWAZQPMMYRpzSkyLMprbZCkQc7o23Pwq/aboz+jqx/s/iWhQB2YjMOB81Tmhr8qgwJhkK
-	mNMVcPInykU7uev06+lrtWA+JmGgU1pIjv7sUuY=
-X-Received: by 2002:a53:b3c7:0:b0:665:1074:b85f with SMTP id
- 956f58d0204a3-667c6233ceemr1765197d50.40.1783697501864; Fri, 10 Jul 2026
- 08:31:41 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBB63C4154
+	for <linux-wireless@vger.kernel.org>; Fri, 10 Jul 2026 15:54:58 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783698899; cv=none; b=pCsbLtwPQI7YnDHuvIwQIDm2rlAmROnPIitmmG1W+YNK3FJ5ILcXxMhqouyMgj/RnKNkxpU1CgC5mzbxbuQd2naHzKgAAp8UZfq//Qmo6I6X2Klyq+3xSQezLF8gWbBehvNXV8mICCeyxg3+virYPjDrbuo8v7H3ffWe+aD6uRA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783698899; c=relaxed/simple;
+	bh=PT2IfD69KHWtSfNcq3axdvI9lUVielXn1p9BUxgRi2U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MqkBP5Qp6J6AVCi01Fi2py0iwv5QCJXPt0CemIX6JNemm88X74wA+TW1ZYqZUumD6OZ6Omm3B+VsOin2qFc+znHRf7SE6bXRlcUeUNLlHQpUnzdTcqYJOz4CqpoFzgcV5OPEK8dcDgf/dYGK3L2VRyjiFlLLAZVepIcRRuIDn+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BGgUvZeV; arc=none smtp.client-ip=170.10.133.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783698897;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bjiyv0lirhfy7+vrSMfYOoDKtgGzU0tRvcCRuYupkas=;
+	b=BGgUvZeVPxLDIg7u38qmYapS1cyM+hC9yEpPTEz9vJkSlbwVxUe3S6gb9stAOEjLMpQtcS
+	OZi5WEQaMi6a9y2zQf2BtEUgbUEW+SH+h4Tx+799f104GW1+WCnsiyjI2nirHRdmDcqlEz
+	HEF9wayowkgDfIn3o0TukPGZhP46NIE=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-642-HavAsTw3O3uLypCFXCWu5Q-1; Fri,
+ 10 Jul 2026 11:54:56 -0400
+X-MC-Unique: HavAsTw3O3uLypCFXCWu5Q-1
+X-Mimecast-MFC-AGG-ID: HavAsTw3O3uLypCFXCWu5Q_1783698895
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4308E1955EBC;
+	Fri, 10 Jul 2026 15:54:54 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.48.25])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BE9591800480;
+	Fri, 10 Jul 2026 15:54:51 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: jjohnson@kernel.org
+Cc: ath11k@lists.infradead.org,
+	ath12k@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Subject: [PATCH 0/2] ath11k/ath12k: implement TX flow control
+Date: Fri, 10 Jul 2026 17:54:41 +0200
+Message-ID: <20260710155443.1761760-1-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260710024637.16729-1-kartikey406@gmail.com> <6be574903752d95ae7125461c38cc30b8a641d24.camel@sipsolutions.net>
-In-Reply-To: <6be574903752d95ae7125461c38cc30b8a641d24.camel@sipsolutions.net>
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Date: Fri, 10 Jul 2026 21:01:29 +0530
-X-Gm-Features: AVVi8CcL-YmNPFgYQepDe9wnXyWwvpDbYyrGnbsg8ANY_fJZrMulP0v4yUcQPp0
-Message-ID: <CADhLXY4bpoaJAnh6KVe1fU9J_wCihgM3y-LQoXz0Snrmknc6eQ@mail.gmail.com>
-Subject: Re: [PATCH] wifi: cfg80211: validate IEs in cfg80211_wext_siwgenie()
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzbot+cc867e537e4bd36f69bb@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:syzbot+cc867e537e4bd36f69bb@syzkaller.appspotmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38854-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38853-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER(0.00)[kartikey406@gmail.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:jjohnson@kernel.org,m:ath11k@lists.infradead.org,m:ath12k@lists.infradead.org,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:jtornosm@redhat.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[jtornosm@redhat.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kartikey406@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless,cc867e537e4bd36f69bb];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jtornosm@redhat.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AD97173C445
+X-Rspamd-Queue-Id: 3236C73C67F
 
-On Fri, Jul 10, 2026 at 12:09=E2=80=AFPM Johannes Berg
-<johannes@sipsolutions.net> wrote:
->
+This series implements custom wake_tx_queue operations for ath11k and
+ath12k drivers to prevent hardware ring overflow issues under heavy
+traffic.
 
-> I don't believe you'd need to even export this, and we also already have
-> validate_ie_attr() in nl80211, written in a better way too...
->
-> johannes
+Without proper flow control, both drivers experience -ENOMEM errors
+("failed to transmit frame -12") when the hardware TCL ring fills up.
+Additionally, ath12k can hang under sustained high throughput. These
+issues are more commonly observed in VMs with PCIe passthrough but
+also occur on bare metal systems.
 
-Hi Johannes,
+The implementation follows the pattern used in the iwlwifi driver,
+checking hardware ring space before dequeuing packets from mac80211.
+Per-packet locking serializes ring access while allowing TX completions
+to run, preventing deadlocks.
 
-validate_ie_attr() takes a struct nlattr * but the wext path
-works with a raw char * buffer, so it cannot be called directly.
+Testing shows stable operation with eliminated -ENOMEM errors, no hangs,
+and improved throughput under heavy traffic conditions.
 
-I have reused the same approach using for_each_element() and
-for_each_element_completed() instead. Is this acceptable?
+Jose Ignacio Tornos Martinez (2):
+  wifi: ath11k: implement custom wake_tx_queue with flow control
+  wifi: ath12k: implement custom wake_tx_queue with flow control
 
-Thanks
+ drivers/net/wireless/ath/ath11k/dp.c       |  1 +
+ drivers/net/wireless/ath/ath11k/dp.h       |  2 +
+ drivers/net/wireless/ath/ath11k/mac.c      | 49 ++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/dp.c       |  1 +
+ drivers/net/wireless/ath/ath12k/dp.h       |  2 +
+ drivers/net/wireless/ath/ath12k/hal.c      |  1 +
+ drivers/net/wireless/ath/ath12k/wifi7/hw.c | 50 +++++++++++++++++++++-
+ 7 files changed, 104 insertions(+), 2 deletions(-)
 
-Deepanshu
+-- 
+2.54.0
+
 
