@@ -1,204 +1,185 @@
-Return-Path: <linux-wireless+bounces-38919-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38920-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id R5hxG6AVVGqChwMAu9opvQ
-	(envelope-from <linux-wireless+bounces-38919-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 00:30:56 +0200
+	id Z8aaG2YWVGq2hwMAu9opvQ
+	(envelope-from <linux-wireless+bounces-38920-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 00:34:14 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F5B27462C5
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 00:30:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE11C746309
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 00:34:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=broadcom.com header.s=google header.b=ezYdBx0y;
+	dkim=pass header.d=broadcom.com header.s=google header.b=UcU6fRmc;
 	dmarc=pass (policy=reject) header.from=broadcom.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38919-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38919-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38920-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38920-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5D6AD3001A79
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 22:30:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFD89300B9DF
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 22:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CAE3378D9A;
-	Sun, 12 Jul 2026 22:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E165383300;
+	Sun, 12 Jul 2026 22:33:23 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f99.google.com (mail-oa1-f99.google.com [209.85.160.99])
+Received: from mail-pl1-f227.google.com (mail-pl1-f227.google.com [209.85.214.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03BC368957
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 22:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55549379974
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 22:33:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783895449; cv=none; b=s7gGyAEbp/Fc7Ixd0jE6CkyMh7GsDiyC/GHhWHpTSO8dS0BbCeJg10uPUCBPRqucXseK3KchfWazeopHdvH8yvf6LFwObC0nnBq37X2sj2i5uEwOo2p8uZcbn95sOlXKwryfkkYz868Hs/0txDFd4J+QlvSruVY2V2jdd4uRDKc=
+	t=1783895603; cv=none; b=aXgn2OlYbhtkDY5VQwJ+caFRpOUEnxm261vCJBr7x8T/wk6qIR37yj5gBjTVufII+YvrPub/8A5CVVP48+TN4+BaGpj/L4DCwuejX43mfFz1RuXxoalX6+4mOA/kbebHTAyt1TlgmWoM6kIFJgvCvfyn8w+bBcJbmjAGqo7PUek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783895449; c=relaxed/simple;
-	bh=ER8tP37lObIhQR9iMWULWXKSl19MKFjdA03HNDy5ju0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BmOb9n8WE6UkorXoTLDtFun1IxVdRm/dKf5xvg9J5GVbMqW8zJyNqNPvndcVZ69A//+Q6znMTZriD50+Kv0w0HOqNu7mbWpFbLdHTOsP1n2EsbCJOp9ZcvosUTltEgP2ogAXjNd3fRBN4U9tZodC1O+ujdrzW0qgUXmySptbFKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ezYdBx0y; arc=none smtp.client-ip=209.85.160.99
-Received: by mail-oa1-f99.google.com with SMTP id 586e51a60fabf-451fd21113cso786399fac.1
-        for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 15:30:47 -0700 (PDT)
+	s=arc-20240116; t=1783895603; c=relaxed/simple;
+	bh=9eV6FVRBj0+rcygV/638gCn4ARxyqwVGy0pBnruSIEI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lNTa1SrYnFz1mDJy0YLw19CuPK51Zki6zGN4xRMkNNg1siMTbHF0EdNWqu4+HsU4GWhwtlz31Fr3aigp/62i0o8EileElNQXhdNJA+dB+CVCvs22c9fmEbm0KvahYajJ3GDean5AgfGrl6BoInl5EwQzy3JueO3+s13y3B/Z3UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=UcU6fRmc; arc=none smtp.client-ip=209.85.214.227
+Received: by mail-pl1-f227.google.com with SMTP id d9443c01a7336-2cca0c5799eso25313535ad.0
+        for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 15:33:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783895447; x=1784500247;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=M5Hwfd1WgOYHOQEiKGvpV7zc4NRj0z5awcHqZeRtKQY=;
-        b=aIjpmCQNBFCqJuZsM+vNQ09J+IAwKBm3hv5Ixp/e0BsLpO69tyUaABn8CWuzqSNNjc
-         UD8UK1CSpW25vGTFtXjaVcJlvyeSaT0nl4uoPEKfdl5FZfYaQeYJtJ5jZvFSwULMTON7
-         SunvzCaVxEommvqnttKmhc8yOLXcWdQ6EkEsqcubnjgrdckXXxmBWONko6Gvze95yqEd
-         WAimNM/TLRDJPy9XqeoNEetCqOoR+hZyCW48upWAfqYsQUVc5rxE4uFqDZ+6rZOpP/Dy
-         zChVvqpC6brd3M+rE9TVCsP+SBYEW8q++hHBsf6HKjip8HcvGPsAq4QPUL++G9CejiQA
-         sJIg==
-X-Gm-Message-State: AOJu0Yxwf3YuA7ktM2vCRHM+qLivjawSvWY1lLoxvlLK8G9mU+EuOzaL
-	YlQcLYoWaoRLa9Zu5irPQLlOfFoY39ApMBodAs1FjcFKezIW3+TbwiSrkmQuwJ8OxmKzlwlhAs8
-	I9+rJwpdTR+jfdiQBtxZcJoLlG3j8yqebOdkk2KoNpJq+9Xnubz4Rb8m3Ip49fVlFhMaBdfNOVr
-	3K4kzfN6zdtxsKixGn1Fn09qcHa2sUmr5dIVQl3qJhKl0ZyPN5fFjjehNywll4yWQZW7SM3DlZr
-	t9eILWU654rauC1RRz/E8nn4smE
-X-Gm-Gg: AfdE7cmuVqUH9hVSNdzrNKo/p5tTHowxSvCWRZJMlYlr4HPzBbXCqSb3/OJJLVe6LnU
-	FCQ8nKmdmNiFRW0p51k80HbV6STo7Z/8uX+p8vXMUU49cZH+D3qhYXw6mJVX2/MpgobGuYL76H7
-	QcWsn6aQd7jT5tQutY/gA0hM8TlG38i03P/Gn1vcHg5EGD5tybhE+Va83egNtONQLRqdAD/LA9Q
-	Nn7ssOMIWBk3b2aKGSlx2niF7lYKWr8s1RNe1mGnkg4d0CM7rU548HS9SY7UPtpBq45WS0cOQVN
-	j0ZvyJyBvH6nq5YJhskNp/FD8AjNkjqTb2LBATFbuE6uIar+iKn09kW4cJpmJbNQONTLoxqgS0E
-	W+YjQji4U2P+OnQh2h0eC9P0PdKTv+7S9R/QkyXa+7Y2p9cJr/08q4FxkEUoa91GzTmXC+ENKrm
-	RTNlKvSzeD1baNoPmVl37TdS0CMPQ2l0Z0sghRZqEHYkdm1pH1W3o1
-X-Received: by 2002:a05:6870:c0cb:b0:44c:a2c5:28d0 with SMTP id 586e51a60fabf-451f24a452cmr3570601fac.1.1783895446932;
-        Sun, 12 Jul 2026 15:30:46 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-117.dlp.protect.broadcom.com. [144.49.247.117])
-        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-4519182d1casm1112893fac.15.2026.07.12.15.30.46
+        d=1e100.net; s=20251104; t=1783895602; x=1784500402;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=as9uoNChv4bOT2fKEipNolL6IX5VF1WJ1fVqwJJ/Tbk=;
+        b=fBQV72wpWl4LzaP3NXzFyFiW+R6OLrCBhl7r2e2zNirrqlNFhpXDqSS5IDVz3bsDZ+
+         gPhifQ7rLZHS0nAqz78N6LQK3rywGpfHRKav+bD53n+UAtKrCfceNxeokY5WEi1PBqhu
+         uTOTyxe5H1MWcseAifnzLy89Ws32CjybxWbneAZGGdK/XzFjnzYPvDR3dyMxKKSjPxkj
+         QZDdjXTjcRlKxG3aLIQ7OWY/f6cLhGcJXbKXf7NVtPQmBVWZF16sW+Mhy+u8DEZBSuCJ
+         y1lMyM6HJM3GMpXZA/yVgn2xpudgrsDBoe4ccwQqqB8U8tIzrK0H/HwIScrDYKgmMJxe
+         N/PQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpQo8YL8enS/M7BiFHLYjLeqdD9Rnkwzzyy9RV/LZqf8oOl8a87yk+FWnyInVU6H2nACLWhvOp154Qv8EYRzA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuXqrpcv44hE+O1cQ5vTHf0kxaslQZwxqC27HAVl2zVTja7qKN
+	P/UEfD8How47gkE8jeAlXUrycI4vUWNC8IJPYHU6+oCECWm+kahqW1bMWq+MLbOQ6UEsgrqrpFN
+	giJ6p91l2tFpAeLRmDNGlBEmO8c1/TezDzIngdpAInmAEbM/da9brzKiHB+V1peDtl1rUp4nrZC
+	ScrvJNgbmGN4sMsziQrOPCTgrL1KmEkdI+kFS2AaUH5L46pyXzJQqDHKFuVybLtT+rDK+Fj0Zzm
+	wL+2zZUNhxpSrmb7xHI08XiHSDC
+X-Gm-Gg: AfdE7cl6yDnww8TSFrgDK3Ua9Fs3bNMGMARSOkuEtnErOlDRQQVepta0osem/Iqlbxz
+	JUSPKBnYrRb5B3cuAL9uAV+Ffx3LfuqG8IaxWKIXF5dAPZ0sSmAgWA1aVrV/pcQtml3hi46Be4/
+	89ZYYyNclltvh4U7lU4PIJDOTY62BDPB5DK/mMyCEDDXh5EMQTXA1sglJlHEYCU0hODwXWAzoaK
+	AgfZv/o5vQG4JxrLQqA0+HTtLwnfWnZzjvZCsQI0wkZ0ncl79UKIDl1/Lt1FohIhAx7eGr+DkZE
+	uNewnpbWY59x1pRW+A29xUHDjSyW3iuKb1lnfzUpood7rmA91MeVAA79Pc70XDF6Zz60NKsl6kF
+	tMV+h+GlQNNpIY8rY4M97Bw8JKmeivoJ6Pwtmw4Oz6t8gc8DvP0Ygjz5QLPo8xOy2Hjkz4E9tgB
+	xOCeAtp2IkPa1GgvBk225SUomSahJayb1FnIXlDnBTRV0qCQQ=
+X-Received: by 2002:a17:903:110f:b0:2cc:aa36:c04c with SMTP id d9443c01a7336-2ce9eae29a7mr68617945ad.1.1783895601534;
+        Sun, 12 Jul 2026 15:33:21 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-6.dlp.protect.broadcom.com. [144.49.247.6])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2ccc9ccdc15sm17778835ad.33.2026.07.12.15.33.21
         for <linux-wireless@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 12 Jul 2026 15:30:46 -0700 (PDT)
+        Sun, 12 Jul 2026 15:33:21 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-c9c26587e67so2567516a12.0
-        for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 15:30:46 -0700 (PDT)
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-381250979d5so2805740a91.0
+        for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 15:33:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1783895445; x=1784500245; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=M5Hwfd1WgOYHOQEiKGvpV7zc4NRj0z5awcHqZeRtKQY=;
-        b=ezYdBx0ylQD2SJbb68gSWTy/hTMv6ujoZIi/mkht3ETFMEyV3+s97ybmvQ5iYE5NZB
-         A6YfiH4OmGGr0XTglYTYXz7VpGQBzGl+A3FN2kdPEIqr9BHRJ4icVFUaOvuJdgg86voV
-         iqeHh+J3unDL45VbnJYX29iuEWvugNNH3ArVY=
-X-Received: by 2002:a05:6a21:164a:b0:3b3:3506:cf3f with SMTP id adf61e73a8af0-3c0f085cddamr12242628637.1.1783895445286;
-        Sun, 12 Jul 2026 15:30:45 -0700 (PDT)
-X-Received: by 2002:a05:6a21:164a:b0:3b3:3506:cf3f with SMTP id adf61e73a8af0-3c0f085cddamr12242613637.1.1783895444870;
-        Sun, 12 Jul 2026 15:30:44 -0700 (PDT)
-Received: from [192.168.178.26] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b924258a2sm35908753c88.1.2026.07.12.15.30.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 12 Jul 2026 15:30:43 -0700 (PDT)
-Message-ID: <99c2c345-c594-46e1-b48a-de7f6e52e1c6@broadcom.com>
-Date: Mon, 13 Jul 2026 00:30:42 +0200
+        d=broadcom.com; s=google; t=1783895599; x=1784500399; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=as9uoNChv4bOT2fKEipNolL6IX5VF1WJ1fVqwJJ/Tbk=;
+        b=UcU6fRmcDwP1BOIrJmXL+A6qaGJTwC5rPvbWnEUbJT7Dt0clJ354cZ2qzBK8UTZC+o
+         a5Hk6epiCXqK9H6ujsupj0gPcQvg9rMBhBDzBsr92wuN1TNKXlZdv+YoZzRgrurwKjFA
+         VtnVP/FjHqSlJKMNFQR2GHgk9DBQAqM0XxtvA=
+X-Forwarded-Encrypted: i=1; AHgh+Rot6ifF8u8ES2WuGiD5WTnsswNGtYfiIQX6QcDbrkCWjK3np+hM+D7lDldEgX77oxq7cTypGiSF8hytw28Ejw==@vger.kernel.org
+X-Received: by 2002:a17:90b:2b43:b0:380:21b7:e727 with SMTP id 98e67ed59e1d1-38dc7a494a6mr7053678a91.14.1783895599471;
+        Sun, 12 Jul 2026 15:33:19 -0700 (PDT)
+X-Received: by 2002:a17:90b:2b43:b0:380:21b7:e727 with SMTP id 98e67ed59e1d1-38dc7a494a6mr7053673a91.14.1783895599053;
+        Sun, 12 Jul 2026 15:33:19 -0700 (PDT)
+Received: from bld-bun-02.bun.broadcom.net ([192.19.176.227])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3120c8e41fcsm30681627eec.15.2026.07.12.15.33.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Jul 2026 15:33:18 -0700 (PDT)
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+To: Jason Huang <Jason.Huang2@infineon.com>
+Cc: arend.vanspriel@broadcom.com,
+	brcm80211-dev-list.pdl@broadcom.com,
+	brcm80211@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	Kurt Lee <kurt.lee@cypress.com>
+Subject: Re: [PATCH v4] wifi: brcmfmac: add DPP support
+Date: Mon, 13 Jul 2026 00:33:14 +0200
+Message-ID: <20260712223314.2182929-1-arend.vanspriel@broadcom.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260708071230.312836-1-Jason.Huang2@infineon.com>
+References: <20260708071230.312836-1-Jason.Huang2@infineon.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: brcmfmac: cyw: clean up PMKID and cookie code
-To: Bogdan Nicolae <bogdan.nicolae@gmail.com>
-Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
- brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org,
- Bogdan Nicolae <bogdan.nicolae@acm.org>
-References: <20260709122315.11400-1-bogdan.nicolae@gmail.com>
-Content-Language: en-US
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <20260709122315.11400-1-bogdan.nicolae@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-7.66 / 15.00];
 	WHITELIST_DMARC(-7.00)[broadcom.com:D:+];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-38919-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[arend.vanspriel@broadcom.com,linux-wireless@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:bogdan.nicolae@gmail.com,m:linux-wireless@vger.kernel.org,m:brcm80211@lists.linux.dev,m:brcm80211-dev-list.pdl@broadcom.com,m:linux-kernel@vger.kernel.org,m:bogdan.nicolae@acm.org,m:bogdannicolae@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_SENDER(0.00)[arend.vanspriel@broadcom.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-38920-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:Jason.Huang2@infineon.com,m:arend.vanspriel@broadcom.com,m:brcm80211-dev-list.pdl@broadcom.com,m:brcm80211@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:kurt.lee@cypress.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[broadcom.com:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[arend.vanspriel@broadcom.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[broadcom.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:from_mime,broadcom.com:dkim,broadcom.com:mid];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4F5B27462C5
+X-Rspamd-Queue-Id: BE11C746309
 
-On 09/07/2026 14:23, Bogdan Nicolae wrote:
-> Avoid setting packet_id to cookie, which is always 0. Instead, use an
-> increasing atomic counter. Avoids mismatches of completion events later
-> in brcmf_notify_mgmt_tx_status, where packet_id != vif->mgmt_tx_id is
-> checked.
-> 
-> Also, zero out auth_status on initialization. Otherwise, garbage will
-> leak from the stack to the firmware (when bssid is less than 32 bytes
-> and/or when params->pmkid is set). Then, pass the params->pmkid to the
-> firmware (without it, the firmware caches a garbage PMKID on successful
-> authentication and denies a subsequent association request that includes
-> the PMKID).
-> 
-> Signed-off-by: Bogdan Nicolae <bogdan.nicolae@acm.org>
+On Wed, 8 Jul 2026 15:12:30 +0800, Jason Huang wrote:
+> Add DPP AKM handling and RSN parsing support. Map DPP to the
+> firmware wpa_auth value and recognize DPP public action frames in the
+> P2P action-frame TX path.
 
-I always get a bit confused when people use different email addresses to 
-send and sign-off patches.
-   > ---
->   .../net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c   | 8 ++++++--
->   1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-> index ce09d44fa..cca53ff19 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-> @@ -23,6 +23,8 @@
->   #define MGMT_AUTH_FRAME_DWELL_TIME	4000
->   #define MGMT_AUTH_FRAME_WAIT_TIME	(MGMT_AUTH_FRAME_DWELL_TIME + 100)
->   
-> +static atomic_t brcmf_cyw_mgmt_tx_id = ATOMIC_INIT(0);
-> +
->   static int brcmf_cyw_set_sae_pwd(struct brcmf_if *ifp,
->   				 struct cfg80211_crypto_settings *crypto)
->   {
-> @@ -155,7 +157,7 @@ int brcmf_cyw_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
->   
->   	memcpy(&mf_params->da[0], &mgmt->da[0], ETH_ALEN);
->   	memcpy(&mf_params->bssid[0], &mgmt->bssid[0], ETH_ALEN);
-> -	mf_params->packet_id = cpu_to_le32(*cookie);
-> +	mf_params->packet_id = cpu_to_le32(atomic_inc_return(&brcmf_cyw_mgmt_tx_id));
+[...]
 
-As I understand things the cookie value here is an output parameter. The 
-driver should assign it:
+> +	    p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif &&
+>  	    p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif->saved_ie.probe_req_ie_len) {
 
-+	*cookie = atomic_inc_return(&brcmf_cyw_mgmt_tx_id);
-	mf_params->packet_id = cpu_to_le32(*cookie);
+[...]
 
->   	memcpy(mf_params->data, &buf[DOT11_MGMT_HDR_LEN],
->   	       le16_to_cpu(mf_params->len));
->
+> ---
+>  .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 151 ++++++++++--------
+>  .../broadcom/brcm80211/brcmfmac/p2p.c         |  59 +++++--
+>  .../broadcom/brcm80211/include/brcmu_wifi.h   |   2 +
+
+In the v2 review I asked to split the P2P device vif bug fix into a
+separate patch with a Fixes: tag for stable backport. The null guard and
+the fallback vif in brcmf_p2p_abort_action_frame() are both pre-existing
+P2P bugs that should be split out and submitted as a standalone patch so
+they can be backported to stable independently of the DPP feature.
+
+Please also add a changelog below the --- line describing what changed
+since v3.
+
+Note that the P2P device vif fixes are pre-existing bugs that need to go
+to the wireless tree for stable backport, separate from the DPP feature
+which targets wireless-next.
+
 Regards,
 Arend
 
