@@ -1,68 +1,68 @@
-Return-Path: <linux-wireless+bounces-38904-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38905-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zUlWKxUOU2qCWQMAu9opvQ
-	(envelope-from <linux-wireless+bounces-38904-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 05:46:29 +0200
+	id qiSgMT8OU2qHWQMAu9opvQ
+	(envelope-from <linux-wireless+bounces-38905-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 05:47:11 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99372743B77
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 05:46:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26EBF743B8C
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 05:47:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=realtek.com header.s=dkim header.b=Dw3qJO57;
+	dkim=pass header.d=realtek.com header.s=dkim header.b=KLXhWdBV;
 	dmarc=pass (policy=none) header.from=realtek.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38904-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38904-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38905-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38905-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 91B7A3001FA7
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 03:46:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3867030179D7
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 03:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFE42BDC26;
-	Sun, 12 Jul 2026 03:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A14846A;
+	Sun, 12 Jul 2026 03:46:29 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3A9846A
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 03:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C385DDA9
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 03:46:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783827984; cv=none; b=ub2EYOuO/YCzxTm6xLdDO7nsJZwQY0+LPvp9Ia5wqe+71h6sIkfzk1bmPbrJw/UQrPmvGEOgYuvr4IRo0zlBuxkZ7eGhG1GK/WqrfZUXm69PRMBGauaeyPAbCi2no26SmN1Aru6+l7TsatmvDzwHdsrMaL/hennpeQt9hqFbgwI=
+	t=1783827989; cv=none; b=hWxQoMdPLXpqrAfvee4WXBGjbMEzwuWxsitZ+naXhe0X7PH33o1SH7RwRnrnfRmbBQf9ngFriN/pwoL1Tobl7/59UrY2a1g+8aAJpf59elD9NNJQALnF6SLLKv1eCOSyT9Lobzw9KB68xSCeiEaOxcLTwB0Rfv4SpICbEFhu8pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783827984; c=relaxed/simple;
-	bh=OmNuCC3kx5urapB4Rkx6j9WFJKfA6Sa0/IVQFvrjgIs=;
+	s=arc-20240116; t=1783827989; c=relaxed/simple;
+	bh=1U68azhRjy5YHer/6TlMBRXgeB+LcCRN8j7HVAXD9Gw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EjLIYMUzNlGzgnR+E+vwFopDbL8XNBNRDg/HY3IWU/Gf653Lfdyelq/WH4P/kh9ZbUPtFUhGsNGv4Ia92qiavnfHnP39rPht4USEtGnJ91JV/0fSM+ETm90arw6EJ9fRyxpooPyiyppLcNb7Y26Atm70nAt18k40/KMWeq148qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Dw3qJO57; arc=none smtp.client-ip=211.75.126.72
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66C3kK5F1535622, This message is accepted by code: ctloc85258
+	 MIME-Version:Content-Type; b=VxTUCet2/ZnyRi2PW83/jsf2sKFxD+MfljKPYhpBxfQiNRcl9Iuiqqdf/HBNHZ1df7JmAseoMmGljSRt+fDlAGUoTmqqfNw1MPwOpOemIJ6sFOuErszYKGYb8gYXjiSY3OxTgBdTsPR331gE59FYta5UB/tESiFvAMeaspnEeLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=KLXhWdBV; arc=none smtp.client-ip=211.75.126.72
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66C3kP641535640, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1783827980; bh=Bl+9TCjIutyMkT136bP3/VSyzT0XPnH5izuJCh/GrfI=;
+	t=1783827985; bh=cNFELYJgoKU+Y+y0aE65ZsqvSqfpFClWG21jDOh/K5s=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=Dw3qJO57GGDZArWymZ8SzDB7yLggeF+sjj87NgCq5hvCUoSodqPIm5UVeLZSQTkO+
-	 HUM6RcE8KY70QtJcVN2HgwM0JFibA51ZzVrECbf6NXPqLcFS+nWbTWqX5bTlYuprdV
-	 Ji5i83wSpntqwRjcyLo2Yr9fO2NYKiC+uodjuZM4Jl9VkMxeSmjwC/cR+Cm36zcqrd
-	 R5+oGcHQa2GqErlbfO5EWNKH8aELN7bL2/faHscCDoEyhpicCMpDfDdleamA5d4bX3
-	 N9ZG+YOzmjnxykmbbgrQa9y8u5MfqED6IetnUQJHv+0+KMFxyDN2I1D5jay2qFo7E2
-	 J/Sup5yw1R5dg==
+	b=KLXhWdBVcw2kKDjUgWJ5VQ/BYMCVkLYciG04ckh10aeFvlB7jxZ5CnT82oVSSbGj0
+	 M2NvCcEadbM54xXBfHtMHL9nRuT2OP5ASif3AN7LNzr05LqMbwc2+Ok+q7cUuBCeZC
+	 baH8443hrTHGR5HJfb1dVWth58BwjyBv0AL9AyD33Wlgki0eFCrTLaJes/RrGszJ8z
+	 7U+H6+i6ub0Y9D9kDjS7JuseovwTqHpo9UrlhRDTONLqpIw5vHFKyVcIwE4WdmRhFg
+	 1eHRrRga3xLy0TG83lHgxzLtBksSukWV12eCqGnvbj9oXNgfwb/QU+TQuRQs+I+Iyl
+	 PlggCpKLldkbw==
 Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66C3kK5F1535622
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66C3kP641535640
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL)
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 11:46:20 +0800
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 11:46:25 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
  RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Sun, 12 Jul 2026 11:46:20 +0800
+ 15.2.2562.17; Sun, 12 Jul 2026 11:46:25 +0800
 Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS06.realtek.com.tw
  (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
- Transport; Sun, 12 Jul 2026 11:46:20 +0800
+ Transport; Sun, 12 Jul 2026 11:46:25 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <echuang@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 3/8] wifi: rtw89: 8922d: add TX time limit for 2GHz band
-Date: Sun, 12 Jul 2026 11:45:01 +0800
-Message-ID: <20260712034506.53209-4-pkshih@realtek.com>
+Subject: [PATCH rtw-next 4/8] wifi: rtw89: introduce helper to get tx shape index
+Date: Sun, 12 Jul 2026 11:45:02 +0800
+Message-ID: <20260712034506.53209-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260712034506.53209-1-pkshih@realtek.com>
 References: <20260712034506.53209-1-pkshih@realtek.com>
@@ -81,11 +81,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-38904-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38905-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -104,197 +104,151 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,realtek.com:from_mime,realtek.com:email,realtek.com:mid,realtek.com:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,realtek.com:from_mime,realtek.com:email,realtek.com:mid,realtek.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 99372743B77
+X-Rspamd-Queue-Id: 26EBF743B8C
 
-Fix 2.4GHz specific L-SIG length TX issue, causing interoperability problem
-with certain APs. Limit the A-MPDU duration to be workaround.
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-For 8922DE, the MAC limit is 164 ticks, and BB limit is 4608 us. The
-conversion is 32.768us / tick. Since smaller limit should be adopted,
-BB limit is filled into newly added field.
+TX shape has a set of parameters inside RFE (RF Front End) parameters.
+It also depends on regulation and even will depend on regulatory 6 GHz
+power type afterwards. Introduce a helper to encapsulate the access to
+TX shape index.
 
-The units of register and CCTL table are tick and us/512 respectively.
-Convert to target unit when filling values.
-
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h     |  1 +
- drivers/net/wireless/realtek/rtw89/mac.c      | 20 +++++++++++++++++--
- drivers/net/wireless/realtek/rtw89/rtw8851b.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852b.c |  1 +
- .../net/wireless/realtek/rtw89/rtw8852bt.c    |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8922a.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8922d.c |  9 +++++++++
- 9 files changed, 34 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.h           | 13 +++++++++++++
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c       |  6 ++----
+ .../net/wireless/realtek/rtw89/rtw8852b_common.c    |  6 ++----
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c       |  6 ++----
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c       |  9 ++-------
+ drivers/net/wireless/realtek/rtw89/rtw8922d.c       |  9 ++-------
+ 6 files changed, 23 insertions(+), 26 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 0f6d4ad66fe2..b7536288c084 100644
+index b7536288c084..1e323007421c 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -5012,6 +5012,7 @@ struct rtw89_chip_info {
- 	const struct wiphy_wowlan_support *wowlan_stub;
- 	const struct rtw89_xtal_info *xtal_info;
- 	unsigned long default_quirks; /* bitmap of rtw89_quirks */
-+	u16 txtime_limit_2ghz;
- };
- 
- struct rtw89_chip_variant {
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index b58d9439ee6d..a63f34440554 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -7047,11 +7047,23 @@ __rtw89_mac_set_tx_time(struct rtw89_dev *rtwdev, struct rtw89_sta_link *rtwsta_
- {
- #define MAC_AX_DFLT_TX_TIME 5280
- 	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
- 	u8 mac_idx = rtwsta_link->rtwvif_link->mac_idx;
- 	u32 max_tx_time = tx_time == 0 ? MAC_AX_DFLT_TX_TIME : tx_time;
-+	struct rtw89_entity_conf conf;
-+	const struct rtw89_chan *chan;
- 	u32 reg;
- 	int ret = 0;
- 
-+	if (chip->txtime_limit_2ghz) {
-+		rtw89_entity_get_conf(rtwdev, &conf);
-+		chan = conf.chans[mac_idx];
-+
-+		if (chan->band_type == RTW89_BAND_2G)
-+			max_tx_time = min_t(u32, max_tx_time,
-+					    chip->txtime_limit_2ghz);
-+	}
-+
- 	if (rtwsta_link->cctl_tx_time) {
- 		rtwsta_link->ampdu_max_time = (max_tx_time - 512) >> 9;
- 		ret = rtw89_chip_h2c_txtime_cmac_tbl(rtwdev, rtwsta_link);
-@@ -7062,9 +7074,13 @@ __rtw89_mac_set_tx_time(struct rtw89_dev *rtwdev, struct rtw89_sta_link *rtwsta_
- 			return ret;
- 		}
- 
-+		if (chip->chip_gen == RTW89_CHIP_AX)
-+			max_tx_time >>= 5;
-+		else
-+			max_tx_time = max_tx_time * 1000 >> 15;
-+
- 		reg = rtw89_mac_reg_by_idx(rtwdev, mac->agg_limit.addr, mac_idx);
--		rtw89_write32_mask(rtwdev, reg, mac->agg_limit.mask,
--				   max_tx_time >> 5);
-+		rtw89_write32_mask(rtwdev, reg, mac->agg_limit.mask, max_tx_time);
- 	}
- 
- 	return ret;
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-index 50480f72c96d..8dd909fc4754 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-@@ -2779,6 +2779,7 @@ const struct rtw89_chip_info rtw8851b_chip_info = {
- #endif
- 	.xtal_info		= &rtw8851b_xtal_info,
- 	.default_quirks		= 0,
-+	.txtime_limit_2ghz	= 0,
- };
- EXPORT_SYMBOL(rtw8851b_chip_info);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index 0c7794742650..66e8035703a6 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -2517,6 +2517,7 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
- #endif
- 	.xtal_info		= &rtw8852a_xtal_info,
- 	.default_quirks		= 0,
-+	.txtime_limit_2ghz	= 0,
- };
- EXPORT_SYMBOL(rtw8852a_chip_info);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-index 5904127cc836..19f35b87d42e 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-@@ -1115,6 +1115,7 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
- #endif
- 	.xtal_info		= NULL,
- 	.default_quirks		= 0,
-+	.txtime_limit_2ghz	= 0,
- };
- EXPORT_SYMBOL(rtw8852b_chip_info);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-index e68f73827fa5..3da95beddc1f 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-@@ -951,6 +951,7 @@ const struct rtw89_chip_info rtw8852bt_chip_info = {
- #endif
- 	.xtal_info		= NULL,
- 	.default_quirks		= 0,
-+	.txtime_limit_2ghz	= 0,
- };
- EXPORT_SYMBOL(rtw8852bt_chip_info);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 968666280c89..54425d707bc6 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -3320,6 +3320,7 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
- #endif
- 	.xtal_info		= NULL,
- 	.default_quirks		= 0,
-+	.txtime_limit_2ghz	= 0,
- };
- EXPORT_SYMBOL(rtw8852c_chip_info);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-index fe87b4929ddc..900aa20cf6ac 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-@@ -3302,6 +3302,7 @@ const struct rtw89_chip_info rtw8922a_chip_info = {
- #endif
- 	.xtal_info		= NULL,
- 	.default_quirks		= 0,
-+	.txtime_limit_2ghz	= 0,
- };
- EXPORT_SYMBOL(rtw8922a_chip_info);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922d.c b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
-index 768434db14c6..27e148b4213a 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922d.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
-@@ -1173,8 +1173,10 @@ static void rtw8922d_set_channel_mac(struct rtw89_dev *rtwdev,
- 	u32 sub_carr = rtw89_mac_reg_by_idx(rtwdev, R_BE_TX_SUB_BAND_VALUE, mac_idx);
- 	u32 chk_rate = rtw89_mac_reg_by_idx(rtwdev, R_BE_TXRATE_CHK, mac_idx);
- 	u32 rf_mod = rtw89_mac_reg_by_idx(rtwdev, R_BE_WMAC_RFMOD, mac_idx);
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
- 	u8 txsb20 = 0, txsb40 = 0, txsb80 = 0;
- 	u8 rf_mod_val, chk_rate_mask, sifs;
-+	u16 tx_time = AMPDU_MAX_TIME_V1;
- 	u32 txsb;
- 	u32 reg;
- 
-@@ -1255,6 +1257,12 @@ static void rtw8922d_set_channel_mac(struct rtw89_dev *rtwdev,
- 
- 	reg = rtw89_mac_reg_by_idx(rtwdev, R_BE_MUEDCA_EN, mac_idx);
- 	rtw89_write32_mask(rtwdev, reg, B_BE_SIFS_MACTXEN_TB_T1_DOT05US_MASK, sifs);
-+
-+	if (chan->band_type == RTW89_BAND_2G && chip->txtime_limit_2ghz)
-+		tx_time = min_t(u32, tx_time, chip->txtime_limit_2ghz * 1000 >> 15);
-+
-+	reg = rtw89_mac_reg_by_idx(rtwdev, R_BE_AMPDU_AGG_LIMIT, mac_idx);
-+	rtw89_write32_mask(rtwdev, reg, B_BE_AMPDU_MAX_TIME_MASK, tx_time);
+@@ -8042,6 +8042,19 @@ static inline u8 rtw89_regd_get(struct rtw89_dev *rtwdev, u8 band)
+ 	return txpwr_regd;
  }
  
- static const u32 rtw8922d_sco_barker_threshold[14] = {
-@@ -3591,6 +3599,7 @@ const struct rtw89_chip_info rtw8922d_chip_info = {
- #endif
- 	.xtal_info		= NULL,
- 	.default_quirks		= BIT(RTW89_QUIRK_THERMAL_PROT_120C),
-+	.txtime_limit_2ghz	= 4608,
- };
- EXPORT_SYMBOL(rtw8922d_chip_info);
++static inline u8 rtw89_get_tx_shape_idx(struct rtw89_dev *rtwdev, u8 band,
++					enum rtw89_rate_section rs)
++{
++	const struct rtw89_rfe_parms *rfe_parms = rtwdev->rfe_parms;
++	const struct rtw89_tx_shape *tx_shape = &rfe_parms->tx_shape;
++	u8 regd = rtw89_regd_get(rtwdev, band);
++
++	if (unlikely(rs >= RTW89_RS_TX_SHAPE_NUM))
++		rs = RTW89_RS_OFDM;
++
++	return (*tx_shape->lmt)[band][rs][regd];
++}
++
+ static inline void rtw89_ctrl_btg_bt_rx(struct rtw89_dev *rtwdev, bool en,
+ 					enum rtw89_phy_idx phy_idx)
+ {
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
+index 8dd909fc4754..38592504b4d0 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
+@@ -1918,11 +1918,9 @@ static void rtw8851b_set_tx_shape(struct rtw89_dev *rtwdev,
+ 				  const struct rtw89_chan *chan,
+ 				  enum rtw89_phy_idx phy_idx)
+ {
+-	const struct rtw89_rfe_parms *rfe_parms = rtwdev->rfe_parms;
+ 	u8 band = chan->band_type;
+-	u8 regd = rtw89_regd_get(rtwdev, band);
+-	u8 tx_shape_cck = (*rfe_parms->tx_shape.lmt)[band][RTW89_RS_CCK][regd];
+-	u8 tx_shape_ofdm = (*rfe_parms->tx_shape.lmt)[band][RTW89_RS_OFDM][regd];
++	u8 tx_shape_cck = rtw89_get_tx_shape_idx(rtwdev, band, RTW89_RS_CCK);
++	u8 tx_shape_ofdm = rtw89_get_tx_shape_idx(rtwdev, band, RTW89_RS_OFDM);
+ 
+ 	if (band == RTW89_BAND_2G)
+ 		rtw8851b_bb_set_tx_shape_dfir(rtwdev, chan, tx_shape_cck, phy_idx);
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_common.c b/drivers/net/wireless/realtek/rtw89/rtw8852b_common.c
+index 7d409a64869f..7c68260dce70 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b_common.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_common.c
+@@ -1321,11 +1321,9 @@ static void rtw8852bx_set_tx_shape(struct rtw89_dev *rtwdev,
+ 				   const struct rtw89_chan *chan,
+ 				   enum rtw89_phy_idx phy_idx)
+ {
+-	const struct rtw89_rfe_parms *rfe_parms = rtwdev->rfe_parms;
+ 	u8 band = chan->band_type;
+-	u8 regd = rtw89_regd_get(rtwdev, band);
+-	u8 tx_shape_cck = (*rfe_parms->tx_shape.lmt)[band][RTW89_RS_CCK][regd];
+-	u8 tx_shape_ofdm = (*rfe_parms->tx_shape.lmt)[band][RTW89_RS_OFDM][regd];
++	u8 tx_shape_cck = rtw89_get_tx_shape_idx(rtwdev, band, RTW89_RS_CCK);
++	u8 tx_shape_ofdm = rtw89_get_tx_shape_idx(rtwdev, band, RTW89_RS_OFDM);
+ 
+ 	if (band == RTW89_BAND_2G)
+ 		rtw8852bx_bb_set_tx_shape_dfir(rtwdev, chan, tx_shape_cck, phy_idx);
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index 54425d707bc6..c7d64fe9c2bc 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -2193,11 +2193,9 @@ static void rtw8852c_set_tx_shape(struct rtw89_dev *rtwdev,
+ 				  const struct rtw89_chan *chan,
+ 				  enum rtw89_phy_idx phy_idx)
+ {
+-	const struct rtw89_rfe_parms *rfe_parms = rtwdev->rfe_parms;
+ 	u8 band = chan->band_type;
+-	u8 regd = rtw89_regd_get(rtwdev, band);
+-	u8 tx_shape_cck = (*rfe_parms->tx_shape.lmt)[band][RTW89_RS_CCK][regd];
+-	u8 tx_shape_ofdm = (*rfe_parms->tx_shape.lmt)[band][RTW89_RS_OFDM][regd];
++	u8 tx_shape_cck = rtw89_get_tx_shape_idx(rtwdev, band, RTW89_RS_CCK);
++	u8 tx_shape_ofdm = rtw89_get_tx_shape_idx(rtwdev, band, RTW89_RS_OFDM);
+ 
+ 	if (band == RTW89_BAND_2G)
+ 		rtw8852c_bb_set_tx_shape_dfir(rtwdev, chan, tx_shape_cck, phy_idx);
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
+index 900aa20cf6ac..86a756f51026 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
+@@ -2502,15 +2502,10 @@ static void rtw8922a_set_tx_shape(struct rtw89_dev *rtwdev,
+ 				  const struct rtw89_chan *chan,
+ 				  enum rtw89_phy_idx phy_idx)
+ {
+-	const struct rtw89_rfe_parms *rfe_parms = rtwdev->rfe_parms;
+-	const struct rtw89_tx_shape *tx_shape = &rfe_parms->tx_shape;
++	u8 band = chan->band_type;
+ 	u8 tx_shape_idx;
+-	u8 band, regd;
+-
+-	band = chan->band_type;
+-	regd = rtw89_regd_get(rtwdev, band);
+-	tx_shape_idx = (*tx_shape->lmt)[band][RTW89_RS_OFDM][regd];
+ 
++	tx_shape_idx = rtw89_get_tx_shape_idx(rtwdev, band, RTW89_RS_OFDM);
+ 	if (tx_shape_idx == 0)
+ 		rtw8922a_bb_tx_triangular(rtwdev, false, phy_idx);
+ 	else
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922d.c b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
+index 27e148b4213a..462165bc2485 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922d.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
+@@ -2854,16 +2854,11 @@ static void rtw8922d_set_tx_shape(struct rtw89_dev *rtwdev,
+ 				  enum rtw89_phy_idx phy_idx)
+ {
+ 	const struct rtw89_bb_wrap_data *d = rtwdev->phy_info.bb_wrap_data;
+-	const struct rtw89_rfe_parms *rfe_parms = rtwdev->rfe_parms;
+-	const struct rtw89_tx_shape *tx_shape = &rfe_parms->tx_shape;
++	u8 band = chan->band_type;
+ 	u8 tx_shape_idx;
+-	u8 band, regd;
+ 	const u16 *th;
+ 
+-	band = chan->band_type;
+-	regd = rtw89_regd_get(rtwdev, band);
+-	tx_shape_idx = (*tx_shape->lmt)[band][RTW89_RS_OFDM][regd];
+-
++	tx_shape_idx = rtw89_get_tx_shape_idx(rtwdev, band, RTW89_RS_OFDM);
+ 	if (tx_shape_idx == 0)
+ 		goto disable;
  
 -- 
 2.25.1
