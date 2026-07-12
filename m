@@ -1,176 +1,191 @@
-Return-Path: <linux-wireless+bounces-38911-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38912-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HzlpLZwWU2rDWwMAu9opvQ
-	(envelope-from <linux-wireless+bounces-38911-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 06:22:52 +0200
+	id 7mS2CGNAU2opZQMAu9opvQ
+	(envelope-from <linux-wireless+bounces-38912-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 09:21:07 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F8C743D31
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 06:22:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D297440C8
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 09:21:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=realtek.com header.s=dkim header.b="gW+c/fD9";
-	dmarc=pass (policy=none) header.from=realtek.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38911-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38911-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="RibjS0/a";
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38912-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38912-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7ABFD301379C
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 04:22:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 81D473011871
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 07:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4088936C0DC;
-	Sun, 12 Jul 2026 04:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC23370D55;
+	Sun, 12 Jul 2026 07:20:42 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011002.outbound.protection.outlook.com [40.93.194.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6444635A3A9;
-	Sun, 12 Jul 2026 04:22:45 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783830168; cv=none; b=p7bkrNr+iKFhvVfSCLlMnMChqXjT6Gv1FiihKtiHOQf10ZIHEIBPZjwjt2+r0HqDkGcDvVX6D31GbA0/2j1FdU1Zwr9kEtv1H05GN97TqxFWDc9cvFaTE2xD2A5F+q2y5MTGd9/GpHkUB0UZWgint+owkuyxrnXnNYF8gBl3f14=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783830168; c=relaxed/simple;
-	bh=UpIY7V0pTTlevXHW+Z12acJHmEW7eFT4SMwJiWy74LQ=;
-	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
-	 MIME-Version:Content-Type; b=W7a4k60gQK9zE/9mpQF8MgZxc8X/TrQwLYFKZGzBPdiVx8VrJTfTiQtxmzWY6a3XbUNUGIdewtXB2k7EF8XsJupID/XtLVurd9FhB9g/uD7AB4dr/lkTG7gQ8yOXyfPiRVEWY50GwvvAUox1FtoBDSbTy+ZpaFefsgPb6ek90RE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=gW+c/fD9; arc=none smtp.client-ip=211.75.126.72
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66C4MRWU0543991, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1783830148; bh=j+4cgdZH3hb6hZ/5BjzpqEpBgMRkvFPmXCi+xOVSD9s=;
-	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
-	 MIME-Version:Content-Type;
-	b=gW+c/fD9Qw1+g5YuZOa7GGnyQ8pq+pEo8bT9+mruWuiRnDWZRuqJ+pfbxbw1NJLMP
-	 MFbN3o3m+QuVjyhBFIIQLoDXLLxWXvl4RDqN6e35eU3QGJdMxJK6G+ylSMwcWyvfRU
-	 JmloqN9vWTqpdarwZ3lDLOrLUYfT/5a3eCocNQxqAYuKFXr3mncy3H2QeEHmvQNdy5
-	 Sc+ENgVxcorKURycXILOkAm7sdgXEQxax97UqB+xAuNDWCBShd0ueNNOgUmPmfrRNu
-	 JgNp0HmS8ZFg+yfHlqvYr3CifJMRzW5+GOFB69gClvY4dDsWTzghlFDFYoe3IU6HOb
-	 QZ5QpgWk9dsRw==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66C4MRWU0543991
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Sun, 12 Jul 2026 12:22:28 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Sun, 12 Jul 2026 12:22:27 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Sun, 12 Jul 2026 12:22:27 +0800
-Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS05.realtek.com.tw
- (10.21.1.55) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
- Transport; Sun, 12 Jul 2026 12:22:22 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Fan Wu <fanwu01@zju.edu.cn>, <Jes.Sorensen@gmail.com>
-CC: <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, Fan Wu
-	<fanwu01@zju.edu.cn>
-Subject: Re: [PATCH] wifi: rtl8xxxu: fix use-after-free from rx_urb_wq on stop
-In-Reply-To: <20260630033117.3377-1-fanwu01@zju.edu.cn>
-References: <20260630033117.3377-1-fanwu01@zju.edu.cn>
-Message-ID: <1c64aa87-6c3e-46aa-bbed-eeb909eab914@RTKEXHMBS05.realtek.com.tw>
-Date: Sun, 12 Jul 2026 12:22:22 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9012B30EF77;
+	Sun, 12 Jul 2026 07:20:41 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783840842; cv=fail; b=SyzlGomoNYxqQm+1OfXOYGIt2/j7D5ayaKNk7wOcQD9aeXDVj4PXxcJ4s6m5p4gnPGcyV3yznHOW+6CvTqe82rhMAfeKPs4l35Dwku9MAJKP63oN1nJx2W40BQ8xvYA23v21euv/Q+X/Or/K0G1vm35wmrWZ3gQoXSDJqaeFFKo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783840842; c=relaxed/simple;
+	bh=Jig94UUIbU2c8uDNuN8z8WbS9KoOtHZ6mquJ4fgjpss=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ekvIfhuTzfB24NVuCT4RFwe0+XrzHig9Kp1qhu74ORXXERF8WC3WfLRZuB9qdCTV/2MOS6iqyqK3y3KcMq1sAKzSooOKMU5TrkHpQ5v9udHJDpgKJhK65f4QyALifGZ5WVILLSZIb2bHlVMfVxOCeCxC91DdKWUC+/MNTD6wOfQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RibjS0/a; arc=fail smtp.client-ip=40.93.194.2
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nEdfPRI77D0H61vAus85oWREzQx586gQccT9FvQYlw6LqWXJDlTiQpXWgwp4/6YeFjuL6k3J5jseVAwHFBBayiVgZjn0Vp7waM7VMDQQ9fFdwYk5cMuj1N1Dy2rsBAHMufp51z+Etz22NjnVJPS8jfKpilsRxcTdX2aW/F4m9krhbSeO5CoxrKsOptrW3UVFBQBB4JAP1Is3qEP0Cr2xDAZGG0SQ7i29lwXwQqZM9NhFRDIaJ9/vGdt4CvByTOVr2n2om3j6vAAZ0O6pkQcFQGq6QIcWn5OyJhI7A+cszW9a9DQlsKI1oYoZxmt7YZj74wFJSXEfsJzcthx29f4zcQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=epmglJ7bAnkCjl9MitqHhswibEtF3s/qH/WIYCFY+bs=;
+ b=LZVS8Slxd8Wz4vOpVLqHJNldtYSZ6Umqilaa9nPShvj7G4QTNoO3GgVRT/qF2iyF2hOzIK3v7SM/AbPaYkreAifDy87QB9Z2xAWvKAkOg6P01kvDdTQ2j66qQ+Ra4/046EA6p/8LN1g+aq/dAA/aB/4BdQvnnHgesQ5tt8kFmDEi29nWb+VIIrE6VL/icfMYvOFYHOmQczldjxw0Tu3WCMYeeQTWlQopiPtb7fzEqRJxgE6lAiqftY8kxXylCqzU7TmgZFSZ4RRkjeoSWvI3EKk6J8IsBPRWMRc5efDERMpxhROGXrkhrJ9asSn/QU0oAIO6mznfPX2QOiZX4bWFOw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=epmglJ7bAnkCjl9MitqHhswibEtF3s/qH/WIYCFY+bs=;
+ b=RibjS0/afop6eWRaAjy8s/xCjmVomMH0L6to6nr4QxVEm3uo0Gr3qmZ1wKlJxcpAJfnsLl6PT8HHCiLqGQ5QtsJLtBBdQLkNshFZtvxW1VhJ5sftN5WONc0/J5yZD8RxoUu2LWOINsk4BvqPHU/aDvOp081Dkam/QfWGf+5xq+nWw5dX+mJ/dFxKmmCcIMVZtYy6jKIKmRzIcVEwLfUhsSAQ1IolA/Gc6t0aXVcNyj9VuTzTo5errCima1ccFRhd5jCdGmweiskd+Zx+K+2KGkl2w45CnGVosdn/rneA4oDiR/FuRz2yzqGBOP35gQ0fFGygC3qIN95eUfdP5jdylg==
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by DS7PR12MB8324.namprd12.prod.outlook.com (2603:10b6:8:ec::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.22; Sun, 12 Jul 2026 07:20:34 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%6]) with mapi id 15.21.0181.019; Sun, 12 Jul 2026
+ 07:20:34 +0000
+Date: Sun, 12 Jul 2026 10:20:25 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Yuyang Huang <yuyanghuang@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	David Ahern <dsahern@kernel.org>,
+	Elad Nachman <enachman@marvell.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org, Kuniyuki Iwashima <kuniyu@google.com>
+Subject: Re: [PATCH net-next v2 3/3] net: ipv4: clear dev->ip_ptr before
+ destroying inetdev
+Message-ID: <20260712072025.GA135396@shredder>
+References: <20260711005405.2861680-1-yuyanghuang@google.com>
+ <20260711005405.2861680-4-yuyanghuang@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260711005405.2861680-4-yuyanghuang@google.com>
+X-ClientProxiedBy: FR4P281CA0003.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:c8::14) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|DS7PR12MB8324:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0851897e-21b8-48f3-075c-08dedfe61038
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|4143699003|56012099006|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	ou8i8LZzLT4D6z1687gBD4yu6Y8TTHAnpY68RXO/shyGuUDGAcP3KL0VRXdXT6bZwFrO/GpzEN+0Yopt4dfsSyalqUcFYvkEvkWiO+6Ru1UvMZQYP5lVunxaERUVEAFoSkwD1af8MWeQQWnJQaujsQa9aEQooWWdjz1a7SYGbnjUwgn8xpsohWFgWK+iD9powoAS0MY7zIz5ifNxpLGWws+avw8EHx5YzBWOOpLDddEx5IqHAywa82B0E6WngQblW7cNZEDzwkpni6okxZyUPiVgkDYesm26mvRstRRXSRwW9SOkp2ecFa9wBexu3FztC21jZqNzcKpPUqBOlSH4cDwEQ2bgrQVZNKyDoVVd/VIqEAiQPVGYodVmljlna0ZNHoT+CqXPkkaANZnT2Dai9zSjbkvPx4SP2NOacFN7IFGe1ongW4EWVPN4kkKBsH4BhCx2K9EFFqRDt7hB4ytE5ifJ2briPO72VBn/2CMOgpYcsyeuHGPE/DyI9m3Z8L0bmOlpMReJ1yHKU+NMM8MPakQYy2OuMBT76Hp9B8s5T09bb+Imlo44W1MtdoPal+ZK9/CGzkAQoQlFz6Bd3IMoCEq2w6Ay8V6q+fRblEYkH/dxec8z3XS/De8wxAO/GQ7x30vyJlHCM8zTeXV9ej+/lyYe767MuGCLw452xD258KM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(4143699003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Nmr8LPdh6eO3OpwWN40VHEehZunjcKLhHXG8CXstardSneldDcHsapj+VQuQ?=
+ =?us-ascii?Q?IUMUe3RUjmpRrefW5ytoeawfhyg8dRo9UfhDV4HkBlx9i5cybVblOp5TNz4Q?=
+ =?us-ascii?Q?Dv679cS1P0Edl4kSXSlil888Lji3GBBiO5A2g5zPJ7PZKzkhpWvWEZidORdH?=
+ =?us-ascii?Q?tSt2wOzaFqI5rvhorSnRWENitqNgCgufY0pBKgUawM1PJNcD6y/ZRbztpcMM?=
+ =?us-ascii?Q?U0ya41iPyypG3hfWj8WdbGMiMBa1azDIOwpmuxQoOw9hxF7jbozkO85S6Jmh?=
+ =?us-ascii?Q?+piYGD1RY84I3OQqiQSlE7KIr6bBmpZAYCe6hq66/NwZKee0rncQKLxSkt8Q?=
+ =?us-ascii?Q?F0VtHQE2aI1bSj7iwXRTu6qUaYxe+cAg6Kmf3MJApyOTwtwKRj5GbFeFDyJE?=
+ =?us-ascii?Q?+X0N1tKJuPjBxbd+SRvSdnkkjR+UhDq1d2OiHjhSQib1CDb8klrbFwo5i0vW?=
+ =?us-ascii?Q?H8802wsZoGX/A3YlxL3iYcVq2srxbOgjvjKD0ReHy0S8Xi9Nam3kSA96lbJK?=
+ =?us-ascii?Q?VGbSYKB7dPvw1FBjYmFF54n/3YNpH+ui2UALUv4uZhTXgNztNPUZeLK2A6fM?=
+ =?us-ascii?Q?LrO3J2YlgKp0ZbweMUCEUmKyKGxSo6RzBjoYGXlKtcFOvJmRiYRxN+1DkJDJ?=
+ =?us-ascii?Q?BeRvrSYBF3UpZZ4Bi7UNz2+hPm9rRh6WFlIQgqhLnL+s7hDI2mKjjP3zmQGA?=
+ =?us-ascii?Q?eApMIr5mJu4u1V1HwUqgA23tD68TPsMILKIRsqZ7laRmQlXHMbn5z7w1PGIR?=
+ =?us-ascii?Q?yp/1DJ7dK9Cn10fWlu+QQqlvebkL320CRA6rgZ9NqqBTkF02WqiD8LjH8/hm?=
+ =?us-ascii?Q?3kruKnGjwBGFV06l4HH5SC9z05PsibC39ggslTthDQJZq+DIQvgGOEPGKKxd?=
+ =?us-ascii?Q?BwmISV/fOwKCX7GlEd+6hSUTCM1H1BI17Uk26GPW1GwC1zRIbty2x32po8kb?=
+ =?us-ascii?Q?SXKRTqjZLoqKXxVyy9P26ioRxeHhlRM84ev5paspp9mx4EOxRVWqWKuVnP/o?=
+ =?us-ascii?Q?pmajsKwLw3pjg6sdr5bz81yJ+9xsLSbdXwIslKgTx38qRmgKsdgzO9/w2jAB?=
+ =?us-ascii?Q?YMRLrZ4/yD9zEeX5iDeiHP4JoHmIak+blYkTFbDWiBs+7ove7rXSGl05r+bk?=
+ =?us-ascii?Q?bDdHlZimQ9SmyitAH5or9bKZdxgdmU3ruOsn4DDizOs2tOr6V1WqB+cXm3Rz?=
+ =?us-ascii?Q?o6eMZJBpor/rm1J9hR6/m46JaotSY7jjclGBdxCEENKcenO1cZXeF6HgFjvo?=
+ =?us-ascii?Q?i72S6t7dnGNycsDJ2YaDQrZz6L8e2bArYVuKc3f/fudXbohIMMb/zwXKUjKw?=
+ =?us-ascii?Q?mCo/9AnmLvjwKo6L61yCyLKi5fMNq4NM52TLU2IS7Vj6PPcimPjLJx0O0yaO?=
+ =?us-ascii?Q?2bNLvo4UI44jGjsaE3bltmbkrWEVZXIZhUrkSW8+UWyXZ4ZpZI1EAEYVk3FK?=
+ =?us-ascii?Q?VhSFg0kD+dg+mOLg9yVHECpLmZmajA+vYKxYfYLsRwEVtVdR83mjICCDbIJO?=
+ =?us-ascii?Q?HxNmKR/cAbrGIxMoEFCYQcxo3FLNWmfvqJqScRqZp0DaI9ymt812l8zYPkwI?=
+ =?us-ascii?Q?ElAPh+A0q7N7BgpovDEoTK4gQK9FgKnV380Ea0AhErw30dPgvxQqRG1/d0us?=
+ =?us-ascii?Q?FalcnB+ooM0UMCJ7cB4HsA30vsQfdPKUPn2MLQ3Ni13KmPHYAj+BwegDs2Qg?=
+ =?us-ascii?Q?OQJWwjSumlBfi5Njhr8L728Kjc/LgwouC43SG9tqlvdE0467?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0851897e-21b8-48f3-075c-08dedfe61038
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2026 07:20:34.1903
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xAyfocI+qI1rSc9vupWq+DpnxnFudlU9Ocego7gw3PwTFSRTnmTK0okUKbmnrMX4HBsqtyG7aaxgmkIlxkEW7g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8324
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[nvidia.com:D:+];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-38911-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:fanwu01@zju.edu.cn,m:Jes.Sorensen@gmail.com,m:kvalo@kernel.org,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:JesSorensen@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[zju.edu.cn,gmail.com];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38912-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:yuyanghuang@google.com,m:davem@davemloft.net,m:andrew+netdev@lunn.ch,m:dsahern@kernel.org,m:enachman@marvell.com,m:edumazet@google.com,m:kuba@kernel.org,m:johannes@sipsolutions.net,m:pabeni@redhat.com,m:horms@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:netdev@vger.kernel.org,m:kuniyu@google.com,m:andrew@lunn.ch,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FORGED_SENDER(0.00)[idosch@nvidia.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,realtek.com:from_mime,realtek.com:dkim,zju.edu.cn:email,RTKEXHMBS05.realtek.com.tw:mid];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[idosch@nvidia.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	TAGGED_RCPT(0.00)[linux-wireless,netdev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:from_mime,nvidia.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,shredder:mid,Nvidia.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F0F8C743D31
+X-Rspamd-Queue-Id: 78D297440C8
 
-Fan Wu <fanwu01@zju.edu.cn> wrote:
+On Sat, Jul 11, 2026 at 09:54:04AM +0900, Yuyang Huang wrote:
+> To prevent RCU readers from accessing a partially destroyed in_device,
+> clear dev->ip_ptr early in inetdev_destroy() before freeing the
+> multicast list and individual IP addresses. This aligns the IPv4 teardown
+> sequence with the IPv6 implementation.
+> 
+> Cc: Ido Schimmel <idosch@nvidia.com>
+> Cc: Kuniyuki Iwashima <kuniyu@google.com>
+> Signed-off-by: Yuyang Huang <yuyanghuang@google.com>
 
-> rtl8xxxu arms rx_urb_wq from the RX completion path:
-> rtl8xxxu_rx_complete() hands the URB to rtl8xxxu_queue_rx_urb(), which
-> queues it on rx_urb_pending_list and, once the list grows past
-> RTL8XXXU_RX_URB_PENDING_WATER, schedules rx_urb_wq.  The worker
-> rtl8xxxu_rx_urb_work() drains rx_urb_pending_list, recovers priv through
-> container_of, and resubmits each URB through rtl8xxxu_submit_rx_urb(),
-> which anchors it on rx_anchor and dereferences priv->udev.
-> 
-> rtl8xxxu_stop() cancels the sibling work items (c2hcmd_work, ra_watchdog,
-> update_beacon_work) but never cancels rx_urb_wq, so a worker armed during
-> the last burst of RX traffic can run rtl8xxxu_rx_urb_work() after
-> rtl8xxxu_disconnect() has called ieee80211_free_hw(), which frees priv,
-> producing a use-after-free.  The window opens under active RX traffic
-> (pending count above the watermark) followed by a disconnect.
-> 
-> There are two teardown races to close:
-> 
->   * rtl8xxxu_queue_rx_urb() decided whether to enqueue under rx_urb_lock
->     but called schedule_work() after dropping the lock.  A completion
->     that observed shutdown == false and released the lock could then call
->     schedule_work() after rtl8xxxu_stop() had set shutdown and
->     cancel_work_sync() had already returned, arming the worker to run
->     after the teardown.  Move schedule_work() under the same !shutdown
->     branch so the arming decision is atomic with the shutdown check.
-> 
->   * rtl8xxxu_rx_urb_work() anchors every URB it drained back onto
->     rx_anchor through rtl8xxxu_submit_rx_urb().  A worker still running
->     when usb_kill_anchored_urbs(&priv->rx_anchor) returned would submit a
->     URB that escaped the kill.  In rtl8xxxu_stop(), call
->     cancel_work_sync(&priv->rx_urb_wq) before the kill so the worker is
->     drained first.
-> 
-> After priv->shutdown is set under rx_urb_lock, completions can no longer
-> queue rx_urb_wq. cancel_work_sync() then drains the last queued or running
-> worker, and the following usb_kill_anchored_urbs() kills the URBs it may
-> have submitted.
-> 
-> rtl8xxxu_disconnect() is covered because ieee80211_unregister_hw()
-> guarantees .stop() runs for a live interface before ieee80211_free_hw()
-> frees priv.  The probe error path needs no cancel: rx_urb_wq is
-> INIT_WORK()'d there but cannot have been scheduled, since no URB is
-> submitted before ieee80211_register_hw() succeeds.
-> 
-> This bug was found by static analysis.
-> 
-> Fixes: 26f1fad29ad9 ("New driver: rtl8xxxu (mac80211)")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
-
-1 patch(es) applied to rtw-next branch of rtw.git, thanks.
-
-6c080026ecc1 wifi: rtl8xxxu: fix use-after-free from rx_urb_wq on stop
-
----
-https://github.com/pkshih/rtw.git
-
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
 
