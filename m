@@ -1,68 +1,68 @@
-Return-Path: <linux-wireless+bounces-38903-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38904-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XQo6JDEOU2qGWQMAu9opvQ
-	(envelope-from <linux-wireless+bounces-38903-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 05:46:57 +0200
+	id zUlWKxUOU2qCWQMAu9opvQ
+	(envelope-from <linux-wireless+bounces-38904-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 05:46:29 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CFDE743B87
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 05:46:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99372743B77
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 05:46:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=realtek.com header.s=dkim header.b=Vvs+oGHK;
+	dkim=pass header.d=realtek.com header.s=dkim header.b=Dw3qJO57;
 	dmarc=pass (policy=none) header.from=realtek.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38903-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38903-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38904-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38904-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C88D301F4A5
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 03:46:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 91B7A3001FA7
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 03:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F7E274670;
-	Sun, 12 Jul 2026 03:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFE42BDC26;
+	Sun, 12 Jul 2026 03:46:24 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC5F846A
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 03:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3A9846A
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 03:46:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783827979; cv=none; b=gMsw6Z0MkEO6I9+d9cfxqEQ/cW2vQFksRxzT/dIFmKbEI1pG4029jyQr7RPU+y3HoPXtRIGZKOLbTzOaaIhcYIkJ/uBD+g8O4i/9UrDJMxdrfd3x55EDsr2++RHtSdGuTjMTCWW2MeLIFBUKSl/wL2XhYPdgC3u9aCgMp6nqCVA=
+	t=1783827984; cv=none; b=ub2EYOuO/YCzxTm6xLdDO7nsJZwQY0+LPvp9Ia5wqe+71h6sIkfzk1bmPbrJw/UQrPmvGEOgYuvr4IRo0zlBuxkZ7eGhG1GK/WqrfZUXm69PRMBGauaeyPAbCi2no26SmN1Aru6+l7TsatmvDzwHdsrMaL/hennpeQt9hqFbgwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783827979; c=relaxed/simple;
-	bh=rB990GhsFhdaSQlZ5yvb7wGApFHnhsGYmrQ75HRWa5g=;
+	s=arc-20240116; t=1783827984; c=relaxed/simple;
+	bh=OmNuCC3kx5urapB4Rkx6j9WFJKfA6Sa0/IVQFvrjgIs=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PjhTkSWjw15C74+DqLvdI6gFx7AQVM9541RFLFbqAncFvf79D4XQdi8myn4vgWk4qzSmaRZxFwr70HiIVXarKn4RXqXcj3cskiMNh7HyRtBOFm1FQq9KUBUAChZWcwWYiEyUVR8ZQebcv+n7edfsl0Gv39XYLLULPw7KTwhGuNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Vvs+oGHK; arc=none smtp.client-ip=211.75.126.72
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66C3kF1H1535607, This message is accepted by code: ctloc85258
+	 MIME-Version:Content-Type; b=EjLIYMUzNlGzgnR+E+vwFopDbL8XNBNRDg/HY3IWU/Gf653Lfdyelq/WH4P/kh9ZbUPtFUhGsNGv4Ia92qiavnfHnP39rPht4USEtGnJ91JV/0fSM+ETm90arw6EJ9fRyxpooPyiyppLcNb7Y26Atm70nAt18k40/KMWeq148qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Dw3qJO57; arc=none smtp.client-ip=211.75.126.72
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66C3kK5F1535622, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1783827975; bh=rBkQrEUu2N/uI/jMe5Y3CW/4DxfNsDCwRyBf60l7ROM=;
+	t=1783827980; bh=Bl+9TCjIutyMkT136bP3/VSyzT0XPnH5izuJCh/GrfI=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=Vvs+oGHKMm3X+0gETrcJYTkErjTfE+dvmbt2klKl6evajD4i5dE3loiPQZ6R2Ap5d
-	 EtCvyaNBCB1BdyTVT8B0VEye4EPxZfZJkf6e8qV5sJd8BD2lGhtJnXjoZp2PoctwLz
-	 X3X3N/2MG9ECe8lEWqtv4m6Y17G4duSBNu2cIgnB0gf8BQZUAJ5fuTlOky2MET93od
-	 qWfsvOyWGBVVp/Ptkh3SQHMhKZ3qjoe4vqE+v7Vt1cR0TmwDD/hXNvoBTWcG6XTd+K
-	 Z3uJh6ZZuR4xWZ7COPBmesQcJVT0oHvo8HJvuKpypndsrID6sT24ZSf3zCkc3H6nlQ
-	 FBfKmxE+Gh4CA==
+	b=Dw3qJO57GGDZArWymZ8SzDB7yLggeF+sjj87NgCq5hvCUoSodqPIm5UVeLZSQTkO+
+	 HUM6RcE8KY70QtJcVN2HgwM0JFibA51ZzVrECbf6NXPqLcFS+nWbTWqX5bTlYuprdV
+	 Ji5i83wSpntqwRjcyLo2Yr9fO2NYKiC+uodjuZM4Jl9VkMxeSmjwC/cR+Cm36zcqrd
+	 R5+oGcHQa2GqErlbfO5EWNKH8aELN7bL2/faHscCDoEyhpicCMpDfDdleamA5d4bX3
+	 N9ZG+YOzmjnxykmbbgrQa9y8u5MfqED6IetnUQJHv+0+KMFxyDN2I1D5jay2qFo7E2
+	 J/Sup5yw1R5dg==
 Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66C3kF1H1535607
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66C3kK5F1535622
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL)
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 11:46:15 +0800
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 11:46:20 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
  RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Sun, 12 Jul 2026 11:46:15 +0800
+ 15.2.2562.17; Sun, 12 Jul 2026 11:46:20 +0800
 Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS06.realtek.com.tw
  (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
- Transport; Sun, 12 Jul 2026 11:46:15 +0800
+ Transport; Sun, 12 Jul 2026 11:46:20 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <echuang@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 2/8] wifi: rtw89: mac: abstract register definition of firmware boot debug
-Date: Sun, 12 Jul 2026 11:45:00 +0800
-Message-ID: <20260712034506.53209-3-pkshih@realtek.com>
+Subject: [PATCH rtw-next 3/8] wifi: rtw89: 8922d: add TX time limit for 2GHz band
+Date: Sun, 12 Jul 2026 11:45:01 +0800
+Message-ID: <20260712034506.53209-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260712034506.53209-1-pkshih@realtek.com>
 References: <20260712034506.53209-1-pkshih@realtek.com>
@@ -81,11 +81,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-38903-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38904-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -104,79 +104,198 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,realtek.com:from_mime,realtek.com:email,realtek.com:mid,realtek.com:dkim]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,realtek.com:from_mime,realtek.com:email,realtek.com:mid,realtek.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0CFDE743B87
+X-Rspamd-Queue-Id: 99372743B77
 
-The registers of firmware boot debug are different between WiFi 6 and 7
-chips. Add field to abstract it accordingly.
+Fix 2.4GHz specific L-SIG length TX issue, causing interoperability problem
+with certain APs. Limit the A-MPDU duration to be workaround.
+
+For 8922DE, the MAC limit is 164 ticks, and BB limit is 4608 us. The
+conversion is 32.768us / tick. Since smaller limit should be adopted,
+BB limit is filled into newly added field.
+
+The units of register and CCTL table are tick and us/512 respectively.
+Convert to target unit when filling values.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c     | 5 +++--
- drivers/net/wireless/realtek/rtw89/mac.c    | 1 +
- drivers/net/wireless/realtek/rtw89/mac.h    | 1 +
- drivers/net/wireless/realtek/rtw89/mac_be.c | 1 +
- 4 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.h     |  1 +
+ drivers/net/wireless/realtek/rtw89/mac.c      | 20 +++++++++++++++++--
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |  1 +
+ .../net/wireless/realtek/rtw89/rtw8852bt.c    |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8922d.c |  9 +++++++++
+ 9 files changed, 34 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 0e7168605850..01770a6a1f6f 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -1939,13 +1939,14 @@ static void rtw89_fw_prog_cnt_dump(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 0f6d4ad66fe2..b7536288c084 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -5012,6 +5012,7 @@ struct rtw89_chip_info {
+ 	const struct wiphy_wowlan_support *wowlan_stub;
+ 	const struct rtw89_xtal_info *xtal_info;
+ 	unsigned long default_quirks; /* bitmap of rtw89_quirks */
++	u16 txtime_limit_2ghz;
+ };
  
- static void rtw89_fw_dl_fail_dump(struct rtw89_dev *rtwdev)
- {
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
- 	u32 val32;
- 
- 	val32 = rtw89_read32(rtwdev, R_AX_WCPU_FW_CTRL);
- 	rtw89_err(rtwdev, "[ERR]fwdl 0x1E0 = 0x%x\n", val32);
- 
--	val32 = rtw89_read32(rtwdev, R_AX_BOOT_DBG);
--	rtw89_err(rtwdev, "[ERR]fwdl 0x83F0 = 0x%x\n", val32);
-+	val32 = rtw89_read32(rtwdev, mac->boot_dbg);
-+	rtw89_err(rtwdev, "[ERR]fwdl 0x%x = 0x%x\n", mac->boot_dbg, val32);
- 
- 	rtw89_fw_prog_cnt_dump(rtwdev);
- }
+ struct rtw89_chip_variant {
 diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 6e3da5e4a1b3..b58d9439ee6d 100644
+index b58d9439ee6d..a63f34440554 100644
 --- a/drivers/net/wireless/realtek/rtw89/mac.c
 +++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -7442,6 +7442,7 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_ax = {
- 	.agg_len_ht = R_AX_AGG_LEN_HT_0,
- 	.ps_status = R_AX_PPWRBIT_SETTING,
- 	.mu_gid = &rtw89_mac_mu_gid_addr_ax,
-+	.boot_dbg = R_AX_BOOT_DBG,
+@@ -7047,11 +7047,23 @@ __rtw89_mac_set_tx_time(struct rtw89_dev *rtwdev, struct rtw89_sta_link *rtwsta_
+ {
+ #define MAC_AX_DFLT_TX_TIME 5280
+ 	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
++	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	u8 mac_idx = rtwsta_link->rtwvif_link->mac_idx;
+ 	u32 max_tx_time = tx_time == 0 ? MAC_AX_DFLT_TX_TIME : tx_time;
++	struct rtw89_entity_conf conf;
++	const struct rtw89_chan *chan;
+ 	u32 reg;
+ 	int ret = 0;
  
- 	.muedca_ctrl = {
- 		.addr = R_AX_MUEDCA_EN,
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index a5f1694af91a..c05f5ee0d2fd 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -1067,6 +1067,7 @@ struct rtw89_mac_gen_def {
- 	u32 agg_len_ht;
- 	u32 ps_status;
- 	const struct rtw89_mac_mu_gid_addr *mu_gid;
-+	u32 boot_dbg;
++	if (chip->txtime_limit_2ghz) {
++		rtw89_entity_get_conf(rtwdev, &conf);
++		chan = conf.chans[mac_idx];
++
++		if (chan->band_type == RTW89_BAND_2G)
++			max_tx_time = min_t(u32, max_tx_time,
++					    chip->txtime_limit_2ghz);
++	}
++
+ 	if (rtwsta_link->cctl_tx_time) {
+ 		rtwsta_link->ampdu_max_time = (max_tx_time - 512) >> 9;
+ 		ret = rtw89_chip_h2c_txtime_cmac_tbl(rtwdev, rtwsta_link);
+@@ -7062,9 +7074,13 @@ __rtw89_mac_set_tx_time(struct rtw89_dev *rtwdev, struct rtw89_sta_link *rtwsta_
+ 			return ret;
+ 		}
  
- 	struct rtw89_reg_def muedca_ctrl;
- 	struct rtw89_reg_def bfee_ctrl;
-diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
-index 4bdf20b7ba6d..46aea7f6a4a1 100644
---- a/drivers/net/wireless/realtek/rtw89/mac_be.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
-@@ -3287,6 +3287,7 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_be = {
- 	.agg_len_ht = R_BE_AGG_LEN_HT_0,
- 	.ps_status = R_BE_WMTX_POWER_BE_BIT_CTL,
- 	.mu_gid = &rtw89_mac_mu_gid_addr_be,
-+	.boot_dbg = R_BE_BOOT_DBG,
++		if (chip->chip_gen == RTW89_CHIP_AX)
++			max_tx_time >>= 5;
++		else
++			max_tx_time = max_tx_time * 1000 >> 15;
++
+ 		reg = rtw89_mac_reg_by_idx(rtwdev, mac->agg_limit.addr, mac_idx);
+-		rtw89_write32_mask(rtwdev, reg, mac->agg_limit.mask,
+-				   max_tx_time >> 5);
++		rtw89_write32_mask(rtwdev, reg, mac->agg_limit.mask, max_tx_time);
+ 	}
  
- 	.muedca_ctrl = {
- 		.addr = R_BE_MUEDCA_EN,
+ 	return ret;
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
+index 50480f72c96d..8dd909fc4754 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
+@@ -2779,6 +2779,7 @@ const struct rtw89_chip_info rtw8851b_chip_info = {
+ #endif
+ 	.xtal_info		= &rtw8851b_xtal_info,
+ 	.default_quirks		= 0,
++	.txtime_limit_2ghz	= 0,
+ };
+ EXPORT_SYMBOL(rtw8851b_chip_info);
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+index 0c7794742650..66e8035703a6 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+@@ -2517,6 +2517,7 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
+ #endif
+ 	.xtal_info		= &rtw8852a_xtal_info,
+ 	.default_quirks		= 0,
++	.txtime_limit_2ghz	= 0,
+ };
+ EXPORT_SYMBOL(rtw8852a_chip_info);
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+index 5904127cc836..19f35b87d42e 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+@@ -1115,6 +1115,7 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
+ #endif
+ 	.xtal_info		= NULL,
+ 	.default_quirks		= 0,
++	.txtime_limit_2ghz	= 0,
+ };
+ EXPORT_SYMBOL(rtw8852b_chip_info);
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
+index e68f73827fa5..3da95beddc1f 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
+@@ -951,6 +951,7 @@ const struct rtw89_chip_info rtw8852bt_chip_info = {
+ #endif
+ 	.xtal_info		= NULL,
+ 	.default_quirks		= 0,
++	.txtime_limit_2ghz	= 0,
+ };
+ EXPORT_SYMBOL(rtw8852bt_chip_info);
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index 968666280c89..54425d707bc6 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -3320,6 +3320,7 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
+ #endif
+ 	.xtal_info		= NULL,
+ 	.default_quirks		= 0,
++	.txtime_limit_2ghz	= 0,
+ };
+ EXPORT_SYMBOL(rtw8852c_chip_info);
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
+index fe87b4929ddc..900aa20cf6ac 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
+@@ -3302,6 +3302,7 @@ const struct rtw89_chip_info rtw8922a_chip_info = {
+ #endif
+ 	.xtal_info		= NULL,
+ 	.default_quirks		= 0,
++	.txtime_limit_2ghz	= 0,
+ };
+ EXPORT_SYMBOL(rtw8922a_chip_info);
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922d.c b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
+index 768434db14c6..27e148b4213a 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922d.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
+@@ -1173,8 +1173,10 @@ static void rtw8922d_set_channel_mac(struct rtw89_dev *rtwdev,
+ 	u32 sub_carr = rtw89_mac_reg_by_idx(rtwdev, R_BE_TX_SUB_BAND_VALUE, mac_idx);
+ 	u32 chk_rate = rtw89_mac_reg_by_idx(rtwdev, R_BE_TXRATE_CHK, mac_idx);
+ 	u32 rf_mod = rtw89_mac_reg_by_idx(rtwdev, R_BE_WMAC_RFMOD, mac_idx);
++	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	u8 txsb20 = 0, txsb40 = 0, txsb80 = 0;
+ 	u8 rf_mod_val, chk_rate_mask, sifs;
++	u16 tx_time = AMPDU_MAX_TIME_V1;
+ 	u32 txsb;
+ 	u32 reg;
+ 
+@@ -1255,6 +1257,12 @@ static void rtw8922d_set_channel_mac(struct rtw89_dev *rtwdev,
+ 
+ 	reg = rtw89_mac_reg_by_idx(rtwdev, R_BE_MUEDCA_EN, mac_idx);
+ 	rtw89_write32_mask(rtwdev, reg, B_BE_SIFS_MACTXEN_TB_T1_DOT05US_MASK, sifs);
++
++	if (chan->band_type == RTW89_BAND_2G && chip->txtime_limit_2ghz)
++		tx_time = min_t(u32, tx_time, chip->txtime_limit_2ghz * 1000 >> 15);
++
++	reg = rtw89_mac_reg_by_idx(rtwdev, R_BE_AMPDU_AGG_LIMIT, mac_idx);
++	rtw89_write32_mask(rtwdev, reg, B_BE_AMPDU_MAX_TIME_MASK, tx_time);
+ }
+ 
+ static const u32 rtw8922d_sco_barker_threshold[14] = {
+@@ -3591,6 +3599,7 @@ const struct rtw89_chip_info rtw8922d_chip_info = {
+ #endif
+ 	.xtal_info		= NULL,
+ 	.default_quirks		= BIT(RTW89_QUIRK_THERMAL_PROT_120C),
++	.txtime_limit_2ghz	= 4608,
+ };
+ EXPORT_SYMBOL(rtw8922d_chip_info);
+ 
 -- 
 2.25.1
 
