@@ -1,68 +1,68 @@
-Return-Path: <linux-wireless+bounces-38907-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38908-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id P/tZESIOU2qDWQMAu9opvQ
-	(envelope-from <linux-wireless+bounces-38907-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 05:46:42 +0200
+	id Uh6KKScOU2qEWQMAu9opvQ
+	(envelope-from <linux-wireless+bounces-38908-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 05:46:47 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A20F4743B7C
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 05:46:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4943A743B7F
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 05:46:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=realtek.com header.s=dkim header.b="l2Aog/Al";
+	dkim=pass header.d=realtek.com header.s=dkim header.b="S2q/TPjy";
 	dmarc=pass (policy=none) header.from=realtek.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38907-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38907-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38908-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38908-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 910D73015890
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 03:46:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7FE0F3006691
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 03:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1EF274670;
-	Sun, 12 Jul 2026 03:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 521102AD37;
+	Sun, 12 Jul 2026 03:46:45 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48874846A
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 03:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E72846A
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 03:46:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783827999; cv=none; b=ZbFcwHBYgVEJBXM9OD5xpKefvFtwc0mnlCUkaAcUig2RqvtlOZIEyqh/YYOBjLl6AB8o79TMyiQjtdvvf5TrVeXDsK9tAwLx2YkuIlD2pzJyg+3W7xgKiHv7FmTazncBPP8KI3TVVwtvn+97XWE2u8VQoNrgQMU0medhxa2QutA=
+	t=1783828005; cv=none; b=qSlw64Qzih5yHwoAadHbtp8SrdfdR+V1HBqNsViVMYc7VcUaqnuGptXyTM03yy+5m/nNbVmJnwin+gVYQKLuzXFur1SPL/4pISgfUM+eHxv+IuBrMi/O8mXAni6lbqgDkaM6X+jAwartC5mOywd28BiGHFlRZChXat3YASgyrm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783827999; c=relaxed/simple;
-	bh=k1mHSkfQR/t9vCWA+h2Hfa717VE5tZJUWoHxAor+W7c=;
+	s=arc-20240116; t=1783828005; c=relaxed/simple;
+	bh=lWdMsGIMMlbToZsMzFKVEAONmUpeAAqQIvt8EhSUxZI=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WEdrwPJtXzvhLU6/gTObhxw9sUmxR5bz2qu6OkYm5oFRq2vpDpdtqoZllVIbtmwJO+v4ZjIWbWJu1rAwP7+S9TwRunwFJU2W/LDy+8XjtKijp1NnBvPBCnPCmzI+D/3zzDPYXS1UghXEaL9TNfen7UVJ25Yet2j6SBjoMOhwzBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=l2Aog/Al; arc=none smtp.client-ip=211.75.126.72
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66C3kacT7535684, This message is accepted by code: ctloc85258
+	 MIME-Version:Content-Type; b=Xb+n71FOLkikS4lj1AfCLqyvWs+SMhZg/iSTzyakfzcmhHKM4XTL2Gln3Rn1GCdZGE275TQXzOQD398JL90uUxOMo82Qt8dRks0QKJKw1EXBQ17kbEU2UKlxVOLAEF0tYhrL9WZRuXNUhV+iZoA15MAJtt1d4tiOzDlRqNVPiAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=S2q/TPjy; arc=none smtp.client-ip=211.75.126.72
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66C3kfodF535699, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1783827996; bh=4sSonfz5SgKhy4zxkkuBfTrWz5YBaFbvT0hFxOvJhMc=;
+	t=1783828001; bh=w9fL0gWzlWlrLJVFp5ww0YMM9Hnkdt99qar+s1CE3Fw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=l2Aog/Aldvws7MqO0AIjhd7CD4ppLaRIvx5D3q/JIW/sISOlY+BKo5u5A6hc0xb94
-	 X8D8riMeKVTZNi0ib5nJmWNFnotJQvVvC1u1XtilzJtyl1F3XAT2FYSnqifHWOUIyg
-	 Hpfz0K6uV61P/1GCML3GEjj5uho+9OWL6pLbugHCmt0l+9eIXyqnkpyJg3QOFc1ia4
-	 zGQw6TxEh/ZQWZvrj64zwp/bGXCbMV+mtJfTahT7PTfDB8TlL2tGf/3FwhQM49nGpu
-	 ShRmt/7T13XgDdW20QX2FqjneklxbEnf8pum0RA3FV34Lu/TaHC2DTBhgWu6BotBym
-	 kBLzgjE4kt0yg==
+	b=S2q/TPjyeE4d+zMERhpgKSwEDaSmocAOn7AIXewTWIyz7zLXssodNmkgBWrYUb+lo
+	 /bEy6dxhv0E45rpgCdIm3apDGrknLonWQsj1HCXFqUuHV7tcBFh28RD+kZu4hbAwhu
+	 Vo8TR9zCeTPRuXoZ8tFjZ1NWX5mASqCcV+ePK6E2R/GZDDg/DS/FHZTY+dbZWNX2QH
+	 PxqFurAljl2AFSS9IffpbcaNlMCOzSy1QGdTdtaCjcORBlxlLYpF5rAnJUak6r0uwK
+	 U66IcJPwBPphAl3GqPLHwfmdamq7qsUbYeG48FtZD/rsCPcFPg25tiHTHnYs9mUcH+
+	 Fd/VFYzPUFwRA==
 Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66C3kacT7535684
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66C3kfodF535699
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL)
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 11:46:36 +0800
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 11:46:41 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
  RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Sun, 12 Jul 2026 11:46:36 +0800
+ 15.2.2562.17; Sun, 12 Jul 2026 11:46:41 +0800
 Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS06.realtek.com.tw
  (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
- Transport; Sun, 12 Jul 2026 11:46:36 +0800
+ Transport; Sun, 12 Jul 2026 11:46:41 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <echuang@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 6/8] wifi: rtw89: extend tx shape format for regulatory 6 GHz power type
-Date: Sun, 12 Jul 2026 11:45:04 +0800
-Message-ID: <20260712034506.53209-7-pkshih@realtek.com>
+Subject: [PATCH rtw-next 7/8] wifi: rtw89: fw: do bb_preinit before downloading firmware
+Date: Sun, 12 Jul 2026 11:45:05 +0800
+Message-ID: <20260712034506.53209-8-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260712034506.53209-1-pkshih@realtek.com>
 References: <20260712034506.53209-1-pkshih@realtek.com>
@@ -81,11 +81,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-38907-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38908-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -104,151 +104,115 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:from_mime,realtek.com:email,realtek.com:mid,realtek.com:dkim,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,realtek.com:from_mime,realtek.com:email,realtek.com:mid,realtek.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A20F4743B7C
+X-Rspamd-Queue-Id: 4943A743B7F
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+The firmware access BB registers while initialization, so driver should
+do bb_preinit before downloading firmware. Otherwise, it might get BB IO
+stuck and throw error.
 
-Even under the same regulation, TX shape may need different settings for
-different 6 GHz power types. So, add one more dimension for that. Because
-TX shape parameters are not quite large, the 2/5/6 GHz sections are not
-divided into different structures. So, the 2/5 GHz sections will also get
-the new dimension. To 2/5 GHz sections, fill the TX shape settings with
-RTW89_REG_6GHZ_POWER_DFLT (0) field.
+  rtw89_8922de 0000:04:00.0: loaded firmware rtw89/rtw8922d_fw.bin
+  rtw89_8922de 0000:04:00.0: Firmware version 0.35.111.7 (51c56e7b), cmd version 1, type 14
+  rtw89_8922de 0000:04:00.0: Firmware version 0.35.111.7 (51c56e7b), cmd version 1, type 15
+  rtw89_8922de 0000:04:00.0: fw unexpected status 6
+  rtw89_8922de 0000:04:00.0: download firmware fail
+  rtw89_8922de 0000:04:00.0: [ERR]fwdl 0x1E0 = 0x8000012
+  rtw89_8922de 0000:04:00.0: [ERR]fwdl 0x78F0 = 0x290900
+  rtw89_8922de 0000:04:00.0: [ERR]fw PC = 0x201445f2
+  rtw89_8922de 0000:04:00.0: [ERR]fw PC = 0x201445f2
+  rtw89_8922de 0000:04:00.0: [ERR]fw PC = 0x201445f2
+  rtw89_8922de 0000:04:00.0: [ERR]fw PC = 0x201445f2
+  rtw89_8922de 0000:04:00.0: [ERR]fw PC = 0x201445f2
+  rtw89_8922de 0000:04:00.0: [ERR]fw PC = 0x201445f2
+  rtw89_8922de 0000:04:00.0: [ERR]fw PC = 0x201445f2
+  rtw89_8922de 0000:04:00.0: [ERR]fw PC = 0x201445f2
+  rtw89_8922de 0000:04:00.0: [ERR]fw PC = 0x201445f2
+  rtw89_8922de 0000:04:00.0: [ERR]fw PC = 0x201445f2
+  rtw89_8922de 0000:04:00.0: [ERR]fw PC = 0x201445f2
+  rtw89_8922de 0000:04:00.0: [ERR]fw PC = 0x201445f2
+  rtw89_8922de 0000:04:00.0: [ERR]fw PC = 0x201445f2
+  rtw89_8922de 0000:04:00.0: [ERR]fw PC = 0x201445f2
+  rtw89_8922de 0000:04:00.0: [ERR]fw PC = 0x201445f2
+  rtw89_8922de 0000:04:00.0: [ERR]H2C path ready
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h | 17 ++++++++++++-----
- drivers/net/wireless/realtek/rtw89/fw.c   | 16 ++++++++++++++--
- drivers/net/wireless/realtek/rtw89/fw.h   |  2 ++
- 3 files changed, 28 insertions(+), 7 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c | 12 +++++++++++-
+ drivers/net/wireless/realtek/rtw89/mac.c  |  7 ++++---
+ drivers/net/wireless/realtek/rtw89/mac.h  |  3 ++-
+ 3 files changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 94ba7e368880..4ba6452a7123 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -4516,8 +4516,9 @@ struct rtw89_txpwr_rule_6ghz {
- };
- 
- struct rtw89_tx_shape {
--	const u8 (*lmt)[RTW89_BAND_NUM][RTW89_RS_TX_SHAPE_NUM][RTW89_REGD_NUM];
--	const u8 (*lmt_ru)[RTW89_BAND_NUM][RTW89_REGD_NUM];
-+	const u8 (*lmt)[RTW89_BAND_NUM][RTW89_RS_TX_SHAPE_NUM][RTW89_REGD_NUM]
-+		       [NUM_OF_RTW89_REG_6GHZ_POWER];
-+	const u8 (*lmt_ru)[RTW89_BAND_NUM][RTW89_REGD_NUM][NUM_OF_RTW89_REG_6GHZ_POWER];
- 
- 	const u8 (*lmt_v0)[RTW89_BAND_NUM][RTW89_RS_TX_SHAPE_NUM][RTW89_REGD_NUM];
- 	const u8 (*lmt_ru_v0)[RTW89_BAND_NUM][RTW89_REGD_NUM];
-@@ -4614,12 +4615,13 @@ struct rtw89_txpwr_lmt_ru_6ghz_data {
- 
- struct rtw89_tx_shape_lmt_data {
- 	struct rtw89_txpwr_conf conf;
--	u8 v[RTW89_BAND_NUM][RTW89_RS_TX_SHAPE_NUM][RTW89_REGD_NUM];
-+	u8 v[RTW89_BAND_NUM][RTW89_RS_TX_SHAPE_NUM][RTW89_REGD_NUM]
-+	    [NUM_OF_RTW89_REG_6GHZ_POWER];
- };
- 
- struct rtw89_tx_shape_lmt_ru_data {
- 	struct rtw89_txpwr_conf conf;
--	u8 v[RTW89_BAND_NUM][RTW89_REGD_NUM];
-+	u8 v[RTW89_BAND_NUM][RTW89_REGD_NUM][NUM_OF_RTW89_REG_6GHZ_POWER];
- };
- 
- struct rtw89_rfe_data {
-@@ -8048,8 +8050,10 @@ static inline u8 rtw89_regd_get(struct rtw89_dev *rtwdev, u8 band)
- static inline u8 rtw89_get_tx_shape_idx(struct rtw89_dev *rtwdev, u8 band,
- 					enum rtw89_rate_section rs)
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 0343cd1a0ee1..3950792651c1 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -7197,9 +7197,19 @@ int rtw89_core_mlsr_switch(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
+ static int rtw89_chip_efuse_info_setup(struct rtw89_dev *rtwdev)
  {
-+	struct rtw89_regulatory_info *regulatory = &rtwdev->regulatory;
- 	const struct rtw89_rfe_parms *rfe_parms = rtwdev->rfe_parms;
- 	const struct rtw89_tx_shape *tx_shape = &rfe_parms->tx_shape;
-+	u8 reg6_pwr = regulatory->reg_6ghz_power;
- 	u8 regd = rtw89_regd_get(rtwdev, band);
+ 	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
++	const struct rtw89_chip_info *chip = rtwdev->chip;
++	bool bb_preinit = false;
+ 	int ret;
  
- 	if (unlikely(rs >= RTW89_RS_TX_SHAPE_NUM))
-@@ -8058,7 +8062,10 @@ static inline u8 rtw89_get_tx_shape_idx(struct rtw89_dev *rtwdev, u8 band,
- 	if (!tx_shape->lmt)
- 		goto v0;
- 
--	return (*tx_shape->lmt)[band][rs][regd];
-+	if (band != RTW89_BAND_6G)
-+		reg6_pwr = RTW89_REG_6GHZ_POWER_DFLT;
+-	ret = rtw89_mac_partial_init(rtwdev, false);
++	/*
++	 * Normally in probe stage, we don't need to do BB pre-initialization.
++	 * However, RTL8922D firmware can access BB registers at firmware
++	 * initial state, so initialize it to avoid BB IO stuck in firmware.
++	 */
++	if (chip->chip_id == RTL8922D)
++		bb_preinit = true;
 +
-+	return (*tx_shape->lmt)[band][rs][regd][reg6_pwr];
++	ret = rtw89_mac_partial_init(rtwdev, false, bb_preinit);
+ 	if (ret)
+ 		return ret;
  
- v0:
- 	return (*tx_shape->lmt_v0)[band][rs][regd];
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 01770a6a1f6f..95acf7caf08e 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -11626,6 +11626,12 @@ fw_tx_shape_lmt_entry_valid(const struct rtw89_fw_tx_shape_lmt_entry *e,
- 	if (e->regd >= RTW89_REGD_NUM)
- 		return false;
- 
-+	/* ensure compatibility work with 2/5 GHz */
-+	static_assert(RTW89_REG_6GHZ_POWER_DFLT == 0);
-+
-+	if (e->reg6_pwr >= NUM_OF_RTW89_REG_6GHZ_POWER)
-+		return false;
-+
- 	return true;
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index a63f34440554..accc5cdfaa3d 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -4308,13 +4308,14 @@ int rtw89_mac_disable_bb_rf(struct rtw89_dev *rtwdev)
  }
+ EXPORT_SYMBOL(rtw89_mac_disable_bb_rf);
  
-@@ -11640,7 +11646,7 @@ void rtw89_fw_load_tx_shape_lmt(struct rtw89_tx_shape_lmt_data *data)
- 		if (!fw_tx_shape_lmt_entry_valid(&entry, cursor, conf))
- 			continue;
+-int rtw89_mac_partial_init(struct rtw89_dev *rtwdev, bool include_bb)
++int rtw89_mac_partial_init(struct rtw89_dev *rtwdev, bool include_bb,
++			   bool bb_preinit)
+ {
+ 	int ret;
  
--		data->v[entry.band][entry.tx_shape_rs][entry.regd] = entry.v;
-+		data->v[entry.band][entry.tx_shape_rs][entry.regd][entry.reg6_pwr] = entry.v;
- 	}
- }
+ 	rtw89_mac_ctrl_hci_dma_trx(rtwdev, true);
  
-@@ -11657,6 +11663,12 @@ fw_tx_shape_lmt_ru_entry_valid(const struct rtw89_fw_tx_shape_lmt_ru_entry *e,
- 	if (e->regd >= RTW89_REGD_NUM)
- 		return false;
+-	if (include_bb) {
++	if (include_bb || bb_preinit) {
+ 		/* Only call BB preinit including configuration of BB MCU for
+ 		 * the chips which need to download BB MCU firmware. Otherwise,
+ 		 * calling preinit later to prevent touching registers affecting
+@@ -4367,7 +4368,7 @@ int rtw89_mac_init(struct rtw89_dev *rtwdev)
+ 	bool include_bb = !!chip->bbmcu_nr;
+ 	int ret;
  
-+	/* ensure compatibility work with 2/5 GHz */
-+	static_assert(RTW89_REG_6GHZ_POWER_DFLT == 0);
-+
-+	if (e->reg6_pwr >= NUM_OF_RTW89_REG_6GHZ_POWER)
-+		return false;
-+
- 	return true;
- }
+-	ret = rtw89_mac_partial_init(rtwdev, include_bb);
++	ret = rtw89_mac_partial_init(rtwdev, include_bb, include_bb);
+ 	if (ret)
+ 		goto fail;
  
-@@ -11671,7 +11683,7 @@ void rtw89_fw_load_tx_shape_lmt_ru(struct rtw89_tx_shape_lmt_ru_data *data)
- 		if (!fw_tx_shape_lmt_ru_entry_valid(&entry, cursor, conf))
- 			continue;
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
+index c05f5ee0d2fd..493d2b9626a6 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.h
++++ b/drivers/net/wireless/realtek/rtw89/mac.h
+@@ -1302,7 +1302,8 @@ rtw89_write32_port_set(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rtwvif_l
  
--		data->v[entry.band][entry.regd] = entry.v;
-+		data->v[entry.band][entry.regd][entry.reg6_pwr] = entry.v;
- 	}
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index af126d15a1fb..5efa75f8c392 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -5834,6 +5834,7 @@ struct rtw89_fw_tx_shape_lmt_entry {
- 	u8 tx_shape_rs;
- 	u8 regd;
- 	u8 v;
-+	u8 reg6_pwr;
- } __packed;
- 
- /* must consider compatibility; don't insert new in the mid */
-@@ -5841,6 +5842,7 @@ struct rtw89_fw_tx_shape_lmt_ru_entry {
- 	u8 band;
- 	u8 regd;
- 	u8 v;
-+	u8 reg6_pwr;
- } __packed;
- 
- const struct rtw89_rfe_parms *
+ int rtw89_mac_pwr_on(struct rtw89_dev *rtwdev);
+ void rtw89_mac_pwr_off(struct rtw89_dev *rtwdev);
+-int rtw89_mac_partial_init(struct rtw89_dev *rtwdev, bool include_bb);
++int rtw89_mac_partial_init(struct rtw89_dev *rtwdev, bool include_bb,
++			   bool bb_preinit);
+ int rtw89_mac_preinit(struct rtw89_dev *rtwdev);
+ int rtw89_mac_init(struct rtw89_dev *rtwdev);
+ int rtw89_mac_dle_init(struct rtw89_dev *rtwdev, enum rtw89_qta_mode mode,
 -- 
 2.25.1
 
