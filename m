@@ -1,68 +1,71 @@
-Return-Path: <linux-wireless+bounces-38901-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38902-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PW3DHwYOU2p+WQMAu9opvQ
-	(envelope-from <linux-wireless+bounces-38901-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 05:46:14 +0200
+	id D+jZACsOU2qFWQMAu9opvQ
+	(envelope-from <linux-wireless+bounces-38902-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 05:46:51 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED5A743B70
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 05:46:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 740A3743B84
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 05:46:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=realtek.com header.s=dkim header.b=lR3TnU2+;
+	dkim=pass header.d=realtek.com header.s=dkim header.b=Blof6r8Q;
 	dmarc=pass (policy=none) header.from=realtek.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38901-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38901-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38902-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38902-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6F0583002D36
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 03:46:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 205B9301BC38
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jul 2026 03:46:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0841846A;
-	Sun, 12 Jul 2026 03:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12CA2AD37;
+	Sun, 12 Jul 2026 03:46:13 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088502BDC26
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 03:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474F3274670
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 03:46:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783827968; cv=none; b=oH4k21tzGPHuoEpTWk4PhAKvDMJgrAx0f0bU1XRK363h7m8oYTUZDLsW9zujrxq1SutniP2LU1E18oRQW3Ie3B1FWvNl/PcOaGSdLGTRZBUYC6dWk6y8UERlvcxhtlD0qiTwM7UEaoE4FuvLWQscoRAJzthXPcIraa2U6SoIL+M=
+	t=1783827973; cv=none; b=iQuO/xLuFC/TikXI1X9N93NeN6GYiJ9d8XMgQXbFOUjdbmjH24kSH0WV2hKGljnnOwy5wnc7RBFRbJoar2AOJx3qxrD95KdioDjE79qLiayavIgTc7V79y+FwdbSxW7aeK085kTFHITMA5m6pcDr/GI61ctVR/mBDXRGsJlNQsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783827968; c=relaxed/simple;
-	bh=DtJu+74HkfLvEXHK/4TukUMSVqEL4r8cJsPff/1Zft4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DUn4DDhTFq7iYaTvbv8ylt5m68PfFXCpk6IFnD0ISnpgltdBeAKZwOLkfTqay6fw+i3K9sHpAd0MwhjtGS81TCJ+5yGqH95f6h4CnUtZasP5M+mTxC+rVEsI8b1VZfI4YwcSIDj56D7e061x5wCzoVphf3DL4m5Cy1A93SLj6JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=lR3TnU2+; arc=none smtp.client-ip=211.75.126.72
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66C3k4Wc9535579, This message is accepted by code: ctloc85258
+	s=arc-20240116; t=1783827973; c=relaxed/simple;
+	bh=nalz0IXpjGiDyFuEDg1T5k0T293UW1tsxFl4eBfOCTY=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AdGP/I3VuPAqwzlzmzMeFDIII5taL8xtyOxibWvlVVDfz1TTk07yamrU6C5/8R5Wv88plOLGOpHPs0hwJtWstAllPHKdXy3p13A1nh2bZbsA/PuplDK5iIxQpvPPTtylGvPa9xgzTLuinhvI98Er0Wecg6xGE/y5EBtaQ0etCg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Blof6r8Q; arc=none smtp.client-ip=211.75.126.72
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66C3k9IN1535594, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1783827964; bh=04UJBjKcY7jS3CaogdhNr+rfcbi4l9poFkcBXDTsb5g=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=lR3TnU2+9NkRRWGheSTkSpZMX5YXcWigQXTxPBgWdx5IsnuhU2Ndu9B+QKKUVS1Ee
-	 e0seW6w/K//jH7YT+GFIZrS83UBHQ2p+OZ+x/gtpBbdIup43HRcgVk6oI+TbQX5+hB
-	 ReLo1wXdtgDsm6I64a7d/M5y9MSC0UKti3sB3j2qOmZUjlOq8JzB+/uxx3pXOCATlh
-	 tbyYGsSk3J1sEupn9wkSX5+ytb2gM1RBSzW6YxNtVWmkOgOacEOR6iwoc3QYHaHHHr
-	 7rENCr3fQP681dGEp6Jx1AFpI9RAYd3F2wJ3xzPhXMdHNJ8wdn6kl/RidyN76NOT9T
-	 W4qzv9EamSTRA==
+	t=1783827969; bh=5jQNboHWqRsza6mOqKB3AbEwUBRiXIVclw5tYsV2ofw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=Blof6r8QmgiCSSvtJjQ+b9P67ZlKufbrWxL13sHoDPV6ghK1ZT9FWddy/eVFlZ1kf
+	 nMgXXUUV2PvKbEbAGpra4vGrFO5vgYzCbbPHegEeOfeUY0VUnvPvOkk0sQzIHDS0Hn
+	 P4Goktw4S9tSBphxNLdkDpcSblJgLjeYrQ13TpBMZ6jv9gP29Nu7iwhXiMx7cSvG1R
+	 S8ZMvbvOrbedPzBi6z8ItKPaSWesfRHzsqUWVxyKHIWEm3JnJS62uKc2hrltH3yLqf
+	 EyQNpbGrV8Vv7RAeyxG/SoJgMnoejRiqvHcmbNGmPbOLGW8ikDDjgbsQfKssy5fdPN
+	 xtxnwhXPEL9ow==
 Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66C3k4Wc9535579
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66C3k9IN1535594
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL)
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 11:46:04 +0800
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 11:46:09 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
  RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Sun, 12 Jul 2026 11:46:04 +0800
+ 15.2.2562.17; Sun, 12 Jul 2026 11:46:10 +0800
 Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS06.realtek.com.tw
  (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
- Transport; Sun, 12 Jul 2026 11:46:04 +0800
+ Transport; Sun, 12 Jul 2026 11:46:10 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <echuang@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 0/8] wifi: rtw89: add RF diagnosis and update random patches
-Date: Sun, 12 Jul 2026 11:44:58 +0800
-Message-ID: <20260712034506.53209-1-pkshih@realtek.com>
+Subject: [PATCH rtw-next 1/8] wifi: rtw89: pack I/O during bb_sethw to reduce API execution time
+Date: Sun, 12 Jul 2026 11:44:59 +0800
+Message-ID: <20260712034506.53209-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260712034506.53209-1-pkshih@realtek.com>
+References: <20260712034506.53209-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -78,11 +81,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-38901-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38902-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -101,69 +104,41 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,realtek.com:from_mime,realtek.com:email,realtek.com:mid,realtek.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6ED5A743B70
+X-Rspamd-Queue-Id: 740A3743B84
 
-First patch is to reduce IO time for USB device, which is addressed by real
-time measurement.
+From: Eric Huang <echuang@realtek.com>
 
-The second patch is to abstract a register for WiFi 6 and 7 chips to read
-firmware state for boot debugging.
+Wrap rtw89_chip_bb_sethw() with rtw89_io_pack/unpack so all register
+writes during baseband hardware initialization are batched into a single
+bus transaction. This reduces API execution time from ~11000 us to
+~4000 us on affected platforms.
 
-Patch 3/8 is to resolve RTL8922DE interoperability issue operating in 2GHz
-channels. Limit the TX time to prevent peer can't receive packets properly.
+Signed-off-by: Eric Huang <echuang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/core.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Patch 4-6/8 are to extend TX shape per 2/5/6 GHz bands to satisfy
-regulation for each bands.
-
-Patch 7/8 is to properly co-work with BB registers access in firmware, so
-driver should power-on BB circuit to ensure possibly accessing.
-
-The last patch is to add RF diagnosis assisting in debugging.
-
-Eric Huang (1):
-  wifi: rtw89: pack I/O during bb_sethw to reduce API execution time
-
-Ping-Ke Shih (3):
-  wifi: rtw89: mac: abstract register definition of firmware boot debug
-  wifi: rtw89: 8922d: add TX time limit for 2GHz band
-  wifi: rtw89: fw: do bb_preinit before downloading firmware
-
-Zong-Zhe Yang (4):
-  wifi: rtw89: introduce helper to get tx shape index
-  wifi: rtw89: add tx shape v0 to keep built-in arrays compatible during
-    transitions
-  wifi: rtw89: extend tx shape format for regulatory 6 GHz power type
-  wifi: rtw89: debug: add diagnosis for RF
-
- drivers/net/wireless/realtek/rtw89/core.c     |  83 ++++++++++++-
- drivers/net/wireless/realtek/rtw89/core.h     |  74 ++++++++++-
- drivers/net/wireless/realtek/rtw89/debug.c    | 115 ++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/fw.c       |  21 +++-
- drivers/net/wireless/realtek/rtw89/fw.h       |   2 +
- drivers/net/wireless/realtek/rtw89/mac.c      |  28 ++++-
- drivers/net/wireless/realtek/rtw89/mac.h      |   4 +-
- drivers/net/wireless/realtek/rtw89/mac_be.c   |   1 +
- drivers/net/wireless/realtek/rtw89/phy.c      |  62 ++++++++--
- drivers/net/wireless/realtek/rtw89/phy.h      |   3 +
- drivers/net/wireless/realtek/rtw89/reg.h      |   1 +
- drivers/net/wireless/realtek/rtw89/rtw8851b.c |   7 +-
- .../wireless/realtek/rtw89/rtw8851b_table.c   |   8 +-
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |   1 +
- drivers/net/wireless/realtek/rtw89/rtw8852b.c |   1 +
- .../wireless/realtek/rtw89/rtw8852b_common.c  |   6 +-
- .../wireless/realtek/rtw89/rtw8852b_table.c   |   4 +-
- .../net/wireless/realtek/rtw89/rtw8852bt.c    |   1 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |   7 +-
- .../wireless/realtek/rtw89/rtw8852c_table.c   |   4 +-
- drivers/net/wireless/realtek/rtw89/rtw8922a.c |  10 +-
- drivers/net/wireless/realtek/rtw89/rtw8922d.c |  18 +--
- 22 files changed, 400 insertions(+), 61 deletions(-)
-
-
-base-commit: 56d32cdc6040440b08edfd5d7262250a721233f8
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 174349c6bc58..0f6d4ad66fe2 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -7810,8 +7810,12 @@ static inline void rtw89_chip_bb_sethw(struct rtw89_dev *rtwdev)
+ {
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 
++	rtw89_io_pack(rtwdev);
++
+ 	if (chip->ops->bb_sethw)
+ 		chip->ops->bb_sethw(rtwdev);
++
++	rtw89_io_unpack(rtwdev);
+ }
+ 
+ static inline void rtw89_chip_rfk_init(struct rtw89_dev *rtwdev)
 -- 
 2.25.1
 
