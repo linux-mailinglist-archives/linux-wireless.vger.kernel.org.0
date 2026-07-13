@@ -1,180 +1,251 @@
-Return-Path: <linux-wireless+bounces-38990-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38991-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EMsyNuQoVWqzkgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-38990-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 20:05:24 +0200
+	id cMGGE0UsVWqQkwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-38991-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 20:19:49 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443AC74E49F
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 20:05:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D66F474E6D5
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 20:19:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BOrOsyE2;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38990-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38990-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=fail ("headers rsa verify failed") header.d=0sec.ai header.s=google header.b=akfdfwC1;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38991-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38991-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=none;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 40160301A41A
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 18:05:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F3BC8301CD22
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 18:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B2233A005;
-	Mon, 13 Jul 2026 18:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7DE3081D6;
+	Mon, 13 Jul 2026 18:19:14 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F633314A84
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 18:05:20 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783965921; cv=none; b=epstvucGUCXJOJnxteQ7+zPJG78ZDqLavIc4KUAmbpPUmqtlFqKTCy12zj/a6KzZ0TjO4NMEoS0oQnVW4Ve8y5pI7BL/JibCZeYuX5UiBVaUpTxFzBbtAwiiAnV25aGWkv5mt97ECIw5DYYklax1nvkZRYZsZi2ilXAc8UcZftE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783965921; c=relaxed/simple;
-	bh=XeZnVF8VMOIq8NowPgSjmvHb8AkE7i+WvqIK6N6ANjs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y4dOhVOOQ5GPQeZxgUo5oDiXSKYRB8bjdT1+5k8cAgeOw24H45sE/nxdj02mh8D1M4Yyn+YNydLnfxW41dVDrHLKw10a1mu0BUR84YHQsUl6UTCkwinqBBLgkqAc7St6+dwqQAUWrpGda/9Mm3prn7W6CfLVKEoCvk4IGL8TbF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BOrOsyE2; arc=none smtp.client-ip=209.85.221.52
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47f365afc5aso908243f8f.0
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 11:05:19 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD689274658
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 18:19:11 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783966754; cv=pass; b=Ih4Ki8burxdpfUDm6nGoqDtzMRekzni4HZwFzP5N2HMd/EMqMtbGp0etldR1WW/19bd/GIqq7ZpHIeUMi21EjTai/LH4UqxoEFabPtpmPV5dulgjUvb7l1GpBT5+czY12gEcvwIrFhIJm2OX/JG3f9wcvLqkuE2w05Z6AO9J+Yk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783966754; c=relaxed/simple;
+	bh=a7J2o/Uawyqjxcq822ubh31HNGfGy3Dyi9p/J54OSA4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GscpQkQS1XT5lWspMn4wtyOiafFRcrbjOB/QRrcVDo6MQTIyI7SMhW+Q/qrAZfF0Ug9JVT88OOZwRZGffP2CGSIep0LMbfabl6uNBH9CDvkSvUKlULRd7dCA1pJcd3nX+OWHNDNBPc4iG/nwMY8jHfzTUs/LYB/QEI4qLYdj6xc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=akfdfwC1; arc=pass smtp.client-ip=209.85.214.178
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2caed617615so38421985ad.3
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 11:19:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783966751; cv=none;
+        d=google.com; s=arc-20260327;
+        b=RLb/VmFrVviSjFBadsCM0uu9Yo283vgURDmZteQ1HRbRlJPNqyb3NAmbhZ600DUq9s
+         5neKYd60yvMhnkwo9blfLlUxB9ObaGlfrTdq5ha5CQh9zeysJCkYVpP59F/kbHexLhKA
+         dAtFqTWxvF/fhwvTd0d/ZX0P1iM06n/TiRDTvhh9Y1DG9dU9fdkJpa2LkWpQWDKxgl3o
+         FtEinXoQl/L1YopzZRH761vUSYBn8ylcTlQr9yE5uCt667irTvRcBOfAL7z/xMAoDwRN
+         2rXfmNCkvcH0MT9+W2yZJqE30hUL75eGfLEuNO2/gpOqNbvXk9H724ZiIw6oKTIXUp3T
+         LBSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=oMyPiF7lny3DatTRlbMwq40lHfzP3eH6xTvYxwG42rU=;
+        fh=oIukcTsuore6C/ObdnDyxb6s34N/7wPUZ1rqdUPvJfM=;
+        b=mIipHNOFpYPIHHF2OWtuTDhhtEooTNCTyjxDezHMll8ZYzyoPs2HFTvNKD1/0EZAIY
+         FrtSEXFYg9IClZhuFv82lmom9qUaxQVBd9jH2OETaHc9gW1pNYNNluQeyQc3WIlqHiwb
+         LjFtva0dkRcsXRGFZFghM2dJ2A50s5jFR9KeCM4//VP7fkY7fsAk4iNPl+jTsc90oqL7
+         wkvZyirD70VSCqHC48weIGqglHGSgSzxFesGqhVuHEs4TylozUb9mgUY7o+3J6EfOeKs
+         6P0P7Jq87g/zLrTV7IzU5Yo9218xiPgfWw0GZXUa1M/KafKRD/YGFCtuI9FxiDwvDvdd
+         N41A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783965918; x=1784570718; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DPs2lHQRfpK+TsWOFRy9KnqkkNN7TxB0PRSoapXl1VE=;
-        b=BOrOsyE2uxxPpM+zui5vnSpr9UHpb4i+2dHjRQqlNk9zn5KE1MWyDihPWmO8r64qZn
-         joQFso2weVNFzGNkZjmAJq+HhHZyS9FpOwq27b8BORtWeljy5xAFWfjeWT1mtxsn6Puo
-         +uaXpNzcbHPKdj4KyikDbQ/nJYf9RaaaISxDczqVd40x+OGJ+ibZIfga4nJnx8PAgovm
-         NuSCrfXid4+ERkCN4XUMWoHxIn7zhwVGzLowXTXuJ/YYJ6tZH4qHoxIG3lUDPpCG6B9X
-         VE/acyvQdqw/e4xz6LZYdc5KWLrMQbFthP9uA5hJdstGuWGYBIGaodCshMeJ0E/bJMf6
-         GNtw==
+        d=0sec.ai; s=google; t=1783966751; x=1784571551; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=oMyPiF7lny3DatTRlbMwq40lHfzP3eH6xTvYxwG42rU=;
+        b=akfdfwC1gWKnXlOaKIrr36v1gDkMDXb3e66zZbNTLs8iYvzO5smFEeG/755bf3KEPS
+         zDONj3HwK8nJC84vUIXOObk1HYVdSXnbGCZjI0FaOCcJuroaV3/9+18hGC2kfaAuZ3mk
+         eZWNxSXk8/q1lWnf5CBggcdOUSzBRgNzuZaCqg4qUl3vVxQNm+0v8X0x1vI3tnT05NI+
+         jG405xgRp2dcJUEIFjNw9c+MQLq46HAgq6KZ7qas+PpVnsfvARuFH7r7kcBQaIl7XWua
+         yo5fnimRe06QyVVY5DqTdjW1skDNLgIKCNir6aVSGxii2vkAmmf+SVEgB/Ez3kZI5VyM
+         toRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783965918; x=1784570718;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DPs2lHQRfpK+TsWOFRy9KnqkkNN7TxB0PRSoapXl1VE=;
-        b=f+6DVzeu4Ur84rDsuH7K3Myd+CyWQczidasp1tky0nmtFmt6IKgYyrBXNv13fhRCZU
-         UKdmShNfdURCzqmbzPGcsMEPSomYG1IwhZAw1jm9zmMKFuGWr5mvWoNfft3JZBqSnLup
-         g8U3vn1/VslKB394ZCEM1fEgssjanjNIdFp+pj0XhRxpFNAZQ4XW1c2LypmmYqhf1PTv
-         eVVXepCo2FO1qNj7tJmSiopGtq9U/5HBMlpSXKP+pJ/FOErJuuLt/TiUx8bdy8F1kcGh
-         ARocIKEuqlNStsQI54CK+RT3h5K4QpqPABFBK6+rJ1ae537+WauNsOaLk9QaDK5kAwwi
-         6Wow==
-X-Forwarded-Encrypted: i=1; AHgh+RophKizsYEYdoPhzkbO0IcGFPYpY+1dSW/WsUklypKlT9YQFFO+YSvB0bf0S9MoZ++xm0wwRwUWbQkHmZ2ynw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzf1LqEf6vhxFiuezGObqbGhCRGaz510T+vsDTLLSMIBB3HLFk6
-	SRxNmTNvq4T4DmCTaBCw6XjM12If/S+4EPPKhzN2Y5QnNRUAuzbrm6+y
-X-Gm-Gg: AfdE7cnNKXIbt/F1/o3wsyCshtrEdsRZ/FiSEGf7tO/1413MYFkVZYFyrsIhtRAGB2Q
-	NWSqonZ3ExEVCX2DePbdkfBB9UFfAR4JYJnDQPjDlD3BJOEdBgZ0OBDHy+WjgGc0rJkHY7I/IU+
-	xpfWT2/ixZm0jsTrWKgPqU3epUo9BGcwd8ZuKlDBvBgvcbLc2zsdcJf1+5aL8zvz9TMEL2lGlDW
-	sjfKEj1NIt+BNvYEjrm+fq5UHMyMAfPXEenCAHHjg75QEGIMNOy5qQu90R6VutHi4SIV6Wrc1vW
-	U3fgL4L19ll0/13JjwQ7vUDJ/rj32hqWdQpinD4NoxzKH/pedStsd8M5ImW+3cS/B+MLM7X7zf3
-	KTm0xC4BlERDNhuw86/MuHp4hx5JMB/hr6O0DL+52NhZtRAPLw6ReNx65VeLHCBYvKTmXvjAi1p
-	0ry9e2h9F7OGTpH4HomOmnDHygx/wt84kKew==
-X-Received: by 2002:a5d:64c4:0:b0:462:e086:35f with SMTP id ffacd0b85a97d-47f2dc88af5mr12536623f8f.21.1783965918210;
-        Mon, 13 Jul 2026 11:05:18 -0700 (PDT)
-Received: from archlinux.tailbe3ea7.ts.net ([46.1.111.57])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f4635aa34sm1230690f8f.15.2026.07.13.11.05.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 11:05:17 -0700 (PDT)
-From: Ismail Tarim <ismailtarim7@gmail.com>
-To: stable@vger.kernel.org
-Cc: Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org
-Subject: [stable backport request] wifi: mt76: mt7921/mt7925: fix NULL dereference in CSA beacon
-Date: Mon, 13 Jul 2026 21:01:37 +0300
-Message-ID: <20260713180433.52394-1-ismailtarim7@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20251104; t=1783966751; x=1784571551;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oMyPiF7lny3DatTRlbMwq40lHfzP3eH6xTvYxwG42rU=;
+        b=CQ3NvuRzJeWxzbzLh1E6pthXHP7oZslvTtaI8RM95yvuw0m5UryCQm4VwdbElkcpFi
+         FToImIs7dCZeF1K2wR6uwVxu0R7MoAV7hJXGo2qN8TzuU5v4rVKuhl9oz0moVZpKJiku
+         Osh+HvccFZK9En4ESbqWx5f2vEJfgecnKNSDUS/hG/NtoG1iww0kg63AvUkQTuPo2a3B
+         XJ/YyaWIePWLFlXYCqXWnJcqbCOEZ1OtV5BcVpo/mJL5rA8Ba/K3t3PhqJQ+Zxq7Vcrz
+         gvTfHuTkuAeB85rHW49UUqkqGSJkgpFIEcsSIwo4Fx3vX4lyhPhyH7y69Z3/+UdM3TVh
+         0KNw==
+X-Forwarded-Encrypted: i=1; AHgh+RrKhexCtKO1I7Vp27iX1AoYRMbpKudAR+YdxarMcBv1/Ci4MzSWeDgC+9TAU5k3sez8/fK684fM6JVEsQlonA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMaGmrLEY+Xv+rTQ8elFUlHoRIdzUcOY11OXnaKT1ZvwLwAYSt
+	PRb7+lrU/w2hwFZooX5qxV3zxdcOC8uUoesC4gsfuZNpQaRtr8Ehd/1HcQF1RR9xurcGZQa/tVO
+	0Hcl2p3U8cRqOzKIOJ/r7uhTHqeui9pguV24ZBiKdWwg=
+X-Gm-Gg: AfdE7ckbo+Wi0QHiog9OHIAKwiQWTp8ECq7C7bntxd87QKMuXe6gpnUiVvIGLZdAlrG
+	l+3zXpFWDY0alXgSPYL61fbjJn57Mar7fq/PNCWCMfWonnx9Gjf+6ZAeJ7NVELp6GymiL2U2UIw
+	pdvyQGHLQEaHJTqH63DLlDaYuCA+m0tszCJ5FGzXIcdcVlT+uP3iU6It6Tb0t+GAQ/jov+WOeJI
+	Z2R8sM2z+F2n7J4iXNFT5VjXThBDLAELUjjyGxZu149uCX5i6TrBc1oCpT2u/es/xe7siwAuiWC
+	ehB/0TQY/uFJeyOIUVaMlo6v7q3MSqpSrIKsj0ikEq9XUaPAoz2QMw4E3r2RWf0Sp+A6gQE=
+X-Received: by 2002:a17:902:d546:b0:2c9:cf62:6f61 with SMTP id
+ d9443c01a7336-2ce9eac212bmr103069735ad.17.1783966750843; Mon, 13 Jul 2026
+ 11:19:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260711071336.58324-1-doruk@0sec.ai> <779ee099-5132-4752-bdb8-354dfdc53926@oss.qualcomm.com>
+In-Reply-To: <779ee099-5132-4752-bdb8-354dfdc53926@oss.qualcomm.com>
+From: "Doruk (0sec)" <doruk@0sec.ai>
+Date: Mon, 13 Jul 2026 20:18:59 +0200
+X-Gm-Features: AVVi8CenKr8Md-_ghFq-SY_VTIPefNoGzVmvVLnHgY8iSBM67OYes4dP0hXi20g
+Message-ID: <CAPdMp1okStu9UiWn-Kb4xrTEdGj1POT4t+moh77JHpLSzD-pZQ@mail.gmail.com>
+Subject: Re: [PATCH] wifi: ath6kl: validate assoc info lengths in the WMI
+ connect event
+To: jeff.johnson@oss.qualcomm.com, linux-wireless@vger.kernel.org
+Cc: tristmd@gmail.com, johannes@sipsolutions.net, 
+	peddolla.reddy@oss.qualcomm.com, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-0.46 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_DKIM_REJECT(1.00)[0sec.ai:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-38991-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-38990-lists,linux-wireless=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:nbd@nbd.name,m:lorenzo@kernel.org,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,s:lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[ismailtarim7@gmail.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ismailtarim7@gmail.com,linux-wireless@vger.kernel.org];
+	DMARC_NA(0.00)[0sec.ai];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS(0.00)[m:jeff.johnson@oss.qualcomm.com,m:linux-wireless@vger.kernel.org,m:tristmd@gmail.com,m:johannes@sipsolutions.net,m:peddolla.reddy@oss.qualcomm.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,sipsolutions.net,oss.qualcomm.com,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[doruk@0sec.ai,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[0sec.ai:-];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[doruk@0sec.ai,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,0sec.ai:url,0sec.ai:email,0sec.ai:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 443AC74E49F
+X-Rspamd-Queue-Id: D66F474E6D5
 
-Hi,
+On 7/11/2026, Jeff Johnson wrote:
+> Some aspects of your patch are already addressed by:
+> https://lore.kernel.org/all/20260421135009.348084-3-tristmd@gmail.com
+> So you will need to rebase once that lands.
 
-Please consider backporting the following mainline commit to the stable
-trees:
+Thanks for the heads up! One thing that looks like it may remain after
+Tristan's patch, in case it's useful: the aggregate check bounds the case
+where the declared lengths are too large, but ath6kl_cfg80211_connect_event=
+()
+still underflows when a length is too small. It does, on u8 values
+with no lower bound:
 
-  commit 351dd7d2c80d ("wifi: mt76: mt7921/mt7925: fix NULL dereference in CSA beacon")
+assoc_req_len -=3D assoc_req_ie_offset; /* -=3D 4 */
+assoc_resp_len -=3D assoc_resp_ie_offset; /* -=3D 6 */
 
-The commit carries a Fixes: tag but was not marked Cc: stable, so it has
-not been picked up for the stable trees automatically. The tip of
-linux-7.1.y still lacks it.
+so an assoc request/response shorter than the fixed offset wraps to ~250, a=
+nd
+cfg80211_connect_result()/cfg80211_roamed() then treat that as the IE lengt=
+h and
+copy that many bytes out of the small assoc_info buffer to user space. That=
+ path
+is separate from the aggregate over-read Tristan's check covers.
 
-Why it should be applied:
+Happy to send a small follow-on clamping those two subtractions on top of
+Tristan's series once it lands -- or Tristan, please feel free to fold it i=
+nto
+your series if you'd rather keep it together. Whatever's easiest for you bo=
+th.
 
-It fixes a NULL pointer dereference in mt7921_channel_switch_rx_beacon()
-(and the identical mt7925 path). When an AP sends a Channel Switch
-Announcement (CSA) beacon, cfg80211 queues a wiphy work item that later
-calls the driver's channel_switch_rx_beacon(); if the station
-disconnects or the channel context is torn down in between,
-dev->new_ctx has already been cleared to NULL and is then dereferenced
-unconditionally. This is triggered by ordinary AP behaviour (channel
-switch / DFS), so it is easy to hit in the field, and it hangs the
-machine: the crash happens in a workqueue worker that exits with IRQs
-disabled, wedging the cfg80211 workqueue and progressively locking up
-userspace until a hard reboot. It affects the very common MT7921 /
-MT7922 / MT7902 chipsets.
+Best
+Doruk
 
-Reproduced on linux-7.1.y (Arch Linux 7.1.3-arch1-1), MT7902
-[14c3:7902] driven by mt7921e:
+DORUK TAN =C3=96ZT=C3=9CRK
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-  RIP: 0010:mt7921_channel_switch_rx_beacon+0x18/0xa0 [mt7921_common]
-  Call Trace:
-   ieee80211_sta_process_chanswitch+0x682/0xc30 [mac80211]
-   ieee80211_rx_mgmt_beacon+0x7ec/0x19c0 [mac80211]
-   ieee80211_iface_work+0x4c4/0x630 [mac80211]
-   cfg80211_wiphy_work+0x13f/0x1e0 [cfg80211]
-   process_one_work+0x19f/0x390
-   worker_thread+0x1b1/0x310
-   kthread+0xe4/0x120
-  note: kworker/u64:15 exited with irqs disabled
+Co-Founder
 
-The offending code was introduced by
-  8aa2f59260eb ("wifi: mt76: mt7921: introduce CSA support")
 
-Please apply 351dd7d2c80d to linux-7.1.y and any other supported stable
-tree that contains 8aa2f59260eb.
+0sec
 
-Thanks,
-Ismail Tarim
+Universit=C3=A4tstrasse 33
+
+8006 Z=C3=BCrich, Switzerland
+
+www.0sec.ai | doruk@0sec.ai | Linkedin
+
+
+
+On Sat, 11 Jul 2026 at 16:39, Jeff Johnson
+<jeff.johnson@oss.qualcomm.com> wrote:
+>
+> On 7/11/2026 12:13 AM, Doruk Tan Ozturk wrote:
+> > ath6kl_wmi_connect_event_rx() only checks that the received event is at
+> > least sizeof(struct wmi_connect_event); it never checks that the traili=
+ng
+> > beacon_ie_len + assoc_req_len + assoc_resp_len fields fit within the
+> > received buffer. Those attacker/AP-influenced lengths then drive two
+> > out-of-bounds accesses:
+> >
+> >   - The WMM information-element scan builds
+> >     peie =3D assoc_info + beacon_ie_len + assoc_req_len + assoc_resp_le=
+n
+> >     and walks up to it, reading past the end of the event buffer when t=
+he
+> >     declared lengths exceed the buffer. The walk also dereferences
+> >     pie[1..6] and pie[1] (for the advance) without checking they stay
+> >     within peie.
+> >
+> >   - ath6kl_cfg80211_connect_event() subtracts fixed offsets from
+> >     assoc_req_len (-=3D 4) and assoc_resp_len (-=3D 6), both u8, with n=
+o lower
+> >     bound. A short assoc request/response underflows the length to ~250=
+,
+> >     which cfg80211_connect_result() / cfg80211_roamed() then treat as t=
+he
+> >     IE length and copy out of bounds from the small assoc_info buffer,
+> >     disclosing adjacent slab memory to user space via nl80211.
+> >
+> > Bound the declared IE lengths against the received buffer, bound the WM=
+M
+> > element reads against peie, and clamp the assoc request/response length=
+s
+> > before the subtraction. The sibling wil6210 driver already performs the
+> > equivalent length check for the same WMI connect event.
+> >
+> > Found by 0sec (https://0sec.ai) using automated source analysis; the
+> > missing bounds are evident from source and cross-checked against the
+> > sibling wil6210 driver. Compile-tested.
+> >
+> > Fixes: bdcd81707973 ("Add ath6kl cleaned up driver")
+> > Cc: stable@vger.kernel.org
+> > Assisted-by: 0sec:claude-opus-4-8
+> > Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+>
+> Some aspects of your patch are already addressed by:
+> https://lore.kernel.org/all/20260421135009.348084-3-tristmd@gmail.com
+>
+> So you will need to rebase once that lands.
+>
+> /jeff
 
