@@ -1,213 +1,302 @@
-Return-Path: <linux-wireless+bounces-38978-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38979-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mmtuBbP1VGoGiAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-38978-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 16:26:59 +0200
+	id 8Is/I+f6VGpNiQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-38979-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 16:49:11 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 049FA74C5CA
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 16:26:58 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F8FC74C961
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 16:49:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=evl+KNZo;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=NRDEoHCq;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38978-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38978-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=L51VZSt3;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="n qVoMSy";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38979-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38979-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=arndb.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2AE48302D051
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 14:07:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1E8C7303BFF1
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 14:22:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DF943B481;
-	Mon, 13 Jul 2026 14:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8100243636A;
+	Mon, 13 Jul 2026 14:22:32 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD9A43B3FD
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 14:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C696B3EBF1A;
+	Mon, 13 Jul 2026 14:22:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783951562; cv=none; b=NOxsYgcMZqSelLIzbzoA2iYPWEw/uwG9xYUYqdy7Ou/HEQXon91trHKQxGZPGuRMVRekPN9RZSh7pED/rTYZmnjNlY2oqlEQZ/21vph11ZS8bTfbEMzNsbZqFS/E5PdB7ynEjoyX+kmIQFqsnn0bQQ/ksq2j714jUBKRTrVTpp0=
+	t=1783952552; cv=none; b=IsNd2ms1t+DFrXvNgx1wA6lQ89/+mSLlj/QBkZ6non4+o22FawQ6HDW1jrjk5RJDNEB9oj21/2ZeuBLLoDHoxOUyGreR55Z5dWgw6IvD+T5SJCPlm7zH1HsZxKj7uSK5EGuQK9CQYKpywjaxJaPV1zSW3qWIHYQCqYGYfP//dAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783951562; c=relaxed/simple;
-	bh=E4jKAifPqPOMJvgrOZSsMI+KSB9Szr5Y5kvefYu+3UQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=b+/ZWJMvVtVK26cTDB1iAHyyhbto2bBy5Bcsy3v1AFSWDEn5rgcTEXxwQsCcVGpr+/bfbxYn5W0Wvz8QXzvPvC0i4Yc2kw+nPclswD2THnPbe3gFeYTbbyr96ubO8pDEeh34T6X/D4Ca4yu23Z04os+72YicW37TB+CNlqbEjiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=evl+KNZo; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=NRDEoHCq; arc=none smtp.client-ip=205.220.168.131
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66DCDv7T1494363
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 14:06:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	9AJ6tkAPs/hBDdoHJdUpYlk65CJplbktTv9X9/HcTe4=; b=evl+KNZowz+Oxmvk
-	p8WxDqDRp6dmze2rBxPMdRgPnQ63B8SwEhkXC7YBE3clF7M9xBtbZw+9ZzYqKZvQ
-	7jwNSu7A7oyUeDGSenZFchrmx5De7p+yUdDBUcPslrjbKWRtxPINL9AESK/ZIwki
-	4I42Te2NrLzznWlKC/XTilyQylc+Pt3HYC2fLmGdFa+0Q7oYrYasWZ95K2f3bhzs
-	C4w8zRXeLq4+M99tYStticI0PbEM3UnXbD1YvaY3RYToeY7TA9sVO1qoUqeSNF8X
-	CetMUI4RiKXOJrFA9t72zLCIspxSm5AJ/QIeR6VYnIKzZcdOk/2lWBZssUlFMxjN
-	7IPWmQ==
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fcjnm2wtd-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 14:06:00 +0000 (GMT)
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cab048cdb3eso2800359a12.0
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 07:06:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783951560; x=1784556360; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:date:message-id
-         :subject:references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9AJ6tkAPs/hBDdoHJdUpYlk65CJplbktTv9X9/HcTe4=;
-        b=NRDEoHCqlchu2lGTkSSYOtwXlquRfcDWY/dMF5Q2K9cr6voMKmkytPpMUO/s9bleJr
-         mWUOn3fXqqgIDDCdXJk9cyUtuvc0K8ZI+zvNI5+y7mWSl6pQl5TJQyyAqX4cMAqwQWg9
-         +FR1Fx5CNqJDWYhuCBhVRStdF3xAhXfMmMpjRcZZZT5o31dUrHCxUlzdaITkMi13swPQ
-         LYHvaiHzsEqm3WN3V3YxLkddLRgCh3adGYi2qMWMMlkGFoQRbx8VZls5SjX6RciV+dXO
-         gO0YjyOsX2BGrDJJyns3aLpdRFTrzRjT0bsdssLZ2ZG0kvlqHOTtGibSXDelb1Nwrill
-         aQyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783951560; x=1784556360;
-        h=content-transfer-encoding:content-type:mime-version:date:message-id
-         :subject:references:in-reply-to:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9AJ6tkAPs/hBDdoHJdUpYlk65CJplbktTv9X9/HcTe4=;
-        b=qRnm0CXIpB2Qui415JhREkYESn84Hc8Rjx9sG90Vq8udAwZtCegHFHAIuc7Q0ZKhzJ
-         Z4s4UHL6rimMzmQCkXGzyvBfVETfqNtM6ZVn/dyQ/Bg+UxWdUqUX6AS42OzPEn+yLhZW
-         l3K77sY6ul3/AVKRjgCzVJDH8qsYAH76JtZ5spM3yN5eZLWrEeScHYtNzKgw31k2dmgL
-         jTIcHWH/c4Y5pQehDdB5JjSw8VXV+mRYIHKP7IoZoD3XenxLzblI/QWS0zH2thdl6NwV
-         d2oWw1n4zV4tDC6dnTVRRj5HhhMhC5FJ7BTFSBUoIcdySUnT7oGyfzDsB0cQ3UBnjKjt
-         1/2A==
-X-Forwarded-Encrypted: i=1; AHgh+Rrv5tk3gU2e022LyZ78P6r1Ej2vQHwDJ/eEkLjzvJv4L0j54c9gGcbGox7eb6NaVp5/j9C2KyqyGm1h2XjWEA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4Co00gSuIyPDXKtThOxbej9XoW6+ghpAEQBEOmqmAX2eLF9Eu
-	AZoQheDyD3O6u3/5g9T+i7jp7jQzKPjeyUS/3tkQqU2BVRmlMdXsrhPqGR7ycjuXkSdKdSbP8Mm
-	xfT/KM1XwQP/vfEuqAT4eGXUqZ9bw5i2OLv3IY+ZYhryxLwUJ5nE0PNNIlKj0KMBTJD4qhA==
-X-Gm-Gg: AfdE7clFKhBKHOrKEhYgGQTnQpzy9t9WxIG2p+f8r+C4vbCk2FSUyXpKE5t63BAqwNI
-	yde/AkixmKaL/CDzCjOuUBgTspDikEErq7pw4vtbzQDY103+IaVlorfuWElHbxdM0Z7KLdvNj1U
-	mtBrcXSCCRQrnOF+CbpzUKCOi0dAU2nANDfZfMWkKOegDFfdtm0XyVkyo+w/VQg80erYe07C0eQ
-	JuCYN3uo21s1DCWFJY8+iEd/kd5gQwfQwqmx5DpPnjHb4/IMjTOCBJVhuyqyXmWyWVkKi8GEqDr
-	cPzZB5bTW8MPudxPvVxUZnq2KxlUH7X39PPEmI7vbEZtzriR06vH1tEHytX+k0StZRcOu10lRQ5
-	0/zM0+YGO5KAgPiqh0jicPPORLsGQSDs3MbbfuKrmQBHXBYTpiOoS5AIwJZtLhQ/c0g==
-X-Received: by 2002:a05:6a20:d485:b0:3c0:9c1a:893b with SMTP id adf61e73a8af0-3c110f7bba1mr11791723637.67.1783951555199;
-        Mon, 13 Jul 2026 07:05:55 -0700 (PDT)
-X-Received: by 2002:a05:6a20:d485:b0:3c0:9c1a:893b with SMTP id adf61e73a8af0-3c110f7bba1mr11791681637.67.1783951554749;
-        Mon, 13 Jul 2026 07:05:54 -0700 (PDT)
-Received: from hu-jjohnson-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3117462f5c7sm77071424eec.0.2026.07.13.07.05.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 07:05:52 -0700 (PDT)
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-To: Christian Lamparter <chunkeey@googlemail.com>,
-        Tristan Madani <tristmd@gmail.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Tristan Madani <tristan@talencesecurity.com>
-In-Reply-To: <20260421134929.325662-1-tristmd@gmail.com>
-References: <20260421134929.325662-1-tristmd@gmail.com>
-Subject: Re: [PATCH v3 0/3] wifi: carl9170: firmware trust boundary
- hardening
-Message-Id: <178395155193.877545.10555494098180752041.b4-ty@oss.qualcomm.com>
-Date: Mon, 13 Jul 2026 07:05:51 -0700
+	s=arc-20240116; t=1783952552; c=relaxed/simple;
+	bh=EI7sexiV/X+UxTd/3TyF/EC4GLNBmSdCjLzN+4m+hOw=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=JHdYtbqhsd9BO9CP71WybrPqbUjxv/8xO1vkISx+elU4MWFlNm9OMo0hPLdnnqOp1VX40OPQ2+lcAlAXHBxUojJ1Sxcvx9HjoL6a0w7bRyo2xCIhXIvkbqjsSfe3Q7VIFUNlKdOl5vhBGOrnQE3IsSiVQ66bvvxaovqaF/f2dGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=L51VZSt3; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=nqVoMSyD; arc=none smtp.client-ip=202.12.124.153
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 447597A0071;
+	Mon, 13 Jul 2026 10:22:29 -0400 (EDT)
+Received: from phl-imap-05 ([10.202.2.95])
+  by phl-compute-04.internal (MEProxy); Mon, 13 Jul 2026 10:22:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1783952549;
+	 x=1784038949; bh=CU2l/l+grvYULNyVB/JOkonr04ETPKXJ4oV6oaYMGmQ=; b=
+	L51VZSt3D0sQZJ86eoW8TsSiS8ndpbFjh1AzuSbpFef1lFXTImKnhKGwnqu4atjm
+	vD3gpcyxTFIxm3Xqc7LZVle6bYKzTiA5qTv1FXVHHXBi8Pt+8hUDWY0kxrfD3cnb
+	zpIypaARxo0b/yD6XT5RYv4nji6H8Dk8yuvb17833RBryUvU+5mrKZo525IxqkcX
+	waBzznApG32gmMdicRWNraHjfpKGEqh+Nxqw3QXktd4GHQ61X88lLRfYmmGi3b/p
+	FFELTNvB5QomRZzkGouMwCq3PpgpBAOrTcPNgZdF+zWVTM3TnDDc2PcBMPELDhSW
+	LjW3YRpc8Uadb6v8kwkqfA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1783952549; x=
+	1784038949; bh=CU2l/l+grvYULNyVB/JOkonr04ETPKXJ4oV6oaYMGmQ=; b=n
+	qVoMSyDbNfi1FdT/UDr2Pmtq0c4QEagBtoHOn31ROZm3wzlAhgwX/9OK/4j+VYse
+	95mSIso//1Ve6Hhsw+vv/qte/MKWAaknKjjU9+4OR5TgA5i8dCf/sY3f+WzZP9W/
+	2sFYMBj0f7booKL21Zi5CjAGJ71BWPU8FbEGZfFccfDTyJQ9GFeMHoUttMv1ojxE
+	BJ0VWes/Cnly+PkwWN9kOmiI9n2FSPVArbSUJ/S+viJbPr2fwLHik6yAtpkL/5/D
+	g8kfHXEYWCL2Iq9p6QByH0Qq3Nkjlrek09CJCElXk6g19faE0oNOtHTqzuZx66Wy
+	ZQHTkhTBayQKPYDAY6rkw==
+X-ME-Sender: <xms:ovRUajBIsXUgDABx0NEfhe7XgaVGldrd2Ka8482OnxT3TUjXZlfhsg>
+    <xme:ovRUakWwJWs7-0TirTG1dAFOwv1XVAKt4OLw7b1d_zepvDu25PgHBdOQNYAeXNfJc
+    6wLyyIPLvQC3_XNkuXvAmuz7BJezLZAZekhexUWrR99ZsDSqQQ0Bw>
+X-ME-Proxy-Cause: dmFkZTFqcwJE5anyfqiojVjksH5tB/3nDJOMgzaL4MffLvJCdssvyH+hKOtcXcDpBqa4sv
+    cTYGFVIOBQ9UuPNtXjB/V0Zqrjq2GMtsrV6GHk75lf46Ay7h6x7q+TmQuo3PrHDoreROk7
+    Rcv07HJ99rDqBInAKHe1BXoCwJ/z97EBkHOElbk9m5jcVnoI2AuqwN+DxJ8VYZMDJTKbuq
+    M5pgR8hSmdmg78onYSbwY9by5uzfaixHwRa+qRiG31tv9lA6cPC3l1yBm+kPz8idmp7iP9
+    zUWHqoKULz7Tzlx7EPCTQfbjmU4/FQCEi+d6ReWBh5D0rKurgS52grVfEKaF3lHstByRaJ
+    tRJjC5lZYI7v6OxRHVK0FjPjCseguZPND9Q8O6Ey+Z2RrbOA8yFYmFfpixuIaAtbA7jjn7
+    dCMDQMpWFsOI+nUF0+NB+EpLBTqmVXFJ17eEH6JoqDVoxGGDNvXsHvIGsEm26de4dNleKM
+    cjJZYp2Ov8juw5ckS/s8lvL8GH050Q93ZvsHaQpOaHb1EIpwdVN0EZ7sOz4HSRbNIOCFSc
+    /GjrJJJUIincyR2Zr2HVRr9MssT1yPnhNiRJZwybvWfRtNur9hFstqQBWjImsPzEA81ynM
+    DeOv+MiLUy/uRo3eXwLuqJHUFYwqKN4xlwrtnXT7OI0rzXM3VqxQIJO9yr8A
+X-ME-Proxy: <xmx:ovRUatfkPdirTgbKSaNUuFYpZUVi-yf6Jy3zt2hjYoVKF7RQTOzd8g>
+    <xmx:ovRUatCE0Bv0VvBTLq0LIFG-5IA8R6k-PFMd6sSE0NfitEs32Zq8vA>
+    <xmx:ovRUaoSWQJ0la1mNQ3pta5ssq090yuqSHS37h8M_CWd7Ln8wk_EOZA>
+    <xmx:ovRUaoJ4jP15A00r9YjOT0Ixaowe-VBEseQM5fypr7gUM_SB677qSg>
+    <xmx:pfRUanEiFrJI2pBYWuIeiVy1rvQeLM-iFP9W4UBxSWImEVlJkqzN0FjA>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id DC870182007E; Mon, 13 Jul 2026 10:22:25 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+X-ThreadId: ARmmoW1aQeCk
+Date: Mon, 13 Jul 2026 16:22:05 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Fernando Fernandez Mancera" <fmancera@suse.de>,
+ Netdev <netdev@vger.kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "David Ahern" <dsahern@kernel.org>,
+ "Simon Horman" <horms@kernel.org>, "Ido Schimmel" <idosch@nvidia.com>,
+ "Jason Gunthorpe" <jgg@ziepe.ca>, "Leon Romanovsky" <leon@kernel.org>,
+ "Andrew Lunn" <andrew+netdev@lunn.ch>,
+ "Anthony L Nguyen" <anthony.l.nguyen@intel.com>,
+ "Przemek Kitszel" <przemyslaw.kitszel@intel.com>,
+ "Elad Nachman" <enachman@marvell.com>,
+ "Saeed Mahameed" <saeedm@nvidia.com>, "Tariq Toukan" <tariqt@nvidia.com>,
+ "Mark Bloch" <mbloch@nvidia.com>, "Petr Machata" <petrm@nvidia.com>,
+ "Edward Cree" <ecree.xilinx@gmail.com>,
+ "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
+ "Alexandre Torgue" <alexandre.torgue@foss.st.com>,
+ "Arend van Spriel" <arend.vanspriel@broadcom.com>,
+ "Miri Korenblit" <miriam.rachel.korenblit@intel.com>,
+ "Keith Busch" <kbusch@kernel.org>, "Jens Axboe" <axboe@kernel.dk>,
+ "Christoph Hellwig" <hch@lst.de>, "Sagi Grimberg" <sagi@grimberg.me>,
+ "Chaitanya Kulkarni" <kch@nvidia.com>,
+ "Saurav Kashyap" <skashyap@marvell.com>,
+ "Javed Hasan" <jhasan@marvell.com>,
+ GR-QLogic-Storage-Upstream@marvell.com,
+ "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ "Nilesh Javali" <njavali@marvell.com>,
+ "Manish Rangankar" <mrangankar@marvell.com>,
+ "Varun Prakash" <varun@chelsio.com>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>,
+ "David Howells" <dhowells@redhat.com>,
+ "Marc Dionne" <marc.dionne@auristor.com>,
+ "Trond Myklebust" <trondmy@kernel.org>,
+ "Anna Schumaker" <anna@kernel.org>, "Chuck Lever" <cel@kernel.org>,
+ "Jeff Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
+ "Olga Kornievskaia" <okorniev@redhat.com>,
+ "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
+ "Marek Lindner" <marek.lindner@mailbox.org>,
+ "Simon Wunderlich" <sw@simonwunderlich.de>,
+ "Antonio Quartulli" <antonio@mandelbit.com>,
+ "Sven Eckelmann" <sven@narfation.org>,
+ "Nikolay Aleksandrov" <razor@blackwall.org>,
+ "Pablo Neira Ayuso" <pablo@netfilter.org>,
+ "Florian Westphal" <fw@strlen.de>, "Phil Sutter" <phil@nwl.cc>,
+ "Johannes Berg" <johannes@sipsolutions.net>,
+ "Matthieu Baerts" <matttbe@kernel.org>,
+ "Mat Martineau" <martineau@kernel.org>,
+ "Geliang Tang" <geliang@kernel.org>, "Julian Anastasov" <ja@ssi.bg>,
+ "Aaron Conole" <aconole@redhat.com>,
+ "Eelco Chaudron" <echaudro@redhat.com>,
+ "Ilya Maximets" <i.maximets@ovn.org>,
+ "Allison Henderson" <achender@kernel.org>,
+ "Jamal Hadi Salim" <jhs@mojatatu.com>, "Jiri Pirko" <jiri@resnulli.us>,
+ "Marcelo Ricardo Leitner" <marcelo.leitner@gmail.com>,
+ "Xin Long" <lucien.xin@gmail.com>,
+ "D. Wythe" <alibuda@linux.alibaba.com>,
+ "Dust Li" <dust.li@linux.alibaba.com>,
+ "Sidraya Jayagond" <sidraya@linux.ibm.com>,
+ "Wenjia Zhang" <wenjia@linux.ibm.com>,
+ "Mahanta Jambigi" <mjambigi@linux.ibm.com>,
+ "Tony Lu" <tonylu@linux.alibaba.com>, "Wen Gu" <guwen@linux.alibaba.com>,
+ "Jon Maloy" <jmaloy@redhat.com>,
+ "Steffen Klassert" <steffen.klassert@secunet.com>,
+ "Herbert Xu" <herbert@gondor.apana.org.au>,
+ "Vikas Gupta" <vikas.gupta@broadcom.com>,
+ "Rajashekar Hudumula" <rajashekar.hudumula@broadcom.com>,
+ "Justin Chen" <justin.chen@broadcom.com>,
+ "Bhargava Marreddy" <bhargava.marreddy@broadcom.com>,
+ "Nicolai Buchwitz" <nb@tipi-net.de>,
+ "Florian Fainelli" <florian.fainelli@broadcom.com>,
+ "Heiner Kallweit" <hkallweit1@gmail.com>,
+ "Krzysztof Kozlowski" <krzk@kernel.org>,
+ "Russell King" <rmk+kernel@armlinux.org.uk>, "Yao Zi" <me@ziyao.cc>,
+ "Yanteng Si" <siyanteng@cqsoftware.com.cn>,
+ "Maxime Chevallier" <maxime.chevallier@bootlin.com>,
+ "Julian Braha" <julianbraha@gmail.com>,
+ "Joey Lu" <a0987203069@gmail.com>,
+ "Shangjuan Wei" <weishangjuan@eswincomputing.com>,
+ "Chen-Yu Tsai" <wens@kernel.org>, "Inochi Amaoto" <inochiama@gmail.com>,
+ "Lad, Prabhakar" <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ "Qingfang Deng" <qingfang.deng@linux.dev>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Eric Biggers" <ebiggers@kernel.org>,
+ "Ethan Nelson-Moore" <enelsonmoore@gmail.com>,
+ "Ard Biesheuvel" <ardb@kernel.org>,
+ "Dmitry Safonov" <0x7f454c46@gmail.com>,
+ "Kuniyuki Iwashima" <kuniyu@google.com>, "Alyssa Ross" <hi@alyssa.is>,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+ "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+ "open list:NETRONOME ETHERNET DRIVERS" <oss-drivers@corigine.com>,
+ linux-net-drivers@amd.com, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-wireless@vger.kernel.org,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+ linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
+ b.a.t.m.a.n@lists.open-mesh.org,
+ "open list:ETHERNET BRIDGE" <bridge@lists.linux.dev>,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ mptcp@lists.linux.dev, lvs-devel@vger.kernel.org, dev@openvswitch.org,
+ rds-devel@oss.oracle.com, linux-sctp@vger.kernel.org,
+ linux-s390@vger.kernel.org,
+ "open list:TIPC NETWORK LAYER" <tipc-discussion@lists.sourceforge.net>
+Message-Id: <713178ff-0fb2-4f1b-90bc-9841cd42c20e@app.fastmail.com>
+In-Reply-To: <2256daf4-d03c-4a57-9d72-7a388d823f18@suse.de>
+References: <20260712013941.4570-1-fmancera@suse.de>
+ <20260712013941.4570-2-fmancera@suse.de>
+ <12ffac6a-649a-4e4a-8d12-0b48171e1d95@app.fastmail.com>
+ <2256daf4-d03c-4a57-9d72-7a388d823f18@suse.de>
+Subject: Re: [PATCH 01/13 RFC net-next] net: ipv4: introduce CONFIG_IPV4 to decouple
+ the IPv4 stack
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
-X-Proofpoint-ORIG-GUID: OaKVciHt5ms3xeiam6LYAR8GcfjrKy7o
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEzMDE0NiBTYWx0ZWRfX+yP7UxO3Vmg6
- zO2eOpITfoGH/pOOeRVAoSMZoO3BXw6PkYXEQ8DOMFEM6Li+wE0wUyr1GEnBetQ1IoyvwN33n+A
- M34VARYoR7mWPcPuIPIRM1xwHs+z6jPfwMq8P7p7jk58om4rQIvLdmVP7vBKuTo0nlx+ysn6bsZ
- FiBwX1wfGyeMDTHLj49KXI9CpJuDZKIwllrwYZPqVW1sKZUQZCGltlJMaQXv4D/6PikJMt6Lm6x
- kDF0jSugmlehacTyZ1Jb4F49Ha7Q1zhzmB7xkt9hh0YM2M7QWr+rmw7FNIBze2tGHlhVj81KljZ
- A23XHB2rNwyAx1e9rmLdX9EZ7p4+X+cQl/VeEBcjli+nzFlURscns1qhOfYeB6Jmw0+P2KWvYAd
- KBjqG8DhOIZUrPqwfzpm9LJPxWGHHvoKDMWGyDVa0vm4/MFQ7s1bDO7bM8i2do7PTaP2i1FRnir
- SXgAnWv/80jPudE4UGQ==
-X-Proofpoint-GUID: OaKVciHt5ms3xeiam6LYAR8GcfjrKy7o
-X-Authority-Analysis: v=2.4 cv=AfmB2XXG c=1 sm=1 tr=0 ts=6a54f0c8 cx=c_pps
- a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
- a=J_-Nd1mkAAAA:8 a=EUspDBNiAAAA:8 a=gbkwWSGpafuMt5R-whIA:9 a=QEXdDO2ut3YA:10
- a=3WC7DwWrALyhR5TkjVHa:22 a=n8ForQn92ZFaZtFqRdMw:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEzMDE0NiBTYWx0ZWRfX62nglDvBsl50
- t89XfdRMQIKG+X2bm5Yh5RVHnn+HwqOO744azlxUd2nGUuSXuvFfkK7alzKDJnpZEuo5masYAMc
- fwu/txzjtfp/KUVEqTt3GfQ2AT9PjLY=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-13_03,2026-07-10_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 phishscore=0 priorityscore=1501
- impostorscore=0 malwarescore=0 clxscore=1015 suspectscore=0 adultscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607130146
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.65 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[arndb.de,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[arndb.de:s=fm1,messagingengine.com:s=fm2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-38978-lists,linux-wireless=lfdr.de];
+	XM_UA_NO_VERSION(0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_TO(0.00)[googlemail.com,gmail.com];
-	FORGED_RECIPIENTS(0.00)[m:chunkeey@googlemail.com,m:tristmd@gmail.com,m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:tristan@talencesecurity.com,m:chunkeey@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oss.qualcomm.com:from_mime,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,vger.kernel.org:from_smtp,qualcomm.com:email,qualcomm.com:dkim,talencesecurity.com:email];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-38979-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER(0.00)[arnd@arndb.de,linux-wireless@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:fmancera@suse.de,m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:dsahern@kernel.org,m:horms@kernel.org,m:idosch@nvidia.com,m:jgg@ziepe.ca,m:leon@kernel.org,m:andrew+netdev@lunn.ch,m:anthony.l.nguyen@intel.com,m:przemyslaw.kitszel@intel.com,m:enachman@marvell.com,m:saeedm@nvidia.com,m:tariqt@nvidia.com,m:mbloch@nvidia.com,m:petrm@nvidia.com,m:ecree.xilinx@gmail.com,m:mcoquelin.stm32@gmail.com,m:alexandre.torgue@foss.st.com,m:arend.vanspriel@broadcom.com,m:miriam.rachel.korenblit@intel.com,m:kbusch@kernel.org,m:axboe@kernel.dk,m:hch@lst.de,m:sagi@grimberg.me,m:kch@nvidia.com,m:skashyap@marvell.com,m:jhasan@marvell.com,m:GR-QLogic-Storage-Upstream@marvell.com,m:James.Bottomley@hansenpartnership.com,m:martin.petersen@oracle.com,m:njavali@marvell.com,m:mrangankar@marvell.com,m:varun@chelsio.com,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:dhowells@redhat.com,m:marc.dionne@auristor.co
+ m,m:trondmy@kernel.org,m:anna@kernel.org,m:cel@kernel.org,m:jlayton@kernel.org,m:neil@brown.name,m:okorniev@redhat.com,m:Dai.Ngo@oracle.com,m:tom@talpey.com,m:marek.lindner@mailbox.org,m:sw@simonwunderlich.de,m:antonio@mandelbit.com,m:sven@narfation.org,m:razor@blackwall.org,m:pablo@netfilter.org,m:fw@strlen.de,m:phil@nwl.cc,m:johannes@sipsolutions.net,m:matttbe@kernel.org,m:martineau@kernel.org,m:geliang@kernel.org,m:ja@ssi.bg,m:aconole@redhat.com,m:echaudro@redhat.com,m:i.maximets@ovn.org,m:achender@kernel.org,m:jhs@mojatatu.com,m:jiri@resnulli.us,m:marcelo.leitner@gmail.com,m:lucien.xin@gmail.com,m:alibuda@linux.alibaba.com,m:dust.li@linux.alibaba.com,m:sidraya@linux.ibm.com,m:wenjia@linux.ibm.com,m:mjambigi@linux.ibm.com,m:tonylu@linux.alibaba.com,m:guwen@linux.alibaba.com,m:jmaloy@redhat.com,m:steffen.klassert@secunet.com,m:herbert@gondor.apana.org.au,m:vikas.gupta@broadcom.com,m:rajashekar.hudumula@broadcom.com,m:justin.chen@broadcom.com,m:bhargava.marreddy@broadcom.com,m:nb@t
+ ipi-net.de,m:florian.fainelli@broadcom.com,m:hkallweit1@gmail.com,m:krzk@kernel.org,m:rmk+kernel@armlinux.org.uk,m:me@ziyao.cc,m:siyanteng@cqsoftware.com.cn,m:maxime.chevallier@bootlin.com,m:julianbraha@gmail.com,m:a0987203069@gmail.com,m:weishangjuan@eswincomputing.com,m:wens@kernel.org,m:inochiama@gmail.com,m:prabhakar.mahadev-lad.rj@bp.renesas.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,redhat.com,nvidia.com,ziepe.ca,lunn.ch,intel.com,marvell.com,gmail.com,foss.st.com,broadcom.com,kernel.dk,lst.de,grimberg.me,hansenpartnership.com,oracle.com,chelsio.com,zeniv.linux.org.uk,suse.cz,auristor.com,brown.name,talpey.com,mailbox.org,simonwunderlich.de,mandelbit.com,narfation.org,blackwall.org,netfilter.org,strlen.de,nwl.cc,sipsolutions.net,ssi.bg,ovn.org,mojatatu.com,resnulli.us,linux.alibaba.com,linux.ibm.com,secunet.com,gondor.apana.org.au,tipi-net.de,armlinux.org.uk,ziyao.cc,cqsoftware.com.cn,bootlin.com,eswincomputing.com,bp.renesas.com,linux.dev,linuxfoundation.org,alyssa.is,vger.kernel.org,lists.osuosl.org,corigine.com,amd.com,st-md-mailman.stormreply.com,lists.infradead.org,lists.linux.dev,lists.open-mesh.org,openvswitch.org,oss.oracle.com,lists.sourceforge.net];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[arnd@arndb.de,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[arndb.de:+,messagingengine.com:+];
+	RCPT_COUNT_GT_50(0.00)[134];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless,netdev,kernel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[app.fastmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,messagingengine.com:dkim,arndb.de:from_mime,arndb.de:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 049FA74C5CA
+X-Rspamd-Queue-Id: 6F8FC74C961
 
+On Mon, Jul 13, 2026, at 16:00, Fernando Fernandez Mancera wrote:
+> On 7/12/26 1:01 PM, Arnd Bergmann wrote:
+>> On Sun, Jul 12, 2026, at 03:38, Fernando Fernandez Mancera wrote:
+>>> Historically, the IPv4 protocol has been linked to the core INET
+>>> subsystem. Because shared infrastructure like the TCP/UDP engine,
+>>> routing or INET hashtables live inside net/ipv4/, it has been impossible
+>>> to compile a kernel with only IPv6 support.
+>>>
+>>> This patch introduces the CONFIG_IPV4 Kconfig symbol, which is set to
+>>> 'def_bool y' for now. This does not allow to completely disable the
+>>> IPv4 stack yet but it lays the necessary build-system work for that
+>>> goal.
+>> 
+>> I expect this will cause additional (trivial) build regression in the
+>> next step when randconfig builds run into obscure corner cases, either
+>> with INET=y IPV4=n IPV6=y or with INET=y IPV4=n IPV6=n.
+>> 
+>> I can probably give your patch (with IPV4 visible or disabled) an
+>> early go on the randconfig tree to find these more quickly.
+>> If I run into regressions, should I just add more 'depends on IPV4',
+>> or do you have other plans?
+>> 
+>
+> Yes, I have a job running randconfig and verifying nothing breaks. If 
+> something breaks and it isn't core networking stack I would just make 
+> the Kconfig symbol depend on IPv4.
+>
+> Then later we will have more time to write a dedicate patch so it does 
+> not depend on IPv4.
 
-On Tue, 21 Apr 2026 13:49:25 +0000, Tristan Madani wrote:
-> From: Tristan Madani <tristan@talencesecurity.com>
-> 
-> This series adds missing bounds checks for firmware-controlled fields
-> in the carl9170 USB driver.
-> 
-> Patch 1 bounds the cmd callback memcpy to prevent heap overflow from
-> an oversized firmware response. Patch 2 fixes an off-by-two in the TX
-> status handler. Patch 3 caps the failover copy to rx_failover_missing
-> bytes, using min_t per Christian Lamparter.
-> 
-> [...]
+Ok
 
-Applied, thanks!
+>> Should we have some logic to ensure that at least one of IPV4 or
+>> IPV6 is enabled? I think this would work
+>> 
+>> config IPV4
+>>        bool "The IPv4 protocol" if IPV6
+>>        default INET
+>> 
+>> which only allows turning IPV4 off if IPV6 has enabled.
+>> 
+>
+> I do wonder, should we? I mean, I didn't try it off but I don't see why 
+> we should not allow a pure L2 system..
 
-[1/3] wifi: carl9170: bound memcpy length in cmd callback to prevent OOB read
-      commit: 4cde55b2feff9504d1f993ab80e84e7ccb62791c
-[2/3] wifi: carl9170: fix OOB read from off-by-two in TX status handler
-      commit: a3f42f1049ad80c65560d2b078ad426c3134f78d
-[3/3] wifi: carl9170: fix buffer overflow in rx_stream failover path
-      commit: a1a21995c2e1cc2ca6b2226cfe4f5f018370182a
+I expected a pure L2 system to be CONFIG_ETHERNET=y CONFIG_INET=n.
 
-Best regards,
--- 
-Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Which user-visible parts of CONFIG_INET would you want keep working
+when both v4 and v6 are disabled?
 
+     Arnd
 
