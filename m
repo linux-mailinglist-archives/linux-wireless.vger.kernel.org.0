@@ -1,171 +1,286 @@
-Return-Path: <linux-wireless+bounces-38971-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38972-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kIYNNEDSVGo8fQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-38971-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 13:55:44 +0200
+	id /6wTMC7yVGoGhwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-38972-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 16:11:58 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C19F74A990
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 13:55:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 326FD74C2F5
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 16:11:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sFZoJpE6;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38971-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38971-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="H4n/nlOz";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=UDB1CXcH;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="H4n/nlOz";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=UDB1CXcH;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38972-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38972-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=suse.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA2FD304A8ED
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 11:54:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 65D4432B0B64
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 14:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80CCD3F482A;
-	Mon, 13 Jul 2026 11:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E294A43C078;
+	Mon, 13 Jul 2026 14:01:01 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD1F3EFFB9
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 11:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D1E43B3D5
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 14:00:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783943678; cv=none; b=tjv9JRU+6brUdionZAqKho2GL5+t9eqhY5g0DmY1zYK38rFM95hpanOAS6uY/bNIa7chWvLjR2mxcEKA3J8Cp6JLH6sNwRIFgoJI4XIcLQwDVoSSqBRJ+dbSBVfFM+Lo5yCOWIo+io+86s8YGcZVO81CVk+k1SpWQPeVIUTjZx0=
+	t=1783951261; cv=none; b=sfvbCkqhF8e8bTNjFhz7Ddxt6jSbHUZvUcYF/B/FppZIgn1gAeggOvdwKphraZqpbqorVX7Pl3Y8RgZMYBtMUCVk6glGCHzGuSbX5Y+ozrLuDG+/yMjJX3GJqECeOnbcFRPVyhOY1XZoSjQDNSLUX7BfGwTlMmTHZlmVi7kw9lQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783943678; c=relaxed/simple;
-	bh=Xx8GPJ2nKgjX8oK3ouIjFUvUPuGPoItp/jdx3bi/nvc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QPaVkAFe5uZ+oOnPzJkuRw2dKLItLDGLaDPtn8AV/JAF+vRBdsIcfWyLAjx4w0SIWfTk6TSY9xW5bDh8wFj6ZRxh7lJ8M9p/ihkfq0Bs0BwHI2V4BxfrF6SGCsD9iJuu+Z/bjnmKGFCC1wo0PA5qW3dCEdt7OcGLwFyeTV0QPhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sFZoJpE6; arc=none smtp.client-ip=209.85.216.52
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38df94d4dd8so561556a91.2
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 04:54:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783943676; x=1784548476; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=x2fdTEqbfX9vvZ1ZNoboKP4zdBzByVQgUUXRVPv19eQ=;
-        b=sFZoJpE6GGZUlfgUYueAoOD30HUb3qrDwrSGB8X6qXzdHwJX3rhphxni3Yx/niZlGt
-         Oa5dJIwqxIeVwTedgYUoHJ+vD31ncffzHTTtrZQMlr8LMKQrfUQ3NJOZy9HgcbhlNO0V
-         4ud+XF+Pf1/NUzFINSou5dEsrdahtojMQHQs3JBonRvD1TZcNszRyfbLGiLXSWW345q4
-         1cetZnLfu4v2dgj6hQM8gxj0dROL8Eu5zqxiv2DbY8H2iMkloTOYJ7ZSNPgUtS+nM4t0
-         9FXt/POZnzbV5ZJ9Y1jg8o09prBjSI/PNWorsISJyWIxD1FfniAZFE9H4GLrub3ScmWE
-         UBfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783943676; x=1784548476;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=x2fdTEqbfX9vvZ1ZNoboKP4zdBzByVQgUUXRVPv19eQ=;
-        b=bNKTYN48F4oSRH7Yz7Oy6h1lxW7TAr4gXcsU2n/GgztG8eDj4u2itxyLxLjE7Wvup+
-         j79cZBCU6wfzc1vAsFN3hhkvzS1Mx6EyYlN2sjDtUAXd0hhPpw0JPLfelHQWgN21GN8g
-         5pk13yaYnF6fXUR+RYGrTLWFSswFNYfV4eB97hduaqBBaZ5fiVj3PlKPqk9NoUaG2zZI
-         CvnU9wtaY06uANF8zl/XGynRIqBQpcHxaMB49OjleZeNWKZpOoWUItODLsVYd7bpIbTb
-         lLCxq6wBF/ONwzwjsZ4v+KW374VX5C6+qhsdsnDUHmSGP5duPVxXUavGdYCECzTYDqz6
-         yiVA==
-X-Gm-Message-State: AOJu0Yy3xD3iuhiH4bl0BY56i+uqjgH/O/+qPBBauBBoJrVR5F+asAnh
-	lX1Q4OUHhi/+Azp6xSHlF4jjTwoN8cVTryuaUjStg7lpcW3WGZgakSpb
-X-Gm-Gg: AfdE7cnPpdCANDm8ljKPudrWkAsUDP5tFJdeGhFIEuRZho9K25uasIt+SSXWfHU22OH
-	5+7NO2jsre2aJedXHWdJmrw6dEg29sBkhiRTbMd1WxYSfb5vZhiQ/vqmswbbRgvrq4grFwOeojm
-	ZSDrgbzNCSIYgAvT5U2zMhszA2x1Jg98u8R1SkpwDhGrzo9DVGmrlIVmKg+aHztYbXeZ7c/TMFh
-	jbKOXp0R6d7Wl+nMm5I6EtsWd7yo8qdaKo0nf9OIJoRzehQKDIsvNpn1yhcQh7W0//mg+UzK0VD
-	GsNqpWzcAloy9ZLo73affx9cgR/MyO9ZNM7HGbnS8uuibyhyjuyhx+icws4DLrtN+YWdpFFPz43
-	le9omA22WP8c//tWYBZpAlJX0OcS8Hye2E5CnM49fYTxSwY8I3gJyAW3vdGQOO7HtxX+WA5bPHl
-	UKPPSLSoEJMvDEBk5N65tvjLyP/3I1/xB3fw8idx9wh1lllImhTlvdJkQ8q/ScjillODShNswAM
-	/dPTW+86YSd3T/PXLk7cvcvuOADziJ0gg==
-X-Received: by 2002:a17:90b:3943:b0:37f:9ce1:735a with SMTP id 98e67ed59e1d1-38dc7777c02mr9454667a91.27.1783943676460;
-        Mon, 13 Jul 2026 04:54:36 -0700 (PDT)
-Received: from localhost.localdomain ([101.251.7.10])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3118ee6080dsm51773930eec.17.2026.07.13.04.54.32
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 13 Jul 2026 04:54:36 -0700 (PDT)
-From: Laxman Acharya Padhya <acharyalaxman8848@gmail.com>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com
-Cc: linux-wireless@vger.kernel.org,
-	stable@vger.kernel.org,
-	Laxman Acharya Padhya <acharyalaxman8848@gmail.com>
-Subject: [PATCH] wifi: mt76: mt7996: validate default EEPROM firmware size
-Date: Mon, 13 Jul 2026 17:39:12 +0545
-Message-ID: <20260713115412.67095-1-acharyalaxman8848@gmail.com>
-X-Mailer: git-send-email 2.51.2
+	s=arc-20240116; t=1783951261; c=relaxed/simple;
+	bh=RRYwRbyEte7BfcMFt3ythO47XNbGmg72CFl/wCmqVnw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dgleTXGSVz3DMaG9eV9phaLMODKFLLvVsKWHQiSbji8VPKLG/yQR24SL4nOjE7XYlpaajSwBbwObQWmfUOjugj09wGb4oPMLuHxshM6t43srGs8HHBF7fLcKDhF4j/WDgbnq0Goa801jVzLdB9YyrqzFz6z5P4na9RSqD1G4h8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=H4n/nlOz; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=UDB1CXcH; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=H4n/nlOz; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=UDB1CXcH; arc=none smtp.client-ip=195.135.223.131
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 88EDB3E14;
+	Mon, 13 Jul 2026 14:00:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1783951256; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vcWXpKMSq59reI46D3PoMFlhf4bMsFOmDLO8bdkAy90=;
+	b=H4n/nlOzSbC6kEf08Mt5PCFch2SnG8tyBuOt05AtDFm3Sezfdg5yX593HaKA6aTuamPcwD
+	htbNFckzP54JbOfP4QSOBVCw/FrvgILSk8fo38hIutmTDtgGvUw8lBAOJFoO8skDLsbz9y
+	32wqjJELZLybOJ5KxnKomeAhyZCck9E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1783951256;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vcWXpKMSq59reI46D3PoMFlhf4bMsFOmDLO8bdkAy90=;
+	b=UDB1CXcHnCErcMegyp3uKFCagjRC+Png4e+SXpAjIKzmoie60e4uuOQZJlcwnWORqsY78F
+	7F2WW9VZXXdIhlCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1783951256; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vcWXpKMSq59reI46D3PoMFlhf4bMsFOmDLO8bdkAy90=;
+	b=H4n/nlOzSbC6kEf08Mt5PCFch2SnG8tyBuOt05AtDFm3Sezfdg5yX593HaKA6aTuamPcwD
+	htbNFckzP54JbOfP4QSOBVCw/FrvgILSk8fo38hIutmTDtgGvUw8lBAOJFoO8skDLsbz9y
+	32wqjJELZLybOJ5KxnKomeAhyZCck9E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1783951256;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vcWXpKMSq59reI46D3PoMFlhf4bMsFOmDLO8bdkAy90=;
+	b=UDB1CXcHnCErcMegyp3uKFCagjRC+Png4e+SXpAjIKzmoie60e4uuOQZJlcwnWORqsY78F
+	7F2WW9VZXXdIhlCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 40CF3779AE;
+	Mon, 13 Jul 2026 14:00:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id RWCfDZPvVGoTEQAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Mon, 13 Jul 2026 14:00:51 +0000
+Message-ID: <2256daf4-d03c-4a57-9d72-7a388d823f18@suse.de>
+Date: Mon, 13 Jul 2026 16:00:37 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/13 RFC net-next] net: ipv4: introduce CONFIG_IPV4 to
+ decouple the IPv4 stack
+To: Arnd Bergmann <arnd@arndb.de>, Netdev <netdev@vger.kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>,
+ Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ Andrew Lunn <andrew+netdev@lunn.ch>,
+ Anthony L Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Elad Nachman <enachman@marvell.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+ Petr Machata <petrm@nvidia.com>, Edward Cree <ecree.xilinx@gmail.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Arend van Spriel <arend.vanspriel@broadcom.com>,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+ Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+ Chaitanya Kulkarni <kch@nvidia.com>, Saurav Kashyap <skashyap@marvell.com>,
+ Javed Hasan <jhasan@marvell.com>, GR-QLogic-Storage-Upstream@marvell.com,
+ "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Nilesh Javali <njavali@marvell.com>,
+ Manish Rangankar <mrangankar@marvell.com>, Varun Prakash
+ <varun@chelsio.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>,
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+ Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+ NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
+ Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+ Marek Lindner <marek.lindner@mailbox.org>,
+ Simon Wunderlich <sw@simonwunderlich.de>,
+ Antonio Quartulli <antonio@mandelbit.com>,
+ Sven Eckelmann <sven@narfation.org>,
+ Nikolay Aleksandrov <razor@blackwall.org>,
+ Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
+ Phil Sutter <phil@nwl.cc>, Johannes Berg <johannes@sipsolutions.net>,
+ Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>,
+ Geliang Tang <geliang@kernel.org>, Julian Anastasov <ja@ssi.bg>,
+ Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
+ Ilya Maximets <i.maximets@ovn.org>, Allison Henderson <achender@kernel.org>,
+ Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+ Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+ Xin Long <lucien.xin@gmail.com>, "D. Wythe" <alibuda@linux.alibaba.com>,
+ Dust Li <dust.li@linux.alibaba.com>, Sidraya Jayagond
+ <sidraya@linux.ibm.com>, Wenjia Zhang <wenjia@linux.ibm.com>,
+ Mahanta Jambigi <mjambigi@linux.ibm.com>, Tony Lu
+ <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
+ Jon Maloy <jmaloy@redhat.com>,
+ Steffen Klassert <steffen.klassert@secunet.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ Vikas Gupta <vikas.gupta@broadcom.com>,
+ Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>,
+ Justin Chen <justin.chen@broadcom.com>,
+ Bhargava Marreddy <bhargava.marreddy@broadcom.com>,
+ Nicolai Buchwitz <nb@tipi-net.de>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Russell King <rmk+kernel@armlinux.org.uk>,
+ Yao Zi <me@ziyao.cc>, Yanteng Si <siyanteng@cqsoftware.com.cn>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Julian Braha <julianbraha@gmail.com>, Joey Lu <a0987203069@gmail.com>,
+ Shangjuan Wei <weishangjuan@eswincomputing.com>,
+ Chen-Yu Tsai <wens@kernel.org>, Inochi Amaoto <inochiama@gmail.com>,
+ "Lad, Prabhakar" <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ Qingfang Deng <qingfang.deng@linux.dev>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Eric Biggers <ebiggers@kernel.org>,
+ Ethan Nelson-Moore <enelsonmoore@gmail.com>, Ard Biesheuvel
+ <ardb@kernel.org>, Dmitry Safonov <0x7f454c46@gmail.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, Alyssa Ross <hi@alyssa.is>,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+ "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+ "open list:NETRONOME ETHERNET DRIVERS" <oss-drivers@corigine.com>,
+ linux-net-drivers@amd.com, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-wireless@vger.kernel.org,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+ linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
+ b.a.t.m.a.n@lists.open-mesh.org,
+ "open list:ETHERNET BRIDGE" <bridge@lists.linux.dev>,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ mptcp@lists.linux.dev, lvs-devel@vger.kernel.org, dev@openvswitch.org,
+ rds-devel@oss.oracle.com, linux-sctp@vger.kernel.org,
+ linux-s390@vger.kernel.org,
+ "open list:TIPC NETWORK LAYER" <tipc-discussion@lists.sourceforge.net>
+References: <20260712013941.4570-1-fmancera@suse.de>
+ <20260712013941.4570-2-fmancera@suse.de>
+ <12ffac6a-649a-4e4a-8d12-0b48171e1d95@app.fastmail.com>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <12ffac6a-649a-4e4a-8d12-0b48171e1d95@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Flag: NO
+X-Spam-Score: -1.01
+X-Spam-Level: 
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-38971-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,redhat.com,nvidia.com,ziepe.ca,lunn.ch,intel.com,marvell.com,gmail.com,foss.st.com,broadcom.com,kernel.dk,lst.de,grimberg.me,hansenpartnership.com,oracle.com,chelsio.com,zeniv.linux.org.uk,suse.cz,auristor.com,brown.name,talpey.com,mailbox.org,simonwunderlich.de,mandelbit.com,narfation.org,blackwall.org,netfilter.org,strlen.de,nwl.cc,sipsolutions.net,ssi.bg,ovn.org,mojatatu.com,resnulli.us,linux.alibaba.com,linux.ibm.com,secunet.com,gondor.apana.org.au,tipi-net.de,armlinux.org.uk,ziyao.cc,cqsoftware.com.cn,bootlin.com,eswincomputing.com,bp.renesas.com,linux.dev,linuxfoundation.org,alyssa.is,vger.kernel.org,lists.osuosl.org,corigine.com,amd.com,st-md-mailman.stormreply.com,lists.infradead.org,lists.linux.dev,lists.open-mesh.org,openvswitch.org,oss.oracle.com,lists.sourceforge.net];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:linux-wireless@vger.kernel.org,m:stable@vger.kernel.org,m:acharyalaxman8848@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[acharyalaxman8848@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[acharyalaxman8848@gmail.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-38972-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:arnd@arndb.de,m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:dsahern@kernel.org,m:horms@kernel.org,m:idosch@nvidia.com,m:jgg@ziepe.ca,m:leon@kernel.org,m:andrew+netdev@lunn.ch,m:anthony.l.nguyen@intel.com,m:przemyslaw.kitszel@intel.com,m:enachman@marvell.com,m:saeedm@nvidia.com,m:tariqt@nvidia.com,m:mbloch@nvidia.com,m:petrm@nvidia.com,m:ecree.xilinx@gmail.com,m:mcoquelin.stm32@gmail.com,m:alexandre.torgue@foss.st.com,m:arend.vanspriel@broadcom.com,m:miriam.rachel.korenblit@intel.com,m:kbusch@kernel.org,m:axboe@kernel.dk,m:hch@lst.de,m:sagi@grimberg.me,m:kch@nvidia.com,m:skashyap@marvell.com,m:jhasan@marvell.com,m:GR-QLogic-Storage-Upstream@marvell.com,m:James.Bottomley@hansenpartnership.com,m:martin.petersen@oracle.com,m:njavali@marvell.com,m:mrangankar@marvell.com,m:varun@chelsio.com,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:dhowells@redhat.com,m:marc.dionne@auristor.com,m
+ :trondmy@kernel.org,m:anna@kernel.org,m:cel@kernel.org,m:jlayton@kernel.org,m:neil@brown.name,m:okorniev@redhat.com,m:Dai.Ngo@oracle.com,m:tom@talpey.com,m:marek.lindner@mailbox.org,m:sw@simonwunderlich.de,m:antonio@mandelbit.com,m:sven@narfation.org,m:razor@blackwall.org,m:pablo@netfilter.org,m:fw@strlen.de,m:phil@nwl.cc,m:johannes@sipsolutions.net,m:matttbe@kernel.org,m:martineau@kernel.org,m:geliang@kernel.org,m:ja@ssi.bg,m:aconole@redhat.com,m:echaudro@redhat.com,m:i.maximets@ovn.org,m:achender@kernel.org,m:jhs@mojatatu.com,m:jiri@resnulli.us,m:marcelo.leitner@gmail.com,m:lucien.xin@gmail.com,m:alibuda@linux.alibaba.com,m:dust.li@linux.alibaba.com,m:sidraya@linux.ibm.com,m:wenjia@linux.ibm.com,m:mjambigi@linux.ibm.com,m:tonylu@linux.alibaba.com,m:guwen@linux.alibaba.com,m:jmaloy@redhat.com,m:steffen.klassert@secunet.com,m:herbert@gondor.apana.org.au,m:vikas.gupta@broadcom.com,m:rajashekar.hudumula@broadcom.com,m:justin.chen@broadcom.com,m:bhargava.marreddy@broadcom.com,m:nb@tipi
+ -net.de,m:florian.fainelli@broadcom.com,m:hkallweit1@gmail.com,m:krzk@kernel.org,m:rmk+kernel@armlinux.org.uk,m:me@ziyao.cc,m:siyanteng@cqsoftware.com.cn,m:maxime.chevallier@bootlin.com,m:julianbraha@gmail.com,m:a0987203069@gmail.com,m:weishangjuan@eswincomputing.com,m:wens@kernel.org,m:inochiama@gmail.com,m:prabhakar.mahadev-lad.rj@bp.renesas.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[fmancera@suse.de,linux-wireless@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[suse.de:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fmancera@suse.de,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_GT_50(0.00)[134];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	TAGGED_RCPT(0.00)[linux-wireless,netdev,kernel];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,suse.de:from_mime,suse.de:dkim,suse.de:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4C19F74A990
+X-Rspamd-Queue-Id: 326FD74C2F5
 
-The default EEPROM firmware is parsed and copied as a full EEPROM
-without checking its length. A truncated file can make the driver
-read beyond the firmware buffer during variant validation or the
-fallback copy.
+On 7/12/26 1:01 PM, Arnd Bergmann wrote:
+> On Sun, Jul 12, 2026, at 03:38, Fernando Fernandez Mancera wrote:
+>> Historically, the IPv4 protocol has been linked to the core INET
+>> subsystem. Because shared infrastructure like the TCP/UDP engine,
+>> routing or INET hashtables live inside net/ipv4/, it has been impossible
+>> to compile a kernel with only IPv6 support.
+>>
+>> This patch introduces the CONFIG_IPV4 Kconfig symbol, which is set to
+>> 'def_bool y' for now. This does not allow to completely disable the
+>> IPv4 stack yet but it lays the necessary build-system work for that
+>> goal.
+> 
+> I expect this will cause additional (trivial) build regression in the
+> next step when randconfig builds run into obscure corner cases, either
+> with INET=y IPV4=n IPV6=y or with INET=y IPV4=n IPV6=n.
+> 
+> I can probably give your patch (with IPV4 visible or disabled) an
+> early go on the randconfig tree to find these more quickly.
+> If I run into regressions, should I just add more 'depends on IPV4',
+> or do you have other plans?
+> 
 
-Reject files shorter than MT7996_EEPROM_SIZE before parsing or
-copying the firmware.
+Yes, I have a job running randconfig and verifying nothing breaks. If 
+something breaks and it isn't core networking stack I would just make 
+the Kconfig symbol depend on IPv4.
 
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Then later we will have more time to write a dedicate patch so it does 
+not depend on IPv4.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Laxman Acharya Padhya <acharyalaxman8848@gmail.com>
----
- drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+> Should we have some logic to ensure that at least one of IPV4 or
+> IPV6 is enabled? I think this would work
+> 
+> config IPV4
+>        bool "The IPv4 protocol" if IPV6
+>        default INET
+> 
+> which only allows turning IPV4 off if IPV6 has enabled.
+> 
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
-index ac05f7d75d63..ec33521db564 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
-@@ -150,6 +150,12 @@ mt7996_eeprom_check_or_use_default(struct mt7996_dev *dev, bool use_default)
- 		goto out;
- 	}
- 
-+	if (fw->size < MT7996_EEPROM_SIZE) {
-+		dev_err(dev->mt76.dev, "Invalid default bin size\n");
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
- 	if (!use_default && mt7996_eeprom_variant_valid(dev, fw->data))
- 		goto out;
- 
--- 
-2.51.2
+I do wonder, should we? I mean, I didn't try it off but I don't see why 
+we should not allow a pure L2 system..
 
+Thanks,
+Fernando.
 
