@@ -1,89 +1,107 @@
-Return-Path: <linux-wireless+bounces-38924-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38925-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7It3Ap5GVGpykAMAu9opvQ
-	(envelope-from <linux-wireless+bounces-38924-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 03:59:58 +0200
+	id U8o+EZxHVGqbkAMAu9opvQ
+	(envelope-from <linux-wireless+bounces-38925-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 04:04:12 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B6C2746852
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 03:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F0F574686F
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 04:04:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WkPV+UQt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38924-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38924-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=lzZarns4;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=ZXDENw+O;
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38925-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38925-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 53BEC30088BA
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 01:59:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 68E0C30094F3
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 02:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A8228C854;
-	Mon, 13 Jul 2026 01:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4402D063E;
+	Mon, 13 Jul 2026 02:04:09 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499A22641CA
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 01:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BDE2116F4
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 02:04:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783907995; cv=none; b=QVAAfBDIVKxAiDU4ODsRadWXn9PCBahI0c7hQfZFCGQstppOR5p8l0a4wdbjEaFw9/CrjzEOoeFnBebOqSeRHNiaaC6qb+1Zmy/1SRALsWygbNGYByeq9cXTD9CFOv/y9yw2PEGGlet/0HnBh8tpf6PDeHQfPgRSi+sBbFIwNmQ=
+	t=1783908249; cv=none; b=faE+y37RiKUXLhPL/7RZQgjCQMCRETfJDDa7i7D0DjLla2iv8NRddM9RwsSVYOuzzHzpFnEhPt/9KZgZhpMKAyDaQvwQWLvrGH7Oe6cIOP1lrO/CcJiozdvonmmCGzj6PHTydT27yLdWmjVkR4PB9LdKx5/oJNJ2FVRwLuzvONM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783907995; c=relaxed/simple;
-	bh=+11yWNOdd8cBhzP4+Mwsu4bHfxAH2qECK88s/cKMByY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KGCh3hHoKkdKQKSMLoHzy3uclWOBDcViKYwdq0torXt7OhHvjuM3Vg651+Dzsm6dY2Ztuf8MxkIL78P8rNcpiCcaL7VEwG3QXzd1hNFRn6ouhtra8LXDoM/3UEQTjYkYxKtViaztRZDws6tn4U5w3+AIC/5Sn/m0lf2rGVe7Avo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WkPV+UQt; arc=none smtp.client-ip=209.85.216.45
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-385ea3ce80dso2922368a91.2
-        for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 18:59:54 -0700 (PDT)
+	s=arc-20240116; t=1783908249; c=relaxed/simple;
+	bh=SDEQdz3SvnCqfp9Vkg5u3uZLgN3RRhGZsDLR3vL20hU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BSS6W8TJALwi7cXvSmfLr8VLsK2Yfwm94fw2KoV6KHaqIySqgEPp3LbdIh74rQQFBSvZ7XNK6J3GQDH+apkB3Z/IJ87wV8bkv1yjYR7QQFom1IodDIZNypUxah+beZB+5Lc05Ji9nGlNS2opP6Rq8n06v2hPB8dpaS6T6Bu6pvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=lzZarns4; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ZXDENw+O; arc=none smtp.client-ip=205.220.180.131
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66D0kBxX4018605
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 02:04:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=IqI7QBEnD99A9xQfzy37mGvJ6+18Nd5vcj2
+	Jej2Ru9I=; b=lzZarns4DcOH3Adkezj1JAQsshicXcOPihdBlu3bOElC//5SeUm
+	qwhiUfoBo9XGqO8fPoL4mPmN3LM+ZYPKeMJO2Q2Wduv5iucncbDxcgKR2Z+x/ObJ
+	X8hZiFDf9CbwhUbDVPOtX8Bg8PNuPYLO7kquxIii6+6h+T0YkhFC5iFFZhXIJtHK
+	IrC2R3/MWwzNlmsN5cUfMPKn8UKW/0/A4weZN6Y6BhW/bAw8V85JhTUSA696kHfq
+	rHLpF3G2qELSpdqnvSXx9EqjZyBCdbe6HxrPskpJPHlC77hmw3xgvuhwHjn7q/wz
+	EB80rOB+OMaT76n5iq5wiuEYrLbGn15z4Ow==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fbe913ytj-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 02:04:06 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cc7e86e7c5so52821815ad.3
+        for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 19:04:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783907994; x=1784512794; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1783908246; x=1784513046; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=g6ZY0A81ZwFH7zPrXD3IEMLtteDysZZzXtDeInBjqMg=;
-        b=WkPV+UQtRkYbHAtVc3mieuguqORhZmP33obXxziiE3hUOUk014tGZ4LUW/Py9RhiSC
-         s1QLNG1DLB2b956AHPNYlcTJpVbKo9EODsTL9CxYDNFivKzZWG/2utpGJ2vQd/EvEJZT
-         h0YIlKFoHRTGGaEQbdGoWwtB5usGIN1PHNHMvZYU8XW63/KLD95pWA5q44DFStDE2X9C
-         GjxglQzmK0O7f4NgxfEwKzEjT3ua0jixg7KxKXuQ+8xgv8g0+piqBCsPyuTLlPN6KhTt
-         xq/S0PLy7UOYBbSuaq7hzLZc1qHA4iQvbuHIxor/LVTo5O6Vpg1CSfQBEwkUJo61X9p/
-         KMtw==
+        bh=IqI7QBEnD99A9xQfzy37mGvJ6+18Nd5vcj2Jej2Ru9I=;
+        b=ZXDENw+OUhJ+Eu1XJF8KauEDZTnimqI3Mia9bLnx4CajSODMUFEs3w4yaZ4V+gcY+t
+         iz2kIgnm0DVHJ3o9yZrXWkGzB/P5HY93fSwJSitnjbUl3JRnvOyY92p/31KokaXUhWkK
+         hdMhlyUD9k+K16V9WKBI5opUxcKwTsQ1wKMpRaZRdUeL2JerO5eRt9IKzl2gtGU5pMQr
+         P3QoYrZyfy4M5tnC5H6+11moopdAFCJobKKizkppJG1WeQ2sg5jsbK7z4YdRvaywiNFX
+         NOLj7Q5S9RrX+8LERmGDyHGC/Y/RXU/zdPRS0YkHnDFippDXi/WWhN0soGddHBhSEJSP
+         RP3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783907994; x=1784512794;
+        d=1e100.net; s=20251104; t=1783908246; x=1784513046;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=g6ZY0A81ZwFH7zPrXD3IEMLtteDysZZzXtDeInBjqMg=;
-        b=LJmobruTjvt/NfB8upARpXsRqq1S/Ybm8mOTwfMUs1687Bgd5J4GmYvSv4kpgLu9EZ
-         bIy9kSOZME5vWrVoqXky4N2v76ZyxyDoj99OhBmdl5yrJOgmQOX44gmg+o5qxlYmiOnJ
-         QuWQaydXRSrfHSX2F4lDvF8sUD05VWEof7FZRGTdPYydeDMEnRiDMvVsQ4DkthQtNlr1
-         Q6d8BW9s14Rv4ySbuucNO9XB3PK6yeg8uJGXm/qs3inncmcVSsHGHOzyDJKyRMyjIBFk
-         PpzNprzWCRBv2BrdkRBbgtyl43hRAkxz4GTpMlFw8+F2XMvFAriTjiG/oomDX2V8SSd6
-         4QsA==
-X-Gm-Message-State: AOJu0Ywois/LKJUjRtwL/TbcptPAc1YwCpV4GH1KVhinlK10jAYo2dBQ
-	7uao+DCCkpY16RmoaUy5nyjbYOy9OnnZmjTh4SUWzcsPi/0jzHRLEP9e9oTAfg==
-X-Gm-Gg: AfdE7cneYucE3+aG3u1UerpTQgAoPnrVHMXpJhVuNaIKxy/PU7ug0cJZrXXLbjvM0PK
-	Dxsw/VHhUWpSyIQiu0GIRQYMO4jm4ECeRRIOP/7+ydvFShZ5lnCKSavmZJ3YolfOYc/Gt5jtQqS
-	TH0t50klAbHc8UwyUGl+19oWtDvgVjwTYuOK9vKAsqbVSAk21tTJo8yXsvm+m8bc0FepWhOsVqf
-	1nyV/G7ha2+jcMSCFwi+rosY5jIxJwTie5DwcT5OGbGQ1bjcA/RChCsOjX51bOZvpd0GAJ3MCZf
-	Boqt4nj64FxI/arAJ5Nb2dNZiCgLgTCgPfyq5dfXYKyVWfD8nUbwAu/gsL3YHg8tI2VjA96MgC8
-	Sid5bXgwEZetr+b5yE3JSGsCgfHtOUqP+KZuGMiNWT7vWXDaF9dLY7GV1O+rracvfQBf8UnSuUQ
-	9FDJ9MGoMoq8YvvyQeggi11g+wraUOCoI2KdyUo4iSvPRMj4LYmMuT1ZYVFvCQhuKSY7mQNyhY5
-	BMh1co=
-X-Received: by 2002:a17:90b:5883:b0:37f:9cdf:f0af with SMTP id 98e67ed59e1d1-38dc780f6c9mr6851162a91.30.1783907993608;
-        Sun, 12 Jul 2026 18:59:53 -0700 (PDT)
-Received: from deepanshu-kernel-hacker.. ([2405:201:682f:383f:6251:ecfe:10d4:faf8])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31174ac14f2sm68369573eec.27.2026.07.12.18.59.50
+        bh=IqI7QBEnD99A9xQfzy37mGvJ6+18Nd5vcj2Jej2Ru9I=;
+        b=PBmDhqyS6uDir+dY2npEIGdNvtRlcnsdVmma2rjeUTd8xqaZpmEbEIE0W8N0eqSGWK
+         KG1MEBeCaQPzO6OnbfNXB4XJZGbEvphsd+vRc8VUtcxs1deiBTYf7Sbfu6e0+n+gTUQg
+         r8fxiLwYZrfsi95yLr1zWvIVTplb/i6OwUBW2Bw6PgJ+n+LB8WfNU8QGM3jB/zRel0Ai
+         4dmBM6AOO+eTbmXnWN871Tv/gjZSYCGoFCLkyt07aRXbIKgc+rl+/ZXTI82rZNlnIK2p
+         pVYnHSiVznDMdD898UT2qEDkmffw1H49/ChSHSupqX+FQhS8uc547JXVYeT0gimaBJgx
+         tTjA==
+X-Forwarded-Encrypted: i=1; AHgh+RqnjwdgfDDPmeEHYbIJr5pNDjln6bmmHZ9vh4qIAjmF+8eQMSpdhTl1W/QP5MovmmCW7gKB1w6hKmB6ZxNJmw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfSMgWEz0LJJY5FqaXigJCkNGXNaHvkBMOejWxC7VPkO1cOfGW
+	LcGwDvhQZ62Be/K1fAKCYGBk0OlWVRf885MADb5gb3gUCLFq3W9nyqTyeXQjv1BbF8gANTao7oN
+	3N5JOVSTTaLXa9J0gs4ES7BReLflmUdiZZJVNe2ZN/SfV7Z8MQezvl+h1GQJt3inV7HUk0w==
+X-Gm-Gg: AfdE7cnRyUaLjoTHxCsuoACJnbU1qSlMZVgccoCD6vX1dvYznXLavNNbG7Yf7YnXtno
+	Uz/eJk9yXs7T1rGZHZQyO+rP75Usmbqi3RISgCWbqvHYRR1zcXiVFGHM3fqV0JXM1459R+L5vwq
+	qTolat+edhI7K6iOyIkQdCcRlt3rrpSIUtv3lfSJu73vkPmhWqqLdBublRD4fSce1yvlv+dldQR
+	H8gY6LlvWKU6Gc8AQj+CuzAel4GFCrk+BX9FlpW9ncEdxB7774JLW7RKAOxtoLGO3PYVgBxGc35
+	uIREBea31G0Q3FkYB8hHKPL63Stm0QgFmrGWmTGDgSzCSthuqxgpz3FHw6ieJz6AFkEC0Ny/4ki
+	z9w5OYmNyDn8YBP82L704BFqJT3qllhveVSERz8y4WvV2fdgxpDCKG+9HJkJKLc+tqVtvJA==
+X-Received: by 2002:a17:903:2d1:b0:2c9:cb1b:64d6 with SMTP id d9443c01a7336-2ce9eabdb5cmr66409855ad.19.1783908245912;
+        Sun, 12 Jul 2026 19:04:05 -0700 (PDT)
+X-Received: by 2002:a17:903:2d1:b0:2c9:cb1b:64d6 with SMTP id d9443c01a7336-2ce9eabdb5cmr66409605ad.19.1783908245426;
+        Sun, 12 Jul 2026 19:04:05 -0700 (PDT)
+Received: from Z2-SFF-G9-MQ.ap.qualcomm.com (i-global052.qualcomm.com. [199.106.103.52])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bf7678sm91862655ad.20.2026.07.12.19.04.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jul 2026 18:59:52 -0700 (PDT)
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+b6ce23950fd636e6efb6@syzkaller.appspotmail.com
-Subject: [PATCH] mac80211: don't encrypt pre-auth (ETH_P_PREAUTH) frames
-Date: Mon, 13 Jul 2026 07:29:46 +0530
-Message-ID: <20260713015946.44636-1-kartikey406@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Sun, 12 Jul 2026 19:04:05 -0700 (PDT)
+From: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+To: jjohnson@kernel.org
+Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+Subject: [PATCH ath-next] wifi: ath11k: add purwa-iot-evk and qcs6490-rb3gen2 to usecase firmware table
+Date: Mon, 13 Jul 2026 10:03:59 +0800
+Message-Id: <20260713020359.3618193-1-miaoqing.pan@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -91,80 +109,103 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=TbymcxQh c=1 sm=1 tr=0 ts=6a544796 cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=b9+bayejhc3NMeqCNyeLQQ==:17
+ a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22 a=EUspDBNiAAAA:8
+ a=VTncd2SxVE48FkO8qcgA:9 a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEzMDAxOSBTYWx0ZWRfX6pZ5tQaPDe3t
+ Kv+Ril5H41ugU1jt9Pm0M3qbO2Il2N0IgowepL084wv1LqcPI+d+6ag+mGXMB4JqUfwC/Oz7Xbr
+ o6ItG/DTDi/F1OsAnSqsgO/0l8bnLcc=
+X-Proofpoint-GUID: ykGaYs3LB12g7WiQeQNY9iVB-vx0nomn
+X-Proofpoint-ORIG-GUID: ykGaYs3LB12g7WiQeQNY9iVB-vx0nomn
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEzMDAxOSBTYWx0ZWRfX9PrSFXgaqZSh
+ RTtGV6lnrQMIEVxwmYJk3+0p+qaIdcLWUXP8eY4mRxanb/uJ9sNaxmVbkfTCBEfr2MnwhlqAdrs
+ w0eYENgYs/EMoUgcJtR8pZrTaquG/Joh4iSh3EdQMfHvVrvisHvEPSx0JpcJqUpBnszKMUGk40Y
+ DUkzueW+YSsFKDfk73wkqjQcneiAor8M8i/kHW4VwBKeIwBGukQbP072c0cq3jNdhk9moOHjeFe
+ JFg8iOFzPLEG2OupsDHyoYLgXCNWArOVRgtw/hoU6SXRgWAmPoPWWLAUW9hdZ/6RkJHl+hXFIo7
+ 3r7S3m0gg3nXXWPBne+IsZ8Mz8PK1EiojTGoldAWFYKp2JYhHYE88+zJQywfWDRqxqSKECjYeBx
+ iyPqWX6R93Psa/xPmefGkGLTnZf8XLmFJobzaUFUt5MMI5y+rHZqwi+pb78yssWazQ2Z7Q5UBNB
+ fh9f/m55SQ/9xFGSAZQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-12_08,2026-07-10_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
+ adultscore=0 lowpriorityscore=0 phishscore=0 spamscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607130019
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-38924-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER(0.00)[kartikey406@gmail.com,linux-wireless@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,syzkaller.appspotmail.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-38925-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:kartikey406@gmail.com,m:syzbot+b6ce23950fd636e6efb6@syzkaller.appspotmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:jjohnson@kernel.org,m:ath11k@lists.infradead.org,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:miaoqing.pan@oss.qualcomm.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[miaoqing.pan@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kartikey406@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[miaoqing.pan@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,b6ce23950fd636e6efb6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,syzkaller.appspot.com:url]
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5B6C2746852
+X-Rspamd-Queue-Id: 9F0F574686F
 
-Pre-authentication frames (ETH_P_PREAUTH, 0x88C7) are sent before
-the authentication handshake completes with the target AP, so no
-encryption key exists for them yet. Unlike normal EAPOL frames
-(ETH_P_8021X, 0x888E) which are registered as the control port
-protocol, pre-auth frames are not recognized as control port frames,
-causing the kernel to incorrectly assign the current AP's key and
-attempt encryption, resulting in a WARN_ON in ieee80211_encrypt_tx_skb
-when the cipher is not handled.
+Add purwa-iot-evk and qcs6490-rb3gen2 platform support to the
+usecase firmware lookup table for WCN6855 hw2.1.
 
-Fix this by setting IEEE80211_TX_INTFL_DONT_ENCRYPT for pre-auth
-frames in ieee80211_tx_h_check_control_port_protocol(), so that
-key selection skips them and they are sent unencrypted as intended.
+These platforms use the nfa765 firmware path for usecase-based
+firmware selection.
 
-Reported-by: syzbot+b6ce23950fd636e6efb6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b6ce23950fd636e6efb6
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Also reorder the table entries by compatible string.
+
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-04685-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
+
+Signed-off-by: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
 ---
- net/mac80211/tx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath11k/core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index c13b209fad47..b3acfd69380f 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -557,6 +557,9 @@ ieee80211_tx_h_check_control_port_protocol(struct ieee80211_tx_data *tx)
- 		info->flags |= IEEE80211_TX_CTL_USE_MINRATE;
- 	}
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 8dacc878c006..8039124e7832 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -1049,9 +1049,11 @@ static const struct __ath11k_core_usecase_firmware_table {
+ 	const char *compatible;
+ 	const char *firmware_name;
+ } ath11k_core_usecase_firmware_table[] = {
++	{ ATH11K_HW_WCN6855_HW21, "qcom,hamoa-iot-evk", "nfa765"},
+ 	{ ATH11K_HW_WCN6855_HW21, "qcom,lemans-evk", "nfa765"},
+ 	{ ATH11K_HW_WCN6855_HW21, "qcom,monaco-evk", "nfa765"},
+-	{ ATH11K_HW_WCN6855_HW21, "qcom,hamoa-iot-evk", "nfa765"},
++	{ ATH11K_HW_WCN6855_HW21, "qcom,purwa-iot-evk", "nfa765"},
++	{ ATH11K_HW_WCN6855_HW21, "qcom,qcs6490-rb3gen2", "nfa765"},
+ 	{ /* Sentinel */ }
+ };
  
-+	if (tx->skb->protocol == htons(ETH_P_PREAUTH))
-+		info->flags |= IEEE80211_TX_INTFL_DONT_ENCRYPT;
-+
- 	return TX_CONTINUE;
- }
- 
+
+base-commit: 951dc0a744e4dc8490935316d3b76e23990bde3c
 -- 
-2.43.0
+2.34.1
 
 
