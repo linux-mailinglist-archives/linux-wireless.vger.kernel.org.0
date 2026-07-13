@@ -1,360 +1,180 @@
-Return-Path: <linux-wireless+bounces-38989-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38990-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3KuCLAobVWoIkAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-38989-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 19:06:18 +0200
+	id EMsyNuQoVWqzkgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-38990-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 20:05:24 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E1474DDB8
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 19:06:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 443AC74E49F
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 20:05:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=l9cpGty4;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=Rhpr7HkR;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38989-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38989-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BOrOsyE2;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38990-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38990-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DC824301C2FC
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 17:06:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 40160301A41A
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 18:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE20A342CB2;
-	Mon, 13 Jul 2026 17:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B2233A005;
+	Mon, 13 Jul 2026 18:05:21 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD23340407
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 17:06:03 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783962365; cv=pass; b=QYD/XSJ3zIvw+YIj32MRV6XaG/fmtGoY7DMgt8JXvIpL8y0G9Xlt4QX0CYdYBk1NBpBBXLrG2RTJs1vY9w5RQC1rBerhU1hdqo9C7xwiCplIRbqc8aC7IOuU0IR0pLlwGbM86LX4m3So1dOai6BuvKHOoq2Z3oHdUq1PQ3ZoqZo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783962365; c=relaxed/simple;
-	bh=Qx+4tjqW/VYM1RWPOA4yEFjNai6l4rB66SRwRlTHn+U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DzckJmEDszYLMReg2qc+B5MXCOfjhMek7hb7JLQUSlVWR75bNpWDmItDVWaoAnrPkhayzs/h7VZqHxDZ2sGM5b5sOzWRHjuaoKCKXqHYXuvXazQiSCT5QQ32uCqTr2U86Or4kh5nJrYoiVADshhcvgZEQQIdn2zHWfrafg1r5+E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=l9cpGty4; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Rhpr7HkR; arc=pass smtp.client-ip=205.220.180.131
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66DF8Gke1709130
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 17:06:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	6SyzZ6EPMaoE03KHkavFTA6TatdreHGVofNf2BUFYTg=; b=l9cpGty44rYnBmQd
-	CpGqfJgd3s2WwkUQcmF36AN77AeUJC9OQsooppQLOa3AhlRPpipW3Ncvip3r04+3
-	RJXso6KMeWwwUqY3b84P7X608OZYXGKRxrvqhQHAJ72Hi3qAgz66mxh+BqyokT6S
-	HpSGl8esY9eNz0053mFi6TksvdRX+pRA60FCDWbhs7QJ4czV1QijQG68rynHIBvs
-	LRIS42eiWdpT46eG8t/zhpXjPnmHJQUdy3NvdXk+h/22SDAjDl09MK11YeMf80zE
-	eq3rTL/cL93ay69LkBCE3/pJPi5QfbyJy5rdouFhrRf9eFfZwai06gWh5fDxVVnq
-	wgLWHg==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fcwk9sshm-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 17:06:02 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3811343bd68so1106633a91.2
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 10:06:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783962362; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FOpNCazax3UsBYxwzMEAQQm5n2HnRYUwAHZlVDhMdUWnZXG/k6fscEe+I3T72cFh4E
-         qAeYItdHTZUq3SEWtOALo2ypXw4goCembDFW7gQA+bdthm3RGMjnIsIXsA90yCZEH8Q1
-         a+kr+vHgaBiRN9eQmyXkaIi1xdxAxzwlM3KfnsP1xDDYrVwHY2uZAu28WdxO1gmcY0GT
-         dLXXR//T5X/j5bAipjr4FouC5nqjmqL8wsxNwQC92ClV9KjSVVKS0a7ua1/nwGq5iWxd
-         mAbEnnetTIvd2N2KCb67Tm87trSibTQFvXUMojpuUSzTYGGa/Lu6ahIkEHzvuhxku9UQ
-         yNYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6SyzZ6EPMaoE03KHkavFTA6TatdreHGVofNf2BUFYTg=;
-        fh=VcyDHNsCazLa8+uqFCrmm8b15ia+ncpUC3iZp3Esxc8=;
-        b=I3AwX0wAsbO7tmBL5wwNguB7cXkwmg6IIi7j/firooRA5BN1JMaoZWsv8EcU587OKO
-         AY94eLBn5xuKJFQ0Uatesnp3b3Cvzj34QdRxTtvb8FvZ29SxvCAnls/k+owZJR9dLPz9
-         ie7v+LQlFNJm1foyfTaJUoemCgK0WO95SIPxSDdMlbBBnd+A/BFbwjcn2ANabdSzfktJ
-         G3zb0VIRYA0O4Wo2oc9MHRNFqf0kyvFeV9bC1qH2gWKTc1e/GP0ad2HzDw/JwuYLhW6w
-         FIT3STAePcUfLn6VUh001RUPRnenFNr49J9R1yOr2GBoLtBjG5ZT3Xh8lilZo8CXavhh
-         bW1Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F633314A84
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 18:05:20 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783965921; cv=none; b=epstvucGUCXJOJnxteQ7+zPJG78ZDqLavIc4KUAmbpPUmqtlFqKTCy12zj/a6KzZ0TjO4NMEoS0oQnVW4Ve8y5pI7BL/JibCZeYuX5UiBVaUpTxFzBbtAwiiAnV25aGWkv5mt97ECIw5DYYklax1nvkZRYZsZi2ilXAc8UcZftE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783965921; c=relaxed/simple;
+	bh=XeZnVF8VMOIq8NowPgSjmvHb8AkE7i+WvqIK6N6ANjs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y4dOhVOOQ5GPQeZxgUo5oDiXSKYRB8bjdT1+5k8cAgeOw24H45sE/nxdj02mh8D1M4Yyn+YNydLnfxW41dVDrHLKw10a1mu0BUR84YHQsUl6UTCkwinqBBLgkqAc7St6+dwqQAUWrpGda/9Mm3prn7W6CfLVKEoCvk4IGL8TbF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BOrOsyE2; arc=none smtp.client-ip=209.85.221.52
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47f365afc5aso908243f8f.0
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 11:05:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783962362; x=1784567162; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6SyzZ6EPMaoE03KHkavFTA6TatdreHGVofNf2BUFYTg=;
-        b=Rhpr7HkRzDwsmtEYJ9eEI8HOKArNl9Jit3GSPCNjpn0+BnTOd0TMu/PQh6Mz7R7CEg
-         X84ORmgVVO3dGOi37iBbnXlVZsr5F32XT60cijDQ89NSV1TNpMaFOMBugJB0e5QxbeRd
-         32AyIR5Hf4uWIAgetx/OLEPoxx7BU8+qn67SV2NgQmpXDDQuA3eIo2pXjAK50Y/EhHWV
-         CDVLSq90nc5i7CIWJyZYqWCMCtkCo1kWnTW3Fy3Y9vGRX65amJWThpI1eIwsW+vNCEVp
-         895g9UVb4ruBFDfEkZLpOGrDSr8BSBf5k2NrgTinMgb8xa/hlp9jBsODE3bhb2qT3Pof
-         fxwg==
+        d=gmail.com; s=20251104; t=1783965918; x=1784570718; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DPs2lHQRfpK+TsWOFRy9KnqkkNN7TxB0PRSoapXl1VE=;
+        b=BOrOsyE2uxxPpM+zui5vnSpr9UHpb4i+2dHjRQqlNk9zn5KE1MWyDihPWmO8r64qZn
+         joQFso2weVNFzGNkZjmAJq+HhHZyS9FpOwq27b8BORtWeljy5xAFWfjeWT1mtxsn6Puo
+         +uaXpNzcbHPKdj4KyikDbQ/nJYf9RaaaISxDczqVd40x+OGJ+ibZIfga4nJnx8PAgovm
+         NuSCrfXid4+ERkCN4XUMWoHxIn7zhwVGzLowXTXuJ/YYJ6tZH4qHoxIG3lUDPpCG6B9X
+         VE/acyvQdqw/e4xz6LZYdc5KWLrMQbFthP9uA5hJdstGuWGYBIGaodCshMeJ0E/bJMf6
+         GNtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783962362; x=1784567162;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6SyzZ6EPMaoE03KHkavFTA6TatdreHGVofNf2BUFYTg=;
-        b=I1Zt7IwzQPBb4eqg5HN8jH0umftz+/FoKO1ezUUqJIvcgJ5AD6No0+zqlxMkT9qdOA
-         do44XY61x2X8kIgwTflGsjcRYkmxh5GjW1ZWnIPqUxhhj7bazflrvMGdMdEn3Jo1KckZ
-         N82i9+e6wNxdAZn0UCG2hnhg6DfVnxvG09jc6Bj5oNoIRiD9qlCGWZHPd01MiXolycUW
-         HPQEw/Pc4odlmYqWZN/ZbOXOWtKdIXyD3oR8nnDtJfYa00+YVvCQ6sE258P8K00kWH7M
-         30tWuD7okuDBK6XGNt39d0IvT9YKr7NVwD6Ph0k49fm5JU0lfoCpf1+owVxzIvAS76sR
-         7wJw==
-X-Forwarded-Encrypted: i=1; AHgh+RrQV1y3fT2QEGxzKiG5H+UX92YNkvWdFadp4fgqtP3JhmFGWvBkBdRnGMk7IFMOWmgufBbbl4TJ1bsrKeHqXQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxebeP2xDXhl816Lep4HjtkBNG5xwJaJdA/y4hNFcsYchzgqS3G
-	A0i3TtSJp9BoFBrORdYQNk+4ZxsEMNUrBKTZSj6cnrClJMw0C91bAsqiR1tdkM1iAiMwZ5XzRrt
-	3QMLXrKNQ5b4hVfJnc8Bl7+cmo1VNCPW7hmU8/bz6B8aJ4J58Ktu4456TrCyiciEjWybxom1oCb
-	GoxD8rDtVhNF2Q//AWfjZhhUovBmg828Dqy7CNc+TWyCpH
-X-Gm-Gg: AfdE7ckSZ1Va4tyR++oEUh4uV1C76FDl0Hz2DMRbY++wFTqcNV2Ke+7s08se5KCpwMz
-	ytPxyy3aJjO2qRV16h5hzlAg3UiBBdrfEmURmLY/lF1sRCEjEt4Utr5lyXSptyr6WYTNOsWtJur
-	TSWT65IArY9zcEeCqropd/U3QusrrB+sjQsa5GE5hqdjZ4x5BrAe3+SE3jAkT6DMXRKmeHCylXg
-	a82f0aWLogrA/jGtK/18aSl0i3baw==
-X-Received: by 2002:a17:90b:51cc:b0:381:6cf0:d5f5 with SMTP id 98e67ed59e1d1-38dc780f503mr7747519a91.5.1783962361889;
-        Mon, 13 Jul 2026 10:06:01 -0700 (PDT)
-X-Received: by 2002:a17:90b:51cc:b0:381:6cf0:d5f5 with SMTP id
- 98e67ed59e1d1-38dc780f503mr7747489a91.5.1783962361387; Mon, 13 Jul 2026
- 10:06:01 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783965918; x=1784570718;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DPs2lHQRfpK+TsWOFRy9KnqkkNN7TxB0PRSoapXl1VE=;
+        b=f+6DVzeu4Ur84rDsuH7K3Myd+CyWQczidasp1tky0nmtFmt6IKgYyrBXNv13fhRCZU
+         UKdmShNfdURCzqmbzPGcsMEPSomYG1IwhZAw1jm9zmMKFuGWr5mvWoNfft3JZBqSnLup
+         g8U3vn1/VslKB394ZCEM1fEgssjanjNIdFp+pj0XhRxpFNAZQ4XW1c2LypmmYqhf1PTv
+         eVVXepCo2FO1qNj7tJmSiopGtq9U/5HBMlpSXKP+pJ/FOErJuuLt/TiUx8bdy8F1kcGh
+         ARocIKEuqlNStsQI54CK+RT3h5K4QpqPABFBK6+rJ1ae537+WauNsOaLk9QaDK5kAwwi
+         6Wow==
+X-Forwarded-Encrypted: i=1; AHgh+RophKizsYEYdoPhzkbO0IcGFPYpY+1dSW/WsUklypKlT9YQFFO+YSvB0bf0S9MoZ++xm0wwRwUWbQkHmZ2ynw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzf1LqEf6vhxFiuezGObqbGhCRGaz510T+vsDTLLSMIBB3HLFk6
+	SRxNmTNvq4T4DmCTaBCw6XjM12If/S+4EPPKhzN2Y5QnNRUAuzbrm6+y
+X-Gm-Gg: AfdE7cnNKXIbt/F1/o3wsyCshtrEdsRZ/FiSEGf7tO/1413MYFkVZYFyrsIhtRAGB2Q
+	NWSqonZ3ExEVCX2DePbdkfBB9UFfAR4JYJnDQPjDlD3BJOEdBgZ0OBDHy+WjgGc0rJkHY7I/IU+
+	xpfWT2/ixZm0jsTrWKgPqU3epUo9BGcwd8ZuKlDBvBgvcbLc2zsdcJf1+5aL8zvz9TMEL2lGlDW
+	sjfKEj1NIt+BNvYEjrm+fq5UHMyMAfPXEenCAHHjg75QEGIMNOy5qQu90R6VutHi4SIV6Wrc1vW
+	U3fgL4L19ll0/13JjwQ7vUDJ/rj32hqWdQpinD4NoxzKH/pedStsd8M5ImW+3cS/B+MLM7X7zf3
+	KTm0xC4BlERDNhuw86/MuHp4hx5JMB/hr6O0DL+52NhZtRAPLw6ReNx65VeLHCBYvKTmXvjAi1p
+	0ry9e2h9F7OGTpH4HomOmnDHygx/wt84kKew==
+X-Received: by 2002:a5d:64c4:0:b0:462:e086:35f with SMTP id ffacd0b85a97d-47f2dc88af5mr12536623f8f.21.1783965918210;
+        Mon, 13 Jul 2026 11:05:18 -0700 (PDT)
+Received: from archlinux.tailbe3ea7.ts.net ([46.1.111.57])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f4635aa34sm1230690f8f.15.2026.07.13.11.05.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2026 11:05:17 -0700 (PDT)
+From: Ismail Tarim <ismailtarim7@gmail.com>
+To: stable@vger.kernel.org
+Cc: Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+Subject: [stable backport request] wifi: mt76: mt7921/mt7925: fix NULL dereference in CSA beacon
+Date: Mon, 13 Jul 2026 21:01:37 +0300
+Message-ID: <20260713180433.52394-1-ismailtarim7@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260710155443.1761760-1-jtornosm@redhat.com> <20260710155443.1761760-3-jtornosm@redhat.com>
-In-Reply-To: <20260710155443.1761760-3-jtornosm@redhat.com>
-From: Tamizh Raja <tamizh.raja@oss.qualcomm.com>
-Date: Mon, 13 Jul 2026 22:35:49 +0530
-X-Gm-Features: AUfX_myqBTA6Al-ASglZ6zXCxWVTaIWJ0S_u-PpqBDiSUnLkbGESlFGPZnjNZcY
-Message-ID: <CABkEBKZABhFkS9MVqbeRFHLUXoNaJC-qocmcPVmZ8ov2j+DMzw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] wifi: ath12k: implement custom wake_tx_queue with
- flow control
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: jjohnson@kernel.org, ath11k@lists.infradead.org,
-        ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEzMDE3NyBTYWx0ZWRfXyeh2oBdIFdyG
- 3VNpvAyyCCOLbA0+47RDR0ii0CVzVw6QfttIKIlT6rvSL4oijyBxFfkjX4VL2gULZOi21gh3M+J
- r+FISsBGzJSc0g4R6oGEirccqh9CsDpxP3VpJbzf2b1LjT3Y/jNjjWM9uxGF4aQswpKKbV+dJSt
- 8miR2nsVS1OAs4EEPK+Fr0o+2jh5nRk9WVDH+TARR2cwvuPGcR3aOJ7yMmdcnFNUvrdYhbqSCO0
- u5DhAKme9YDgtLcOGTkPJ00awairFUr7etNMQhSbbYa3uTi41M+4+eCyWiDqY2zbEDMT1tg6W3H
- fvJEOHDxYkJXFdT+0RPfQdEtj1OmqFbNo/x/QDgM6V9ff1l9FaHpyKxlxcoIsWMK7d9qea9R/Fr
- LmkarxT7pkqsk+qx7SsGkF1PpG285BY1qloJAsqaWQGbTIkyuov9RUM/boCLfLwMU4XmJez4BbC
- PtjmpmGeu8BzXeCtBJg==
-X-Proofpoint-ORIG-GUID: TLNQFlK3MlP6sSeZs5hhzPRHPzHsfEoG
-X-Authority-Analysis: v=2.4 cv=UMHt2ify c=1 sm=1 tr=0 ts=6a551afb cx=c_pps
- a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=yx91gb_oNiZeI1HMLzn7:22 a=20KFwNOVAAAA:8 a=6vpvkDlHG3n5nyPZv6IA:9
- a=QEXdDO2ut3YA:10 a=uKXjsCUrEbL0IQVhDsJ9:22
-X-Proofpoint-GUID: TLNQFlK3MlP6sSeZs5hhzPRHPzHsfEoG
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEzMDE3NyBTYWx0ZWRfX16voTvqASLVM
- +5KsAVSYNxu6i0X2SuDyNTHdCrviWdXK2qYbiAtqE+Msb+CF1OgOHGHRd63w3N0A01W3luPQBAc
- TQwrGK79UsU/0kyuU9Kpg19Hje1OYQ4=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-13_04,2026-07-10_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 spamscore=0 clxscore=1015 adultscore=0
- malwarescore=0 lowpriorityscore=0 phishscore=0 suspectscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607130177
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38989-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:jtornosm@redhat.com,m:jjohnson@kernel.org,m:ath11k@lists.infradead.org,m:ath12k@lists.infradead.org,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[tamizh.raja@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-38990-lists,linux-wireless=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tamizh.raja@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:nbd@nbd.name,m:lorenzo@kernel.org,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[ismailtarim7@gmail.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ismailtarim7@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,mail.gmail.com:mid,oss.qualcomm.com:from_mime,oss.qualcomm.com:dkim,qualcomm.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 48E1474DDB8
+X-Rspamd-Queue-Id: 443AC74E49F
 
-On Fri, Jul 10, 2026 at 9:25=E2=80=AFPM Jose Ignacio Tornos Martinez
-<jtornosm@redhat.com> wrote:
->
-> Under heavy traffic, ath12k can hang and experiences -ENOMEM errors
-> ("failed to transmit frame -12") when the hardware TCL ring fills up.
-> This issue is more commonly observed in VMs with PCIe passthrough but
-> also occurs on bare metal systems.
->
-> Implement a custom wake_tx_queue operation that:
->
-> 1. Checks hardware ring space before dequeuing packets from mac80211
-> 2. Uses per-packet locking to serialize ring access and prevent races
-> 3. Syncs with hardware state to get accurate free slot count
-> 4. Returns early during firmware crash in the same way as other tx paths
->
-> This approach follows the pattern used in the iwlwifi driver, adapted
-> for ath12k's hardware ring architecture.
->
-> This prevents hangs, eliminates -ENOMEM errors, and improves throughput
-> by optimizing resource usage and preventing unnecessary packet drops.
->
-> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-> ---
->  drivers/net/wireless/ath/ath12k/dp.c       |  1 +
->  drivers/net/wireless/ath/ath12k/dp.h       |  2 +
->  drivers/net/wireless/ath/ath12k/hal.c      |  1 +
->  drivers/net/wireless/ath/ath12k/wifi7/hw.c | 50 +++++++++++++++++++++-
->  4 files changed, 53 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/=
-ath/ath12k/dp.c
-> index af5f11fc1d84..3d46cfbf0a1c 100644
-> --- a/drivers/net/wireless/ath/ath12k/dp.c
-> +++ b/drivers/net/wireless/ath/ath12k/dp.c
-> @@ -1539,6 +1539,7 @@ static int ath12k_dp_setup(struct ath12k_base *ab)
->         }
->
->         for (i =3D 0; i < ab->hw_params->max_tx_ring; i++) {
-> +               spin_lock_init(&dp->tx_ring[i].wake_tx_lock);
->                 dp->tx_ring[i].tcl_data_ring_id =3D i;
->
->                 dp->tx_ring[i].tx_status_head =3D 0;
-> diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/=
-ath/ath12k/dp.h
-> index f8cfc7bb29dd..68d2020be9b8 100644
-> --- a/drivers/net/wireless/ath/ath12k/dp.h
-> +++ b/drivers/net/wireless/ath/ath12k/dp.h
-> @@ -58,6 +58,8 @@ struct dp_tx_ring {
->         u8 tcl_data_ring_id;
->         struct dp_srng tcl_data_ring;
->         struct dp_srng tcl_comp_ring;
-> +       /* Serializes wake_tx_queue operations for this ring */
-> +       spinlock_t wake_tx_lock;
->         struct hal_wbm_completion_ring_tx *tx_status;
->         int tx_status_head;
->         int tx_status_tail;
-> diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless=
-/ath/ath12k/hal.c
-> index a164563fff28..c1c656e4550b 100644
-> --- a/drivers/net/wireless/ath/ath12k/hal.c
-> +++ b/drivers/net/wireless/ath/ath12k/hal.c
-> @@ -390,6 +390,7 @@ int ath12k_hal_srng_src_num_free(struct ath12k_base *=
-ab, struct hal_srng *srng,
->         else
->                 return ((srng->ring_size - hp + tp) / srng->entry_size) -=
- 1;
->  }
-> +EXPORT_SYMBOL(ath12k_hal_srng_src_num_free);
->
->  void *ath12k_hal_srng_src_next_peek(struct ath12k_base *ab,
->                                     struct hal_srng *srng)
-> diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hw.c b/drivers/net/wir=
-eless/ath/ath12k/wifi7/hw.c
-> index d9fdd2fc8298..e3a6f9cdee24 100644
-> --- a/drivers/net/wireless/ath/ath12k/wifi7/hw.c
-> +++ b/drivers/net/wireless/ath/ath12k/wifi7/hw.c
-> @@ -1100,9 +1100,57 @@ static void ath12k_wifi7_mac_op_tx(struct ieee8021=
-1_hw *hw,
->         }
->  }
->
-> +static void ath12k_wifi7_mac_op_wake_tx_queue(struct ieee80211_hw *hw,
-> +                                             struct ieee80211_txq *txq)
-> +{
-> +       struct ath12k_hw *ah =3D ath12k_hw_to_ah(hw);
-> +       struct ieee80211_tx_control control =3D {
-> +               .sta =3D txq->sta,
-> +       };
-> +       struct ath12k *ar =3D ah->radio;
+Hi,
 
-This assignment is wrong and all traffic is incorrectly steered to
-radio[0] as ah->radio is a flexible array, not a pointer
+Please consider backporting the following mainline commit to the stable
+trees:
 
-> +       struct dp_tx_ring *tx_ring;
-> +       struct hal_srng *tcl_ring;
-> +       struct ath12k_dp *dp;
-> +       struct sk_buff *skb;
-> +       int num_free;
-> +
-> +       if (!ar)
-> +               return;
-> +
-> +       if (unlikely(test_bit(ATH12K_FLAG_CRASH_FLUSH, &ar->ab->dev_flags=
-)))
-> +               return;
-> +
-> +       dp =3D ar->ab->dp;
-> +       tx_ring =3D &dp->tx_ring[txq->ac % dp->hw_params->max_tx_ring];
-> +       tcl_ring =3D &dp->hal->srng_list[tx_ring->tcl_data_ring.ring_id];
+  commit 351dd7d2c80d ("wifi: mt76: mt7921/mt7925: fix NULL dereference in CSA beacon")
 
-tx_ring/tcl_ring selection should be corrected.
-> +
-> +       while (1) {
-> +               spin_lock_bh(&tx_ring->wake_tx_lock);
+The commit carries a Fixes: tag but was not marked Cc: stable, so it has
+not been picked up for the stable trees automatically. The tip of
+linux-7.1.y still lacks it.
 
-Do we need this spin_lock_bh?
+Why it should be applied:
 
-> +
-> +               spin_lock(&tcl_ring->lock);
-> +               num_free =3D ath12k_hal_srng_src_num_free(ar->ab, tcl_rin=
-g, true);
-> +               spin_unlock(&tcl_ring->lock);
-> +
-Do we need this check and spin_lock here? already ath12k_wifi7_dp_tx()
-has this lock and fetches the next entry. Can we check those return
-value here and break the loop?
+It fixes a NULL pointer dereference in mt7921_channel_switch_rx_beacon()
+(and the identical mt7925 path). When an AP sends a Channel Switch
+Announcement (CSA) beacon, cfg80211 queues a wiphy work item that later
+calls the driver's channel_switch_rx_beacon(); if the station
+disconnects or the channel context is torn down in between,
+dev->new_ctx has already been cleared to NULL and is then dereferenced
+unconditionally. This is triggered by ordinary AP behaviour (channel
+switch / DFS), so it is easy to hit in the field, and it hangs the
+machine: the crash happens in a workqueue worker that exits with IRQs
+disabled, wedging the cfg80211 workqueue and progressively locking up
+userspace until a hard reboot. It affects the very common MT7921 /
+MT7922 / MT7902 chipsets.
 
-> +               if (num_free =3D=3D 0) {
-> +                       spin_unlock_bh(&tx_ring->wake_tx_lock);
-> +                       break;
-> +               }
-> +
-> +               skb =3D ieee80211_tx_dequeue(hw, txq);
-> +               if (!skb) {
-> +                       spin_unlock_bh(&tx_ring->wake_tx_lock);
-> +                       break;
-> +               }
-> +
-> +               ath12k_wifi7_mac_op_tx(hw, &control, skb);
-> +
-> +               spin_unlock_bh(&tx_ring->wake_tx_lock);
-> +       }
-> +}
-> +
->  static const struct ieee80211_ops ath12k_ops_wifi7 =3D {
->         .tx                             =3D ath12k_wifi7_mac_op_tx,
-> -       .wake_tx_queue                  =3D ieee80211_handle_wake_tx_queu=
-e,
-> +       .wake_tx_queue                  =3D ath12k_wifi7_mac_op_wake_tx_q=
-ueue,
->         .start                          =3D ath12k_mac_op_start,
->         .stop                           =3D ath12k_mac_op_stop,
->         .reconfig_complete              =3D ath12k_mac_op_reconfig_comple=
-te,
-> --
-> 2.54.0
->
->
+Reproduced on linux-7.1.y (Arch Linux 7.1.3-arch1-1), MT7902
+[14c3:7902] driven by mt7921e:
 
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  RIP: 0010:mt7921_channel_switch_rx_beacon+0x18/0xa0 [mt7921_common]
+  Call Trace:
+   ieee80211_sta_process_chanswitch+0x682/0xc30 [mac80211]
+   ieee80211_rx_mgmt_beacon+0x7ec/0x19c0 [mac80211]
+   ieee80211_iface_work+0x4c4/0x630 [mac80211]
+   cfg80211_wiphy_work+0x13f/0x1e0 [cfg80211]
+   process_one_work+0x19f/0x390
+   worker_thread+0x1b1/0x310
+   kthread+0xe4/0x120
+  note: kworker/u64:15 exited with irqs disabled
 
---
-- Tamizh.
+The offending code was introduced by
+  8aa2f59260eb ("wifi: mt76: mt7921: introduce CSA support")
+
+Please apply 351dd7d2c80d to linux-7.1.y and any other supported stable
+tree that contains 8aa2f59260eb.
+
+Thanks,
+Ismail Tarim
 
