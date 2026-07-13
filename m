@@ -1,250 +1,177 @@
-Return-Path: <linux-wireless+bounces-38932-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38933-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Pd14D4NcVGpylAMAu9opvQ
-	(envelope-from <linux-wireless+bounces-38932-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 05:33:23 +0200
+	id d5E6NS9eVGrGlAMAu9opvQ
+	(envelope-from <linux-wireless+bounces-38933-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 05:40:31 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A096B746F24
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 05:33:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29AE8746F90
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 05:40:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=W7kzXzAX;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=di+jOHqF;
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38932-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38932-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=mokrynskyi.com header.s=dkim header.b=t6TVRoIM;
+	dmarc=pass (policy=reject) header.from=mokrynskyi.com;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38933-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38933-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A8661300E14D
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 03:33:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F3FDD3008D27
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jul 2026 03:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691A529BD9A;
-	Mon, 13 Jul 2026 03:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8897B29BD9A;
+	Mon, 13 Jul 2026 03:40:29 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mail.mokrynskyi.com (mail.mokrynskyi.com [65.109.39.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D492BD59C
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 03:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56201F3BA4
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 03:40:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783913599; cv=none; b=KHIb6axq8BUnVCysw1LwZLXyHd7dk1KsWP/zMDwKpeLfy+kK+tbZx67NZgvZIjG6Tob5a2CBVltFv7NlhuACAFYVQKhYlLM1nWwo0RStgMk5fvLNHSvvODcOJZU1RhkAnV4vMnwfDA1P3z4wmn5EkC16vQzlBg/FqHLRewmzDBk=
+	t=1783914029; cv=none; b=a0+lS/Y+kSBgIHFFX2hDSnynbDo5xkLM8UJjshWWuI9HJRQbBCrxi1fTK9VZJf9dZiESppBRyS3yUq6pgfufBFDO5jsVb70Nl0iM5TiCUDz66gSwnJ9xqfXOf/5hWeu7THGzUkpQ7WREzLaLtuqr+LAbMWlvAen/IMCCRY3HqcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783913599; c=relaxed/simple;
-	bh=h6oOscAAguANCZDJxkWy8rFtuqFfu2tJ5MYQwBgxIJQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=ZCPpFLzirCitB2nn/k678ceda2MbVENo1wNEHYjjLIAAm2nchHQ03AWw5JMVVpEPzqJQYO+6gonU4X1coAd+DIHW5lw2icxXlJigTAF6Oc56gK2sL1tyTMxZPsO3n94Wr8qrSwAyBK+LsT+KGdM8WP2Z8ubLP4n27nZM0rReOJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=W7kzXzAX; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=di+jOHqF; arc=none smtp.client-ip=205.220.180.131
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66D3AKPG136801
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 03:33:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	F8rJJgcg5hWvGHnmMlB/vJr/mhGZXs+mdRV5ZzRHmeU=; b=W7kzXzAXZluWWEvH
-	JTbb6yvH1bVwlZFG+jGdqx7rRU0w9KsdWKvmG+eOClmVhveyEOEaT0svjCAR17MH
-	R1EH8oqQNywTq3yyh31eHVSMoaK6oU3E6ABrSlfsSA75B3hMh0lQv66wC5Al43UK
-	RXz2fUqPcv28zQCaPdljADNl7o9iBf/mEDjAQWU+kYOUulFX1nwuyVeZEGUBNzuO
-	JKH/4fi5WIsIYO5AYxrY7GoSOIAhiGuT7FTKzhENzlc4l5jfRTZJSa8ckf+E4Qyh
-	bP1YW7dHNWpuni+nYlmeWWtdZ28F+ZqF9puk/c0flttusWM51N65yoU0feAmkRg/
-	AgKE/Q==
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fbe9146ud-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Jul 2026 03:33:16 +0000 (GMT)
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-ca8aee88725so3771044a12.3
-        for <linux-wireless@vger.kernel.org>; Sun, 12 Jul 2026 20:33:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783913596; x=1784518396; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=F8rJJgcg5hWvGHnmMlB/vJr/mhGZXs+mdRV5ZzRHmeU=;
-        b=di+jOHqFVSWR8tqTDp6h+KDdfV47TwX/l/kqFhF0bTWsGXEkxMOjmqkdbw3w603H3J
-         lFFxyFuc4s6qf1ZgzFDj6QkE35aHH4r/GkcQoyKv8j/CI/q829fOsfnUx1ev06eZ0txu
-         hdhXcQogZMvCUMBiNRXrn1hpdJeRZcno96QV+0Wnf8gsMcaedXW1iBHnNA6MXp9s4rv9
-         N4wkY88TDpS0VnfP8LPtwbMjZdkkBbhuCnHp74JbGqjRt3A5yi6zUpR7MrUuY5p/IqK8
-         wiZ7sufAC4MKrpAf+AsDOnzoQoGkCxytXUpkTeuAyGm+sHj6DiB4CvZ55mzjR0AYWQeI
-         saZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783913596; x=1784518396;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=F8rJJgcg5hWvGHnmMlB/vJr/mhGZXs+mdRV5ZzRHmeU=;
-        b=XNi/f9NQmFsy1wryv6qp2EQ50AdR5kz2ubH91rwG4i7rsGpLQG0BsYINjf6jUKcyUB
-         WuzcMXMgN4Rdi1yCtL1MPa7xznpv2QMoZMFCI8cVT1z+tJIXuroUmeFI53YgY2u0NvUM
-         8BYwoR7ZidIeYpIJXFYNEjjlmae2e4xege2gJSjjxnTYaKDd30PvpN7Ye8ym4+zhrILE
-         k8n1RXwzifjBL7vOzZGmgnpRZLFTBIEjuz613cQiWahrJsgPxOAZrcBQDKd9Ja/BiIZS
-         gwbHyUZ79bJVPZ/18xOlxKO4fQYi3ac4+nWawCC5X7E1rJNHlMA6aRsuLVGT9aKna5P4
-         mrOw==
-X-Forwarded-Encrypted: i=1; AHgh+Rqivll3/37/m6pBO3pYwAbjlsL1WJ6hCqtp0kZy+PimPZGB+zj913ihZfFNE0+nd/zVSZsConibevGoW6BOag==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPcqLqiFDfPIGclL5l6JGh15O5cASgwQCAnDv7XYtxxfHEc8vu
-	NMtMzQAGtn89ToJFcAsLYYsO/MpHtiQqw8QXg3+StrTXtsNCQBdoT5GA66C+Zexv28df4frOKLh
-	Up8FGQ+X1nJA1f8yLFuYCZdCbFTBCjrzb+k6XFQqU06b1Fm1uyssS3ghS1IXgWfhqLjNxqg==
-X-Gm-Gg: AfdE7cn3F6mKpfujKR4ujf9tM46uucgD9sMwo6vlbBofiN+4mTqQDOkm0BorKeqKsCn
-	qBu5Y0Z7BZOG6DL4RhqMMITFJmXvwmPAWrccLJaxCyTkqTg8JcChMyoSJ+7JNLNTWQgbcDFnI3m
-	MjLEYQRvSex9ZAu4yj7OyV5K7UYWjYjK6NX81pHpaJbTUibMHuo9IcAgUM9zR6pSMck5k9wcJC1
-	KGlymAs69tR4WFtShoz3JoujHkPbk+QYRAG3A6LLpEeiMW+0yh7iIiN0oyXw0s/RbCa0HxRkIzT
-	p9Y1KaP7bD8b19e+miq3WfnVX7gGDgzMCYGmOZ7hCLu/4lQChSgiH3upL/84jK7hJQYx5EhU9YU
-	u9qjN2vm+h1SNWPgACBSVvMt0a0aS0jrF8xTUFRPXWE4LosiF/Wg9iKkc02f7/F63/omFm1GAZj
-	mfE+iahu8=
-X-Received: by 2002:a17:902:d2c8:b0:2ca:ecfa:1308 with SMTP id d9443c01a7336-2ce9ead153emr73387205ad.20.1783913595837;
-        Sun, 12 Jul 2026 20:33:15 -0700 (PDT)
-X-Received: by 2002:a17:902:d2c8:b0:2ca:ecfa:1308 with SMTP id d9443c01a7336-2ce9ead153emr73386885ad.20.1783913595299;
-        Sun, 12 Jul 2026 20:33:15 -0700 (PDT)
-Received: from [10.133.33.33] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ce7b3755a3sm49385165ad.80.2026.07.12.20.33.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 12 Jul 2026 20:33:15 -0700 (PDT)
-Message-ID: <c7d7e6d5-88e6-4bcc-8c35-8fd48d8a5464@oss.qualcomm.com>
-Date: Mon, 13 Jul 2026 11:33:11 +0800
+	s=arc-20240116; t=1783914029; c=relaxed/simple;
+	bh=Ncw22CpgIicW10sn4M6BBpLsecOSRhXqXnK7BKihxpM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iHOGCs42VnGKPa2uMAS6iQFuhqNHsrURalJraKUVaw18wpjRkLcp/UeHm7f8oLd3RqyNfLv/sRCoNPFCtwjX6I858oBdMHEL25T8deEAmH5gb544sgiEigCr+vHgq+H6mIZPs9kbHA2GNB+twQsPO8ZPjpciG9e2XqZ6GYP/eaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mokrynskyi.com; spf=pass smtp.mailfrom=mokrynskyi.com; dkim=pass (2048-bit key) header.d=mokrynskyi.com header.i=@mokrynskyi.com header.b=t6TVRoIM; arc=none smtp.client-ip=65.109.39.229
+Message-ID: <2dd63a14-6daf-42f8-9eb9-60596b30583a@mokrynskyi.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mokrynskyi.com;
+	s=dkim; t=1783913680;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WJMfk3Njo6igrjkkDYvlK+PoNmEoME2tim5+B/Vy6jI=;
+	b=t6TVRoIMQ44etF0RxUgcM3A+sVPgjPPlLwQR8YqitGWvhHdrPK5svnknwE7aUisaoVaehw
+	kZfr9XHPZpDbFHB7x/ol+2x9ECGv3Xe9HI5U0pIUWM6IGv2Ckm35wmG5HJ/Rj/PJ4BBAAs
+	+o6ez0M+TZSlAOHEQz++pk9PdVW29VRtWD7a42n24yEDnGtcThCVBQnnea28oPZUpJqacw
+	KPGZJpAuS2AFi0a/ZNgxo7OIptKhsHZkFkF9x88MUn73nDqJSUEZC75AfgAURyrMrnp4em
+	IkQ0qjKOOOQzjSIvXbBkFOlMnrbgTLYpzCU5qQ42vOFRsMP5QMP7zRMqIgb8rQ==
+Date: Mon, 13 Jul 2026 06:34:36 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath12k: release QMI handle on late init failures
-To: Guangshuo Li <lgs201920130244@gmail.com>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-        linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-References: <20260708100924.744386-1-lgs201920130244@gmail.com>
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20260708100924.744386-1-lgs201920130244@gmail.com>
+Subject: Re: [PATCH 1/2] wifi: ath12k: skip PCIe global reset on initial
+ power-up
+To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, jeff.johnson@oss.qualcomm.com
+References: <20260505172415.566328-1-nazar@mokrynskyi.com>
+ <20260505172415.566328-2-nazar@mokrynskyi.com>
+ <fe668799-6024-4370-acfc-ee64fb3a4d5c@oss.qualcomm.com>
+Content-Language: en-US, uk, uk-UA
+From: Nazar Mokrynskyi <nazar@mokrynskyi.com>
+In-Reply-To: <fe668799-6024-4370-acfc-ee64fb3a4d5c@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=TbymcxQh c=1 sm=1 tr=0 ts=6a545c7c cx=c_pps
- a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
- a=pGLkceISAAAA:8 a=BBdAH38HxtlORMPQ_CcA:9 a=QEXdDO2ut3YA:10
- a=x9snwWr2DeNwDh03kgHS:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEzMDAzMSBTYWx0ZWRfXyB6ZnxxbfR5d
- d1doc65LQhvjkMr8K4OdQRItMr9v9fYbP7lBbVUGXBpzB4B5WQmpu62B1DOaBApPlOrz+S7vKoT
- CKFcNdRDgO2iYlylNgai+RcnK3SqwS8=
-X-Proofpoint-GUID: Bw5dnvDbTSdmIfhm2HFBn3Iw0Sm_od57
-X-Proofpoint-ORIG-GUID: Bw5dnvDbTSdmIfhm2HFBn3Iw0Sm_od57
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEzMDAzMSBTYWx0ZWRfX3wsIcD4zPcgC
- G4lOpGyxy3yM2v42IsHyhFqlkUOBXrDbdflzgCCoYJsIORMyOVzkcSE/ACTy7eDLijPGKs4knIk
- h1gTX8xH9TKrYW/kj9sLNg1jBbLBvNrErq3RHC6/LclTbP9UP0w9h4GgLFFcvab7p2rWvGkuGWi
- rrNtHqodjy3k0KWvRRxkxJDTmIg02RgLH9T8OcuXBZvjDJMSpwRj7r3biMx8HMCY7t/uU3Rec86
- Yj0GF1z+lt677dBFenBvzf10dB1jkkhhhrPZOBvyDrckMBG6IG66Uk0ZQs1AIMBf69eDnuvrNZs
- +mRp1KxaMG0LWWMSYM1hqKuLqDHXTAvdECl0aHGOc7AfQxclqrQOfExX5i7RkPVg+z7hooT0MSA
- OsskoSuDgcKcd4tbgDXIii+2MkgUUU7vudKBsRYJTBNTe93UP/dbVyFceU7tQPIdHhyQcAR6Wab
- UYY7OaDVr8AB+6nDhlA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-13_01,2026-07-10_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
- adultscore=0 lowpriorityscore=0 phishscore=0 spamscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607130031
+X-Spamd-Bar: ---
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[mokrynskyi.com,reject];
+	R_DKIM_ALLOW(-0.20)[mokrynskyi.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-38933-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38932-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:lgs201920130244@gmail.com,m:jjohnson@kernel.org,m:vasanthakumar.thiagarajan@oss.qualcomm.com,m:linux-wireless@vger.kernel.org,m:ath12k@lists.infradead.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oss.qualcomm.com:from_mime,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,qualcomm.com:dkim];
-	FORGED_SENDER(0.00)[baochen.qiang@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,oss.qualcomm.com,vger.kernel.org,lists.infradead.org];
+	FORGED_RECIPIENTS(0.00)[m:baochen.qiang@oss.qualcomm.com,m:ath12k@lists.infradead.org,m:linux-wireless@vger.kernel.org,m:jeff.johnson@oss.qualcomm.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER(0.00)[nazar@mokrynskyi.com,linux-wireless@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[baochen.qiang@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nazar@mokrynskyi.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[mokrynskyi.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mokrynskyi.com:from_mime,mokrynskyi.com:email,mokrynskyi.com:mid,mokrynskyi.com:dkim,lkml.org:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A096B746F24
+X-Rspamd-Queue-Id: 29AE8746F90
 
+The patches I sent only allow VM to start once.
+Any attempt to shutdown or reboot the VM results in host crashing instantly due to PCIe errors.
 
+The only way to somewhat gracefully reboot the host that I found is to unbind corresponding host bridge first (so it doesn't propagate PCIe error), then kill the VM (instead of attempting to shut down gracefully) and then reboot the host.
 
-On 7/8/2026 6:09 PM, Guangshuo Li wrote:
-> The change referenced by the Fixes tag makes hardware group creation
-> skip the device whose ath12k_core_soc_create() failed, and only destroys
-> devices that were created successfully before it.
-> 
-> That avoids releasing an uninitialized QMI handle when qmi_handle_init()
-> fails, but it also means that ath12k_qmi_init_service() must clean up any
-> resources it has already acquired before returning an error.
-> 
-> qmi_handle_init() can succeed before later initialization steps fail. If
-> the QMI event workqueue allocation fails, or qmi_add_lookup() fails, the
-> function returns an error without releasing the already initialized QMI
-> handle. Since the failed device is now skipped by the hardware group
-> rollback path, that handle is leaked.
-> 
-> Release the QMI handle on those late failure paths and clear ab->qmi.ab
-> so the failed device is left in the same state as the qmi_handle_init()
-> failure path.
-> 
-> Fixes: 088a099690e4 ("wifi: ath12k: fix error handling in creating hardware group")
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
->  drivers/net/wireless/ath/ath12k/qmi.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-> index fd762b5d7bb5..31e9fa9a62be 100644
-> --- a/drivers/net/wireless/ath/ath12k/qmi.c
-> +++ b/drivers/net/wireless/ath/ath12k/qmi.c
-> @@ -4054,7 +4054,8 @@ int ath12k_qmi_init_service(struct ath12k_base *ab)
->  	ab->qmi.event_wq = alloc_ordered_workqueue("ath12k_qmi_driver_event", 0);
->  	if (!ab->qmi.event_wq) {
->  		ath12k_err(ab, "failed to allocate workqueue\n");
-> -		return -EFAULT;
-> +		ret = -EFAULT;
-> +		goto err_release_qmi_handle;
->  	}
->  
->  	INIT_LIST_HEAD(&ab->qmi.event_list);
-> @@ -4067,9 +4068,15 @@ int ath12k_qmi_init_service(struct ath12k_base *ab)
->  	if (ret < 0) {
->  		ath12k_warn(ab, "failed to add qmi lookup\n");
->  		destroy_workqueue(ab->qmi.event_wq);
-> -		return ret;
-> +		goto err_release_qmi_handle;
->  	}
->  
-> +	return ret;
-> +
-> +err_release_qmi_handle:
-> +	qmi_handle_release(&ab->qmi.handle);
-> +	ab->qmi.ab = NULL;
+This is not great, but still much better than not being able to use the hardware at all. These cards were paperweight for me for far too long.
+I've been running a system with these patches for probably close to 3 months now and have not found other issues except performance is not that great.
 
-since ath12k_qmi_deinit_service() NULL-checks ab->qmi.ab to determine whether qmi service
-init succeeds, does it make more sense to move ab->qmi.ab initialization in
-ath12k_qmi_init_service() to the last step? This achieves symmetry and also avoids reset
-in the failure path.
+I sent a suggestion to allow ignoring PCIe errors in vfio so it doesn't crash the host here: https://lore.kernel.org/kvm/70de9b8f-b7c7-481b-8cb1-931e3b82eb0e@mokrynskyi.com/
+But maintainers weren't too happy about it.
 
-> +
->  	return ret;
->  }
->  
+While searching for that thread I found this recent development, which looks related to the issues I'm having: https://lkml.org/lkml/2026/6/30/398
 
+Sincerely, Nazar Mokrynskyi
+github.com/nazar-pc
+
+13.07.26 06:03, Baochen Qiang:
+>
+> On 5/6/2026 1:24 AM, Nazar Mokrynskyi wrote:
+>> ath12k_pci_sw_reset() unconditionally calls ath12k_pci_soc_global_reset()
+>> regardless of whether the device is being powered up for the first time or
+>> recovering from a previous run. The global reset drops the PCIe link and
+>> relies on the host root complex to perform physical link retraining before
+>> the MHI BHI register can be accessed.
+>>
+>> When the device is passed through to a VM via VFIO, no physical link
+>> retraining occurs after the reset since QEMU's virtual PCIe bridge does
+>> not implement hardware LTSSM negotiation. As a result, all subsequent
+>> MMIO reads return 0xffffffff and MHI initialization fails with -EREMOTEIO.
+>>
+>> On initial power-up, vfio-pci has already performed a Function Level
+>> Reset before handing the device to the guest driver, placing it in a
+>> known clean state equivalent to what the global reset achieves. The global
+> AFAIK this is not the fact. Some internal registers are not cleanly reset without a global
+> reset.
+>
+>> reset is therefore redundant on power-up and only necessary on the
+>> shutdown/recovery path where it tears down an already-running firmware.
+> is ath12k recovery working in Qemu in your setup? I doubt it since recovery would also hit
+> the link retraining issue ? Also how about the rmmod / insmod sequence in Qemu, since
+> rmmod also triggers global reset ?
+>
+> To me this is more like a Qemu/vfio issue than a driver issue. The QEMU's behavior that
+> virtual PCIe bridge does not implement hardware LTSSM negotiation basically breaks all
+> hardware requiring runtime PCIe link retraining. Not sure why it is designed like this. If
+> it can not be fixed/changed in Qemu, can we do it in the host vfio?
+>
+>> Skip ath12k_pci_soc_global_reset() when power_on is true to allow MHI
+>> initialization to succeed under VFIO passthrough without affecting bare
+>> metal behavior.
+>>
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.6-01243-QCAHKSWPL_SILICONZ-1
+>>
+>> Signed-off-by: Nazar Mokrynskyi <nazar@mokrynskyi.com>
+>> ---
+>>  drivers/net/wireless/ath/ath12k/pci.c | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+>> index 375277ca2..a3d7aeb72 100644
+>> --- a/drivers/net/wireless/ath/ath12k/pci.c
+>> +++ b/drivers/net/wireless/ath/ath12k/pci.c
+>> @@ -303,7 +303,8 @@ static void ath12k_pci_sw_reset(struct ath12k_base *ab, bool power_on)
+>>  
+>>  	ath12k_mhi_clear_vector(ab);
+>>  	ath12k_pci_clear_dbg_registers(ab);
+>> -	ath12k_pci_soc_global_reset(ab);
+>> +	if (!power_on)
+>> +		ath12k_pci_soc_global_reset(ab);
+>>  	ath12k_mhi_set_mhictrl_reset(ab);
+>>  }
+>>  
 
