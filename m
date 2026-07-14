@@ -1,138 +1,171 @@
-Return-Path: <linux-wireless+bounces-39010-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-39011-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pH5rFBTeVWpaugAAu9opvQ
-	(envelope-from <linux-wireless+bounces-39010-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 08:58:28 +0200
+	id I7W+NYbhVWrZugAAu9opvQ
+	(envelope-from <linux-wireless+bounces-39011-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 09:13:10 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5EC9751B2B
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 08:58:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B44F1751C10
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 09:13:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=realtek.com header.s=dkim header.b=mI76qIyr;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39010-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39010-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=realtek.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=b+Mk3si1;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="b hfPs3j";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39011-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39011-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=arndb.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6078A301CD26
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 06:58:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C04ED3008FC0
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 07:13:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B823DEAEC;
-	Tue, 14 Jul 2026 06:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 946963EBF19;
+	Tue, 14 Jul 2026 07:13:04 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031022F8E94;
-	Tue, 14 Jul 2026 06:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA923033E6;
+	Tue, 14 Jul 2026 07:13:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784012306; cv=none; b=sYPGqXoZZNp+glvunpLJIBcfYAuu0Cft5YPFmhcmFsHX6rGRfZXexwhp0RWXDm8UjNlMKOPsn5rCQwT5pRO6fxlKAnbVwoFun6Py1SBNcT0CrvrZq8HdgeugIa7e7EEAumG0xmk+iLR8a11LVMDruzH1r88pAdfbE2bYf9vSO10=
+	t=1784013184; cv=none; b=aDQPq1T9FJD2ODUkL43CI6Z2ofPwX9cdsm9ts6HYgHgxTWal+J88X4uq5K4cNvET/VuquYX3yDW6U2b+C93tsTiv0EqHjK6M0sdwXvIXy7clEdy9lKwtcfk9n58b4+hdG3sNUbIeTKX9bfJlizLN2CotKO/Yi3Dpo2zE27s/3mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784012306; c=relaxed/simple;
-	bh=fuQ2RRXqFek06eApOhqhlpG77IQplSqVaqzdgmRdqhw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=CTNQ4mV2Xok/GTHuSqkeV1y45PtAaJjkxNrX9INTpjPwbUaqrQ5ljo2c05yUY6BNQ04QnL4OsuJsPX+Et51sdkm38600L7fw7uZJUcygZInwgM0hsYlpEm1pq4OwbCeKmHemnmkt4ABlmWZ+PHdYMBIU/7XnklOuGYHdOaJM1jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=mI76qIyr; arc=none smtp.client-ip=211.75.126.72
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66E6vmvsF1943012, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1784012268; bh=iGj48yemdWauySdVEsdnGgJJ0oT9G63LD8JsctGOIY8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=mI76qIyrAvl+Y0uGC+dY+9eJWZZJ88t5FcDyCv2Lk4AnrJmGW7LQ2/z11uKF0FmWn
-	 wai2Xkkh87mUdQm6q1MH8SJG6swP+nNuShcb1b8486SiUkB/wBU+RNaGB/ZfqYOI+x
-	 7CgEJqQvbiaRgGND++eke8Ks1QQtS9QQjaa9s9I6ficw1bEdwbIt5+BzssFwSIErYN
-	 a1XcnF7X4BqTSWlswpxmw3F2Mb8KvoOMrtnTzSGmxd08eeWsbixlCi6oRHrE+cexKU
-	 lVVDCKFVaP0mmqbVWLqwE1VrZMBKI4bSi5PgDYFS1mT3NzNgeLPJksHvYXZBAKR3DS
-	 6SCofsn5kUhkg==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66E6vmvsF1943012
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 14 Jul 2026 14:57:48 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 14 Jul 2026 14:57:44 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 14 Jul 2026 14:57:43 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::e6fd:5a3f:8946:92c4%10]) with mapi id
- 15.02.2562.017; Tue, 14 Jul 2026 14:57:43 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Jeff Johnson
-	<jjohnson@kernel.org>
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"ath12k@lists.infradead.org" <ath12k@lists.infradead.org>
-Subject: RE: [PATCH] wifi: ath12k: Constify struct ath12k_dp_arch_ops
-Thread-Topic: [PATCH] wifi: ath12k: Constify struct ath12k_dp_arch_ops
-Thread-Index: AQHdE1uKB+sp9zTsUkKJ8dFek3N2uLZslSiQ
-Date: Tue, 14 Jul 2026 06:57:42 +0000
-Message-ID: <2efa694140ce418c8d83a62d3f7b5309@realtek.com>
-References: <469d732e2c6f159e1a05e89c7e417c3a10db5fdf.1784010931.git.christophe.jaillet@wanadoo.fr>
-In-Reply-To: <469d732e2c6f159e1a05e89c7e417c3a10db5fdf.1784010931.git.christophe.jaillet@wanadoo.fr>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1784013184; c=relaxed/simple;
+	bh=hjMnmBy5eiiroY+WM19jerjrD4NSfqSbySltKRYbT18=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=jRyCofIY8n8TmgVi6hIXg6n0ZQLoBrvluEOev/q/93JmTjrMDazStTMzknUEGsBCp3Q4y7YhAZ57IN8/CPJ/pzS+kzRtaZ4Cwh5Ud3s4+mn2CJVz5DdjjIUcWhQZVfc2slZTnDiW5dr1MWkt71J46IaUjYooN/r5LEE4CcJQV3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=b+Mk3si1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=bhfPs3jA; arc=none smtp.client-ip=202.12.124.156
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 77AD47A0145;
+	Tue, 14 Jul 2026 03:13:01 -0400 (EDT)
+Received: from phl-imap-05 ([10.202.2.95])
+  by phl-compute-04.internal (MEProxy); Tue, 14 Jul 2026 03:13:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1784013181;
+	 x=1784099581; bh=U2JleBMEyaN4TrOpJxl78gYeo4UTolhpSNMUutN3PbQ=; b=
+	b+Mk3si1dnGvDUxCX9dTarczfqQV3U7abc1fyV2eDgAIbKaUw3MjuSXk2Oqq7tmY
+	UpIWr83ATb+ggnNsoltuRUOSQYeYEeVOHoz58QR6l69cZqBJNxjyrMr3Z8lAR7eO
+	MFAAoSnYXp3GU/GafGxwRrWxxjwkhI86zUXTZTqu1nyG4WMOvn3W85pdzf0TFYKa
+	dx1NNAokYbrd9ijeY22UPlKYfeTbl5yMKPAeRnNDCWFlAlLyGD4QU6qj8ay9804a
+	JMbcyyMN6j9BmM4Y5QrQDhUXO+4GCGEeuJq/GYge/YAvIQxu+xfc6J12teCW6l+D
+	/DHvHQ6ZbYdAjQ5EsQZCtw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784013181; x=
+	1784099581; bh=U2JleBMEyaN4TrOpJxl78gYeo4UTolhpSNMUutN3PbQ=; b=b
+	hfPs3jAdSBOSwUdaX0N7VbhDiPF8bSclHADKfVOLu6xGnOFzGNs5+B5UnMIQg6r3
+	YqnZDfDfjg4vQghwz6hERGqzCedtPGWn2I/9bCF0WX80CQ9wwTZ1qylm9yWY491n
+	F+2HikMrt6YL7iFpxnqjjpWdC7KN+vqB222T3ZdWnaj37Z389p7GoVp5oWVusilN
+	btuiMGhNgKtSy5OppNp764PmYtbw3XbhczRKw5UkHuXI9DOYJPp7LPz8A42icZL3
+	ToHG8ZnHlM/KsLf77njfG3c/kpcPGGdRVpAq12tx3w50f866aGA6+fd1/2zH50f7
+	wFWiriK+5mu3gooWbEQXQ==
+X-ME-Sender: <xms:e-FValZnF0Gh6-pAID_JiLxPlTDjBGclM6GAV3G27FnNXk-IpL90Eg>
+    <xme:e-FVanMXpXC3qqZNUcvWp7yEN8J7RcjhXA-2zOnvib5prccOgarvRWUCASpm_We4P
+    yb2h3rl5oXJs_Ot5cs1dErZtofN0Hlui9IuH5qEDGf3S3Y1npf8DT0>
+X-ME-Proxy-Cause: dmFkZTEi623NeAIToclec5fEpZtjqETttKPLxvck5S7cX8ia4shMWBc5B04a00kNzETMhG
+    nd8QZoxSuQqg7t9Lydv4FxzZSEPTOxk12aNxSKOoFr8X/jY9bz1l2ODa4aRqaT1RVYvKcQ
+    XxIM/PA7ZmApHQNm17gbEVR51QX4FHkwHHLN3uDYfaNEFMnvcj01jbxs/9NRZGYpones3u
+    b6rYdbijILeHfskKZWrZo2NNC+vK8LvenPGViV5grJFIWAjmoWKnWboj1Q7en0ruyiKaNd
+    Xj1vnDHRJfz5hZo2LJcQUP9TzxdEsmVLW0LMiySucSZVvHlawGdj0/xaB9FbPkk1YbjJpO
+    oXt7Ggj0nQHoVszgKLkHzX7luk1W+CiwVOazhwL5uk2ETUvbcfA5J4MOxeM0q/RkWYFQ9L
+    Cyul8AJvkw/t3xrpM0w4ur3qe8mmQozCI9nKwHmCR9wxr4lLVqNfWA896ccQv/E1gcEzzT
+    iPqBxORi1I1T3QskB63RB5IFIlQAYC0GtoqHrnMqNgwl4BJ1gkckjEtv0RIHyKA2AXQx0f
+    MsrxvKjJT4FUiec7RvpZg89kjBNFWNoQGX5DFrteQzwzeyR1aTnxs7fdSJYqIYC9IrVXNZ
+    v+C+24/ozwlT37VRZ6OdZA7LLPmbLRPtmj3P35V88MnbZE0MiTUXBibyX8JA
+X-ME-Proxy: <xmx:e-FVakTFdwwuk9BuBWXPFofooOE_sma9W5OC_u-qDa5tc3ti212pbg>
+    <xmx:e-FVap7n6Oe8ZBc0gMm-Kh4GWMsLF8uSxoiT6U4_mEM0EssT5lat9w>
+    <xmx:e-FVahWgg1FTAP2U9xYwa12ptUfo8srFJhw05lTZ0nCrRO3NDd93zg>
+    <xmx:e-FVan-FpBLhrhR3yWTq29pa26fYrkkP4IuzjJdcha-QFXqVcufTKA>
+    <xmx:feFVagmAILd35LAyioF_Mgc-izHf2yIj0Bq0ei8Aw_o1BO44NB9ATcaK>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id D17C4182007E; Tue, 14 Jul 2026 03:12:59 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-ThreadId: AR7AWmfjl_6V
+Date: Tue, 14 Jul 2026 09:12:39 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Dmitry Torokhov" <dmitry.torokhov@gmail.com>,
+ =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
+ =?UTF-8?Q?Michael_B=C3=BCsch?= <m@bues.ch>,
+ "Hauke Mehrtens" <hauke@hauke-m.de>,
+ "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+ "Waldemar Brodkorb" <wbx@openadk.org>
+Cc: "Bartosz Golaszewski" <brgl@kernel.org>, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+ "Bartosz Golaszewski" <bartosz.golaszewski@oss.qualcomm.com>
+Message-Id: <4a8d64e1-5f8c-4ac0-afb0-2d68c3f53ada@app.fastmail.com>
+In-Reply-To: <20260713-b4-bcm47xx-swnode-v2-0-2b879f0c193c@gmail.com>
+References: <20260713-b4-bcm47xx-swnode-v2-0-2b879f0c193c@gmail.com>
+Subject: Re: [PATCH v2 0/3] MIPS: BCM47XX: convert buttons to software nodes
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.65 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[arndb.de,none];
+	R_DKIM_ALLOW(-0.20)[arndb.de:s=fm1,messagingengine.com:s=fm2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	XM_UA_NO_VERSION(0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:dmitry.torokhov@gmail.com,m:zajec5@gmail.com,m:m@bues.ch,m:hauke@hauke-m.de,m:tsbogend@alpha.franken.de,m:wbx@openadk.org,m:brgl@kernel.org,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-mips@vger.kernel.org,m:bartosz.golaszewski@oss.qualcomm.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-39011-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER(0.00)[arnd@arndb.de,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com,bues.ch,hauke-m.de,alpha.franken.de,openadk.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:christophe.jaillet@wanadoo.fr,m:jjohnson@kernel.org,m:linux-kernel@vger.kernel.org,m:kernel-janitors@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath12k@lists.infradead.org,s:lists@lfdr.de];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[wanadoo.fr,kernel.org];
-	FORGED_SENDER(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-39010-lists,linux-wireless=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[arnd@arndb.de,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[arndb.de:+,messagingengine.com:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,app.fastmail.com:mid,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E5EC9751B2B
+X-Rspamd-Queue-Id: B44F1751C10
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
-> --- a/drivers/net/wireless/ath/ath12k/wifi7/dp.c
-> +++ b/drivers/net/wireless/ath/ath12k/wifi7/dp.c
-> @@ -139,7 +139,7 @@ static int ath12k_wifi7_dp_service_srng(struct ath12k=
-_dp *dp,
->         return tot_work_done;
->  }
->=20
-> -static struct ath12k_dp_arch_ops ath12k_wifi7_dp_arch_ops =3D {
-> +static  struct ath12k_dp_arch_ops ath12k_wifi7_dp_arch_ops =3D {
+On Mon, Jul 13, 2026, at 23:58, Dmitry Torokhov wrote:
+> This series converts the legacy gpio-keys platform device on BCM47XX
+> boards to use software nodes and static properties.
+>
+> To do this properly without relying on legacy name-based matching
+> (which is being removed from gpiolib), we introduce and register
+> software nodes for the underlying GPIO controllers (BCMA and SSB)
+> and reference them in the button properties.
+>
+> The first two patches add the software nodes to bcma-gpio and
+> ssb-gpio respectively. The third patch performs the conversion
+> for the BCM47XX buttons.
+>
+> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> ---
+> As Johannes mentioned on v1 this best should go through MIPS tree.
 
-Did you miss 'const' here?
+Adding Waldemar to Cc. He has recently done some work to
+get this platform working again in FreeWRT and should
+be able to test your patches on hardware.
 
-
+       Arnd
 
