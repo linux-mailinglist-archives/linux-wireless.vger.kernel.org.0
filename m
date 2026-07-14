@@ -1,73 +1,73 @@
-Return-Path: <linux-wireless+bounces-39034-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-39035-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BIblFukbVmoTzQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-39034-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 13:22:17 +0200
+	id oua8FvIbVmoUzQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-39035-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 13:22:26 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A02C1753DA2
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 13:22:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CBB7753DA7
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 13:22:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=K1e7uTyU;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39034-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39034-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=intel.com header.s=Intel header.b=n+M7JS1n;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39035-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39035-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 36F3D3155198
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 11:20:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F5843164D1C
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 11:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9A2377559;
-	Tue, 14 Jul 2026 11:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B01373C12;
+	Tue, 14 Jul 2026 11:20:37 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BC8363C60
-	for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 11:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAF337DAA3
+	for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 11:20:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784028035; cv=none; b=iwTFIgiV8QW+L0It07RhJO4l9nFy0o5Wjb81lVH0Kz2ew+31QjSLShbAwsup8kLQthjZ3O0BKh7aPeCEwtzCiN+Pv1XrlSkB2IAqf3qZLmuThUus88jjPFouWXCynFZWzB1+a9eQuKx3B5x8VeKdaJ9HxPLv4R4u0fO6q4TTKvA=
+	t=1784028037; cv=none; b=NvvtTBy9DVxEHAtUEOvDVtY5f+ayKa2+w/2cZW8a1ApEMa2uEDQoT0lUg/7E9RCRCCxj1GZGpLNyDTO0XK+AYxjWZdkdDE6dX8m69EOZvRM59yVANxbX94yspY6MjTl6mptDxBmxF1vbztBpjOdypt2zFk4fOYK6ypqMhz2pAiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784028035; c=relaxed/simple;
-	bh=Cc7l79NrUNP0SHLwpPaMTdp/TD4PTtToZifJnazIGEc=;
+	s=arc-20240116; t=1784028037; c=relaxed/simple;
+	bh=yeEZfH5cDHGk9ahbLA7+T11RUDJ0yCVfgNSJbKlSPLE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qAzENHZNmAHQEyoGeFLIXDq9X+RPOL9GqR8tR3MukusGPD9dHOjjqnIIMGC7JSKPklR9KSS498kv0WOyNOXzWSOa3KyHRJPjSPGrswuKOiVWrTba7OP8wgxW4o/9ILCh66uJr/fm/PINgcs0aCzx9CFN5SYrJf5zjyUDh9dlGss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K1e7uTyU; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=ipnRbD/wmpMaZ7cTeCoBmAn/rIIEVbfl8Hy5THKIUNFDpSigu2OSOP0+utPMFucsMFbuUS+TwpLCQVbNGJkGoWIz8j0Nvajlbx9MIz8nMrAS/mwfG/L34kXr8X0C7NCX+ciNP/LSRyOPnoDgVO8Arxb0KrLbD8VImneekIFl4HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n+M7JS1n; arc=none smtp.client-ip=192.198.163.8
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784028034; x=1815564034;
+  t=1784028036; x=1815564036;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Cc7l79NrUNP0SHLwpPaMTdp/TD4PTtToZifJnazIGEc=;
-  b=K1e7uTyUJ+v4DBw/JDZYddN8iZkwmy11k5pXrP10AEbFOkmQdcUGDulu
-   mxH+wlNdQF001rmk7mwApdgALzrrnp+hsYwKrayGwxdvff5Cupzj9pUIz
-   MRRFdMatkjez5d3+GASnVgQHjTpebj3WFJDhuX/rLFII/h9aELBN6ZFwl
-   ryIZRLCmupcVhe+f2fGOzAupqQSWG+pE5x3QSTejVyxOXawG9GMgZ2pSP
-   5Btn60bR8V9CLxOSfXao5OE3ow+EAhhFo2WfpZQFsbPhXKeN5ZhGruT4O
-   PVn1KauG++vE3beQmZNphYGQXMlb2WbW8o107EvOaF4wmEdLGMYmSj2fp
-   Q==;
-X-CSE-ConnectionGUID: w7BMZB+sQBuoOkDFBRbBWA==
-X-CSE-MsgGUID: PdxjFZXxTxWW2b/R6SeGgA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="102200310"
+  bh=yeEZfH5cDHGk9ahbLA7+T11RUDJ0yCVfgNSJbKlSPLE=;
+  b=n+M7JS1nLEHxbaFsi/Y0tTwBgtsPX+5YXxqvUnpXUDN3bZ6inE2DOhi7
+   9Q0bkkvvUi5qSvjp/qrQ60KsRoaFA7abLlX2LPji7ol0gY25ibmgblukM
+   bUptgJQ9GY+4Qd8z8NNeo4WRll4nk57KYELrvvkbPIMk1Gc8Fps45tXb+
+   PeV4TOn67+e3keld5BnNVT/XwHCRe2wyKwTuh2eVuKwVxxowXd6gzthuN
+   UYi8BkuA1aOARcJgNmzSEByLyFrxY5xvt869eFRZNjv5TFbOZAZdM2lz0
+   0GplSKxTtmd/p2OYW1cYAU68Tov0kF2PoDwI+UbcmdPlKlq/28tmfNadr
+   w==;
+X-CSE-ConnectionGUID: IC5iz6bjRa+2vWITjjKxVw==
+X-CSE-MsgGUID: kEo2oaMbRhCMnM62tP9LWw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="102200312"
 X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; 
-   d="scan'208";a="102200310"
+   d="scan'208";a="102200312"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 04:20:34 -0700
-X-CSE-ConnectionGUID: seQpzcRPTp6FmqSJ52UMRw==
-X-CSE-MsgGUID: IL9XPBSDTzGBn1KJko7hnw==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 04:20:35 -0700
+X-CSE-ConnectionGUID: VWNgdQNhRByqbDmWeMJGTg==
+X-CSE-MsgGUID: 09fIIGUBRaq3OtBmMhIcBw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; 
-   d="scan'208";a="280250169"
+   d="scan'208";a="280250175"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 04:20:33 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 04:20:34 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH iwlwifi-fixes 07/15] wifi: iwlwifi: mvm: parse beacon notif per layout
-Date: Tue, 14 Jul 2026 14:19:56 +0300
-Message-Id: <20260714141909.cc8aa937f8e5.I921f8dadcb20cb73e8283e1b8546e1778205411f@changeid>
+Subject: [PATCH iwlwifi-fixes 08/15] wifi: iwlwifi: mvm: validate MCC header before n_channels
+Date: Tue, 14 Jul 2026 14:19:57 +0300
+Message-Id: <20260714141909.cb2cef3d3e7e.Iee7b48614289da576de842157ad3730b7589a4b1@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260714141909.fdf31f494f1c.I70d01ed2023f6584fb23ea8ab344a93d222cc4c0@changeid>
 References: <20260714141909.fdf31f494f1c.I70d01ed2023f6584fb23ea8ab344a93d222cc4c0@changeid>
@@ -87,12 +87,12 @@ X-Spamd-Result: default: False [-4.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-39034-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-39035-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	HAS_ORG_HEADER(0.00)[];
@@ -110,125 +110,119 @@ X-Spamd-Result: default: False [-4.16 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:from_mime,intel.com:email,intel.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A02C1753DA2
+X-Rspamd-Queue-Id: 6CBB7753DA7
 
 From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-The beacon TX notification can arrive in different layouts, and fields
-must be read only after selecting the expected format.
+MCC response parsing read n_channels from v8/v4/v3 response variants
+before ensuring the payload contained the fixed response header.
 
-Parse gp2 and TSF from the matching notification structure in each
-branch, and keep using the parsed gp2 for CSA countdown and debug output.
-Drop the obsolete cached gp2 field.
+Add a minimum payload-length check for each response version before
+reading n_channels, and keep the existing exact-size validation for the
+channels array payload.
 
 Assisted-by: GitHub Copilot:gpt-5.3-codex
 Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 25 +++++++++++--------
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  1 -
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  3 ---
- 3 files changed, 15 insertions(+), 14 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/nvm.c | 43 ++++++++++++++++----
+ 1 file changed, 36 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-index d6a8624b1ae5..b2c5be22c293 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-@@ -1493,49 +1493,54 @@ void iwl_mvm_rx_beacon_notif(struct iwl_mvm *mvm,
- {
- 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
- 	unsigned int pkt_len = iwl_rx_packet_payload_len(pkt);
--	struct iwl_extended_beacon_notif *beacon = (void *)pkt->data;
--	struct iwl_extended_beacon_notif_v5 *beacon_v5 = (void *)pkt->data;
- 	struct ieee80211_vif *csa_vif;
- 	struct ieee80211_vif *tx_blocked_vif;
- 	struct agg_tx_status *agg_status;
-+	u32 beacon_gp2;
- 	u16 status;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
+index 953218f1e025..f76e57399c1f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2012-2014, 2018-2019, 2021-2025 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2019, 2021-2026 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+@@ -416,6 +416,7 @@ iwl_mvm_update_mcc(struct iwl_mvm *mvm, const char *alpha2,
+ 	int ret, resp_ver;
+ 	u32 status;
+ 	int resp_len, n_channels;
++	unsigned int pkt_len;
+ 	u16 mcc;
  
- 	lockdep_assert_held(&mvm->mutex);
+ 	if (WARN_ON_ONCE(!iwl_mvm_is_lar_supported(mvm)))
+@@ -431,6 +432,7 @@ iwl_mvm_update_mcc(struct iwl_mvm *mvm, const char *alpha2,
+ 		return ERR_PTR(ret);
  
--	mvm->ap_last_beacon_gp2 = le32_to_cpu(beacon->gp2);
--
- 	if (!iwl_mvm_is_short_beacon_notif_supported(mvm)) {
-+		struct iwl_extended_beacon_notif_v5 *beacon = (void *)pkt->data;
- 		struct iwl_tx_resp *beacon_notify_hdr =
--			&beacon_v5->beacon_notify_hdr;
-+			&beacon->beacon_notify_hdr;
+ 	pkt = cmd.resp_pkt;
++	pkt_len = iwl_rx_packet_payload_len(pkt);
  
--		if (unlikely(pkt_len < sizeof(*beacon_v5)))
-+		if (unlikely(pkt_len < sizeof(*beacon)))
- 			return;
+ 	resp_ver = iwl_fw_lookup_notif_ver(mvm->fw, IWL_ALWAYS_LONG_GROUP,
+ 					   MCC_UPDATE_CMD, 0);
+@@ -439,9 +441,18 @@ iwl_mvm_update_mcc(struct iwl_mvm *mvm, const char *alpha2,
+ 	if (resp_ver >= 8) {
+ 		struct iwl_mcc_update_resp_v8 *mcc_resp_v8 = (void *)pkt->data;
  
--		mvm->ibss_manager = beacon_v5->ibss_mgr_status != 0;
-+		beacon_gp2 = le32_to_cpu(beacon->gp2);
++		if (IWL_FW_CHECK(mvm, pkt_len < sizeof(*mcc_resp_v8),
++				 "MCC v8 response too short: %u\n", pkt_len)) {
++			resp_cp = ERR_PTR(-EINVAL);
++			goto exit;
++		}
 +
-+		mvm->ibss_manager = beacon->ibss_mgr_status != 0;
- 		agg_status = iwl_mvm_get_agg_status(mvm, beacon_notify_hdr);
- 		status = le16_to_cpu(agg_status->status) & TX_STATUS_MSK;
- 		IWL_DEBUG_RX(mvm,
- 			     "beacon status %#x retries:%d tsf:0x%016llX gp2:0x%X rate:%d\n",
- 			     status, beacon_notify_hdr->failure_frame,
- 			     le64_to_cpu(beacon->tsf),
--			     mvm->ap_last_beacon_gp2,
-+			     beacon_gp2,
- 			     le32_to_cpu(beacon_notify_hdr->initial_rate));
+ 		n_channels =  __le32_to_cpu(mcc_resp_v8->n_channels);
+-		if (iwl_rx_packet_payload_len(pkt) !=
+-		    struct_size(mcc_resp_v8, channels, n_channels)) {
++		if (IWL_FW_CHECK(mvm,
++				 pkt_len !=
++				 struct_size(mcc_resp_v8, channels, n_channels),
++				 "invalid MCC v8 response size: %u (n_channels=%d)\n",
++				 pkt_len, n_channels)) {
+ 			resp_cp = ERR_PTR(-EINVAL);
+ 			goto exit;
+ 		}
+@@ -464,9 +475,18 @@ iwl_mvm_update_mcc(struct iwl_mvm *mvm, const char *alpha2,
+ 			       IWL_UCODE_TLV_CAPA_MCC_UPDATE_11AX_SUPPORT)) {
+ 		struct iwl_mcc_update_resp_v4 *mcc_resp_v4 = (void *)pkt->data;
+ 
++		if (IWL_FW_CHECK(mvm, pkt_len < sizeof(*mcc_resp_v4),
++				 "MCC v4 response too short: %u\n", pkt_len)) {
++			resp_cp = ERR_PTR(-EINVAL);
++			goto exit;
++		}
++
+ 		n_channels =  __le32_to_cpu(mcc_resp_v4->n_channels);
+-		if (iwl_rx_packet_payload_len(pkt) !=
+-		    struct_size(mcc_resp_v4, channels, n_channels)) {
++		if (IWL_FW_CHECK(mvm,
++				 pkt_len !=
++				 struct_size(mcc_resp_v4, channels, n_channels),
++				 "invalid MCC v4 response size: %u (n_channels=%d)\n",
++				 pkt_len, n_channels)) {
+ 			resp_cp = ERR_PTR(-EINVAL);
+ 			goto exit;
+ 		}
+@@ -489,9 +509,18 @@ iwl_mvm_update_mcc(struct iwl_mvm *mvm, const char *alpha2,
  	} else {
-+		const struct iwl_extended_beacon_notif *beacon =
-+			(void *)pkt->data;
+ 		struct iwl_mcc_update_resp_v3 *mcc_resp_v3 = (void *)pkt->data;
+ 
++		if (IWL_FW_CHECK(mvm, pkt_len < sizeof(*mcc_resp_v3),
++				 "MCC v3 response too short: %u\n", pkt_len)) {
++			resp_cp = ERR_PTR(-EINVAL);
++			goto exit;
++		}
 +
- 		if (unlikely(pkt_len < sizeof(*beacon)))
- 			return;
- 
-+		beacon_gp2 = le32_to_cpu(beacon->gp2);
-+
- 		mvm->ibss_manager = beacon->ibss_mgr_status != 0;
- 		status = le32_to_cpu(beacon->status) & TX_STATUS_MSK;
- 		IWL_DEBUG_RX(mvm,
- 			     "beacon status %#x tsf:0x%016llX gp2:0x%X\n",
- 			     status, le64_to_cpu(beacon->tsf),
--			     mvm->ap_last_beacon_gp2);
-+			     beacon_gp2);
- 	}
- 
- 	csa_vif = rcu_dereference_protected(mvm->csa_vif,
- 					    lockdep_is_held(&mvm->mutex));
- 	if (unlikely(csa_vif && csa_vif->bss_conf.csa_active))
--		iwl_mvm_csa_count_down(mvm, csa_vif, mvm->ap_last_beacon_gp2,
-+		iwl_mvm_csa_count_down(mvm, csa_vif, beacon_gp2,
- 				       (status == TX_STATUS_SUCCESS));
- 
- 	tx_blocked_vif = rcu_dereference_protected(mvm->csa_tx_blocked_vif,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 48cc10db7b96..f4f4446bef54 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -3061,7 +3061,6 @@ void iwl_mvm_stop_ap_ibss_common(struct iwl_mvm *mvm,
- 	}
- 
- 	mvmvif->ap_ibss_active = false;
--	mvm->ap_last_beacon_gp2 = 0;
- 
- 	if (vif->type == NL80211_IFTYPE_AP && !vif->p2p) {
- 		iwl_mvm_vif_set_low_latency(mvmvif, false,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 683cac56822c..31912f4d0175 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1168,9 +1168,6 @@ struct iwl_mvm {
- 	struct ieee80211_vif __rcu *csa_tx_blocked_vif;
- 	u8 csa_tx_block_bcn_timeout;
- 
--	/* system time of last beacon (for AP/GO interface) */
--	u32 ap_last_beacon_gp2;
--
- 	/* indicates that we transmitted the last beacon */
- 	bool ibss_manager;
- 
+ 		n_channels =  __le32_to_cpu(mcc_resp_v3->n_channels);
+-		if (iwl_rx_packet_payload_len(pkt) !=
+-		    struct_size(mcc_resp_v3, channels, n_channels)) {
++		if (IWL_FW_CHECK(mvm,
++				 pkt_len !=
++				 struct_size(mcc_resp_v3, channels, n_channels),
++				 "invalid MCC v3 response size: %u (n_channels=%d)\n",
++				 pkt_len, n_channels)) {
+ 			resp_cp = ERR_PTR(-EINVAL);
+ 			goto exit;
+ 		}
 -- 
 2.34.1
 
