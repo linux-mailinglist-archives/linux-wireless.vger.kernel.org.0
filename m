@@ -1,181 +1,194 @@
-Return-Path: <linux-wireless+bounces-39075-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-39076-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fG5+LvxCVmqh2QAAu9opvQ
-	(envelope-from <linux-wireless+bounces-39075-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 16:09:00 +0200
+	id IfxXGwFRVmov3QAAu9opvQ
+	(envelope-from <linux-wireless+bounces-39076-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 17:08:49 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E162B7558A4
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 16:08:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D74B87563EE
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 17:08:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BnaUrGD0;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39075-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39075-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DeIh8Z2T;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39076-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39076-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 59243320AC16
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 14:03:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8B5B3020AAE
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 15:04:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50E447DD42;
-	Tue, 14 Jul 2026 14:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B75480352;
+	Tue, 14 Jul 2026 15:04:46 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8510047D927
-	for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 14:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE3748AE18
+	for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 15:04:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784037805; cv=none; b=KnBR5MHUy1tEch+aHyDIqGgsKi7MZ6YGjtQYO48DuXv4GKS7acR6DNc45BkYr12mwul+M/nS2b2h8VWjzQUCaulOk0RswmPJbMnTnY0oHiNUi2OjCqnlnh7ISeEP/PX3JzPb4d+bH+yjEws6wdTrmGCY7eztaKzqMrGRHh6+bfg=
+	t=1784041486; cv=none; b=RTMLlZYBk48cBzb2SAen7jYeiFfpbyYQuDDO0qAy1RJAJzjbkXFsxIa9eVb5RTsjcFjN0eNPq/EZt5G7kIxzp+DT4KJhrXUENtPTZTnzpsZX5J9dIF0DG5FFt/dSRZbE5EFmqI53QpP++Qz4D/m+jiQ6y9Lvn69BVAUb4fzMpck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784037805; c=relaxed/simple;
-	bh=Rn5WoE9aqjgy/fQcTFSuQUYdNpb3qzLFOIilqo9QWZA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=poorflS8czb/m4SA0c35g19jIqukEpR0sW94x0tGHJ64RniCY6faUtlGgUiWUWuiBf7wJttJbDHrmBV6w01D+z5Ccyv0WabVGUjBFN4CxbYH8DpnfRjlh8BlkGkg71dsQPiTn65oBMFFUedrFoaYd8kzLMyfTh/nslHgjqiqbZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BnaUrGD0; arc=none smtp.client-ip=198.175.65.16
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784037802; x=1815573802;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Rn5WoE9aqjgy/fQcTFSuQUYdNpb3qzLFOIilqo9QWZA=;
-  b=BnaUrGD0UhfefTHaSpkdgmZeMXZn/GaCzTe8nF4XIXfH3KsN6G8adfGA
-   +yys+ZiScPAzkPjcrxe9892I+nToqfMTbOi+nbNZ5RKP/y1pvY2xnpTjU
-   PeIZsbYTr0pXxNywVj038lNatm9nhs7XJO4A0d259VuUZaf3ejxP1w/dO
-   /Vbq+gssAVE7fhcsZdegZzYpz7TP3FdGyCQsCmehVSPkTj9Sv6gh8BmPO
-   ix6usHpG5e0r79k6fbu6Lb7faAR8+apcf8N/37h2bXaP0J7Av25dc3VFh
-   BX7xSW3POPx6aD6+L1KwbQoqZEF7dTvncFjPAEbxbAQVL1gK4A/VrSF9x
-   g==;
-X-CSE-ConnectionGUID: O8dIx/t5SVyxUcF077TGzg==
-X-CSE-MsgGUID: zwQmoDnZRGyXyfBGJGuPDA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="84855172"
-X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; 
-   d="scan'208";a="84855172"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 07:03:05 -0700
-X-CSE-ConnectionGUID: IvbL5QA6RDyiEw7ECzPU5w==
-X-CSE-MsgGUID: yESkIQTZTk2O1k4G05QcxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; 
-   d="scan'208";a="254738000"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 07:03:03 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
+	s=arc-20240116; t=1784041486; c=relaxed/simple;
+	bh=zw7sWG9NMsbCDcycSEpB+JJ+Mh7QJC4TEmEfQVhsny0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kUle1t1O6ZM2xcbezWTZgjEp/k1OODudPTT2gKgv3nlE0xjxZmPw3AdSoYAb4WyvyYos88TWNQIfIvx1AJLEJtgvTOAoybfciea5S5MXag9StMIiY7zAlE9dBi44/1/KlbQZ4JZxIw4b7iljsfQmf54pn8FgHvkzTRZmPqJRNuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DeIh8Z2T; arc=none smtp.client-ip=209.85.161.42
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-6a375aa918eso124348eaf.1
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 08:04:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784041483; x=1784646283; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6ah3OjIXDJ8FGYTbK7t3P/0aF11VxI9dGNiWaxqwvQI=;
+        b=DeIh8Z2TutJGgVSHHRuMdFLl4hJpsIQLgBSn4+yQUfakoxdvJ7sku/ESNbcDBjFRG3
+         9B+DKNEJRpdmPSN3lfM9/TJ1bDjH/pM78vNSg9njZnNY3t2wa1XPId2Dv82KfE+yVFtC
+         rP3EoDGZTWJYf083/wBXLf2Ijr4BpsUPWcZ0UcXobLuuARuSFztnA9nZiTwNud4PLtYo
+         kpRSM3s2wrYyS3JhaHr4ftnyecVvqPaCjOJSBdHG536ol3VxjFg0vOussVncjR4dlNYG
+         OxVfomnpEWsGeI0sIYRwF/dvZhgxZKpIHxOr774bBdtLWpCk/A6XnYwsoDOgiFyVEfkV
+         0e0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784041483; x=1784646283;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6ah3OjIXDJ8FGYTbK7t3P/0aF11VxI9dGNiWaxqwvQI=;
+        b=VBIUtq9GRA8b8F51l8Hw5MkH/YWVP94GhSOlEb6n679roRRkm10cf4LEuUnLSWMGXh
+         hD0fUiL68W6FGODlN2tRWKC6o3r6ifLzPHRtrtwVmcgg99ukKR6vE+pyEom0jHa6UbUC
+         sixkZ6TBiZm+NfYYteuaL4OmVS63yzCPJFsM6YSIQzGZrQenGWyhbrUYdMBs1aKUz2xj
+         JgMnDYehpZmeFgRyq7fl9Aw7dGj23+gyr64SrVKeA0kcQrNUjUMfJI7iIl3aEauXYttZ
+         P3yaFGacQBslKROIViNDABha/MtuiSjRl9uX5Cog9NIoR0ByC8lxPeQ1Uq4Imsdh5r83
+         YgBg==
+X-Gm-Message-State: AOJu0YzaoDItVKrNU09iazH0JEGFDqMIZhTsyENzwIEPJzeiNxmM65l9
+	WJqLfKAguAvUmNd9Jnps9F13r4bvECWN7mctoi5IgRW6pXG0Y9ul8d5R
+X-Gm-Gg: AfdE7cmg0ch4vx4eu6Tnpv3m+TIGTpkt6DxKrLQRARsce3Y7YsakH4CTkV1LkqfWJAi
+	9CIMP5Qr4M8gk1yWolHbCc5ENWbG84HT4ELJRwY3jwVlmpEx0i+fMxN8kPcr5XpQkVzwhQ1fsGP
+	dZjALhYa+pqYK4UvkPantXwK0nEZfSTQ05cRB0aaUKZvxlAa/tgHdCOxK+Q1z6TkYjOd5deMr8w
+	N1aJzUUk0FNl+zmI2hYOI7cXaErlmDcLEJ3yTRGKSiy7Mj9dKhfyvpFZLzfZlfh0fbfbk2B86rK
+	9qyCSvDdcuT0ImRWvS2++E4JhbGpfdE1Xqlhf0mBOcJtUfQws/1HG8ZxRdqbIq33LkcpMMosok4
+	Af1NJtvweeAIrrPtEK/3dDBq9I8vko+zmBp+CQsttZSBnQelCgkvBFGh/KSUM1Sc89uSJQXoX/i
+	fxLrfhmmeCj56x6sJcP855YzHIGGUvxwTV+JZHY9gyAjOyrwTMZh/JE0/6jWi8OWESBerbn8+b2
+	imZebe7OyHkilz+I6vu1ho7etwrJX3JLMrk4LaGMDiJWn+8CMiXq7oeCa8=
+X-Received: by 2002:a05:6830:2692:b0:7e9:c6fd:c36e with SMTP id 46e09a7af769-7ec097b3ac9mr5781922a34.3.1784041483243;
+        Tue, 14 Jul 2026 08:04:43 -0700 (PDT)
+Received: from 3155-XPS.case.edu (casewireless18.CWRU.Edu. [129.22.1.27])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ebcae206e2sm15301403a34.2.2026.07.14.08.04.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 08:04:42 -0700 (PDT)
+From: bogdan.nicolae@gmail.com
+To: Arend van Spriel <arend.vanspriel@broadcom.com>
 Cc: linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH v2 iwlwifi-next 15/15] wifi: iwlwifi: mld: reset the driver state upon firmware recovery
-Date: Tue, 14 Jul 2026 17:02:18 +0300
-Message-Id: <20260714165826.ff1c9e05e0a9.I8df8d4a0384065fd2a32cf258339be77084c55bd@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260714140218.2887000-1-miriam.rachel.korenblit@intel.com>
-References: <20260714140218.2887000-1-miriam.rachel.korenblit@intel.com>
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	Bogdan Nicolae <bogdan.nicolae@acm.org>
+Subject: [PATCH] wifi: brcmfmac: cyw: clean up PMKID and cookie code
+Date: Tue, 14 Jul 2026 10:04:23 -0500
+Message-ID: <20260714150423.53960-1-bogdan.nicolae@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-39075-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-39076-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:emmanuel.grumbach@intel.com,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_SENDER(0.00)[bogdannicolae@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:arend.vanspriel@broadcom.com,m:linux-wireless@vger.kernel.org,m:brcm80211@lists.linux.dev,m:brcm80211-dev-list.pdl@broadcom.com,m:linux-kernel@vger.kernel.org,m:bogdan.nicolae@acm.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NO_DN(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bogdannicolae@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[changeid:mid,intel.com:from_mime,intel.com:email,intel.com:dkim,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,acm.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E162B7558A4
+X-Rspamd-Queue-Id: D74B87563EE
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Bogdan Nicolae <bogdan.nicolae@acm.org>
 
-Just like we did in iwlmvm, we also need to clear the mld state when the
-firmware was killed because of the device being powered off during
-suspend.
+Avoid setting packet_id to cookie, which is always 0. Instead, use an
+increasing atomic counter. Avoids mismatches of completion events later
+in brcmf_notify_mgmt_tx_status, where packet_id != vif->mgmt_tx_id is
+checked.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Also, zero out auth_status on initialization. Otherwise, garbage will
+leak from the stack to the firmware (when ssid is less than 32 bytes
+and/or when params->pmkid is set). Then, pass the params->pmkid to the
+firmware (without it, the firmware caches a garbage PMKID on successful
+authentication and denies a subsequent association request that includes
+the PMKID).
+
+Signed-off-by: Bogdan Nicolae <bogdan.nicolae@acm.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/mac80211.c | 3 +--
- drivers/net/wireless/intel/iwlwifi/mld/mac80211.h | 2 ++
- drivers/net/wireless/intel/iwlwifi/mld/mld.c      | 1 +
- 3 files changed, 4 insertions(+), 2 deletions(-)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c   | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-index 17286b3341c0..4065d8e4fa8c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-@@ -543,8 +543,7 @@ iwl_mld_mac80211_tx(struct ieee80211_hw *hw,
- 	iwl_mld_tx_skb(mld, skb, NULL);
- }
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
+index ce09d44fa..99f8c5bef 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
+@@ -23,6 +23,8 @@
+ #define MGMT_AUTH_FRAME_DWELL_TIME	4000
+ #define MGMT_AUTH_FRAME_WAIT_TIME	(MGMT_AUTH_FRAME_DWELL_TIME + 100)
  
--static void
--iwl_mld_restart_cleanup(struct iwl_mld *mld)
-+void iwl_mld_restart_cleanup(struct iwl_mld *mld)
++static atomic_t brcmf_cyw_mgmt_tx_id = ATOMIC_INIT(0);
++
+ static int brcmf_cyw_set_sae_pwd(struct brcmf_if *ifp,
+ 				 struct cfg80211_crypto_settings *crypto)
  {
- 	iwl_cleanup_mld(mld);
+@@ -123,7 +125,7 @@ int brcmf_cyw_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 	if (!ieee80211_is_auth(mgmt->frame_control))
+ 		return brcmf_cfg80211_mgmt_tx(wiphy, wdev, params, cookie);
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.h b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.h
-index aad04d7b2617..f3302997b28f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.h
-@@ -1,6 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-  * Copyright (C) 2024 Intel Corporation
-+ * Copyright (C) 2026 Intel Corporation
-  */
- #ifndef __iwl_mld_mac80211_h__
- #define __iwl_mld_mac80211_h__
-@@ -9,5 +10,6 @@
+-	*cookie = 0;
++	*cookie = atomic_inc_return(&brcmf_cyw_mgmt_tx_id);
+ 	vif = container_of(wdev, struct brcmf_cfg80211_vif, wdev);
  
- int iwl_mld_register_hw(struct iwl_mld *mld);
- void iwl_mld_recalc_multicast_filter(struct iwl_mld *mld);
-+void iwl_mld_restart_cleanup(struct iwl_mld *mld);
+ 	reinit_completion(&vif->mgmt_tx);
+@@ -200,7 +202,7 @@ brcmf_cyw_external_auth(struct wiphy *wiphy, struct net_device *dev,
+ {
+ 	struct brcmf_if *ifp;
+ 	struct brcmf_pub *drvr;
+-	struct brcmf_auth_req_status_le auth_status;
++	struct brcmf_auth_req_status_le auth_status = {};
+ 	int ret = 0;
  
- #endif /* __iwl_mld_mac80211_h__ */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.c b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-index 99506f354bfa..093bdc130704 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-@@ -748,6 +748,7 @@ static void iwl_mld_device_powered_off(struct iwl_op_mode *op_mode)
- 
- 	wiphy_lock(mld->wiphy);
- 	iwl_mld_stop_fw(mld);
-+	iwl_mld_restart_cleanup(mld);
- 	mld->fw_status.in_d3 = false;
- 	wiphy_unlock(mld->wiphy);
- }
+ 	brcmf_dbg(TRACE, "Enter\n");
+@@ -208,6 +210,8 @@ brcmf_cyw_external_auth(struct wiphy *wiphy, struct net_device *dev,
+ 	ifp = netdev_priv(dev);
+ 	drvr = ifp->drvr;
+ 	if (params->status == WLAN_STATUS_SUCCESS) {
++		if (params->pmkid)
++			memcpy(auth_status.pmkid, params->pmkid, WLAN_PMKID_LEN);
+ 		auth_status.flags = cpu_to_le16(BRCMF_EXTAUTH_SUCCESS);
+ 	} else {
+ 		bphy_err(drvr, "External authentication failed: status=%d\n",
 -- 
-2.34.1
+2.55.0
 
 
