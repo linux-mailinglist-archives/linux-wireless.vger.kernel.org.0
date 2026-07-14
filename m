@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-39096-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-39097-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id z8S4J3B4Vmqg6QAAu9opvQ
-	(envelope-from <linux-wireless+bounces-39096-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 19:57:04 +0200
+	id eaLOAHd4Vmqn6QAAu9opvQ
+	(envelope-from <linux-wireless+bounces-39097-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 19:57:11 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED7DB757A82
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 19:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86ABB757A88
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 19:57:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=b5KIYJ6w;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39096-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39096-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HzVzJAd8;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39097-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39097-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 614C9319A803
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 17:52:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8C54B31A0ADC
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 17:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B8A2A1B2;
-	Tue, 14 Jul 2026 17:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720C631E851;
+	Tue, 14 Jul 2026 17:52:22 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F0030C366
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2377F3126B0
 	for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 17:52:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784051539; cv=none; b=rtTFb/JJlIHdk4G5gAkDRjePyDOnFVP/LsypY7Hea6lXyWuGhug5XMRrTIkXoZ8cQ87AbuDXDSj4Qxaia1L+KqWTAt8SGiMyLX3jbNyH7KX7SASrlVik++WhaDu9g5Aj+YGQ699Kf8W6pqCiQUBmMiNsfY1yCwWeb7rWVuJezzY=
+	t=1784051541; cv=none; b=mKdWHCv+gnyq1BaKwsRPxrgGkRAjkOPE3XYCt6SI7Jnjjer83OSGWMQ6BSVT465C/UGqUUHv+gKxvBL1pebshuk+mlBqjKdzO0HDZQGSUpzFcziD1bekvjWeCW8J5qxDB2HrfrW2XOsUfG7+XBq6J+56Sw7q6bLrF5XOJ6Qo3r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784051539; c=relaxed/simple;
-	bh=lPHTxEtT2oe+NVhu+9CDOrZpHaALiriG59RbGozQTN0=;
+	s=arc-20240116; t=1784051541; c=relaxed/simple;
+	bh=mlae/lkDPvA6UHvzVumik/UBaj343DJycP+KZT21HTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bGPG5vDzhY20fOnKMY0P4E75D/io5G4Hc3YDj7cza5EM5fijnJui8qqbrH0mwc/pB7C+Nng+t5w+P1g45yYSBPDqpbvVZODjn5sUCRpSqSlak/MeAGyQiVxCjIOZDml2NJraa82ymmFSko98wSRoBjf2sGAz1WQoAS+g5pePIEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=b5KIYJ6w; arc=none smtp.client-ip=95.215.58.179
+	 MIME-Version; b=uEkdXUXbqCmKek0JMvmDmOR0L4A+JnHyBQhbq2ps/2XmrWGwSj1NY1ZSPzqHIdpxjFtSx5yHgL8MhPy3nZtl+GQnc/Xy6WhkNpgERrDUuMNqEKZap+jZ4TyZgHHFg1khkw3gwyzdmr302HbM5UAq+iHmO/Yh3iTlv7gFNvjfQjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HzVzJAd8; arc=none smtp.client-ip=95.215.58.171
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784051530;
+	t=1784051531;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=B2umSC76rl84LTzUS0enU3q72aMEOT4aJyH69vr9Q54=;
-	b=b5KIYJ6wimV3jbQEJ+royAu6hTx9dyv/cz78fT55EK36J+zPcXeaemkRF3ki+T1PiHDtVF
-	PEYAcTwTw60tLJY6e/7S2K9NQFpeMTwrbK6VmuiO06nYDkgJ+iPo2K1jaurkxveCx7xGIc
-	wez2D1drBVKSjZGad6TsEGwOd396qNM=
+	bh=Ij7j7s/jH59tqxTiyYXspASFf43o47cHui6+04S+o+k=;
+	b=HzVzJAd8HeW7cgDFRTF1XTcMLGFN5MvZ/gXUminM1lB7cT/QyzjtTA7Y6Ty6NPJAG3oa6I
+	7Os3MEiVW1u0qbJLL4bg4gjauI7OjgkScCcJc6NqGmRDyKiwENXHoOj0qusRsRHoVAZLF+
+	pPJ7BHGILRdEQcD56ANLOCz9zuyzqc4=
 From: luka.gejak@linux.dev
 To: linux-wireless@vger.kernel.org
 Cc: pkshih@realtek.com,
 	straube.linux@gmail.com,
 	luka.gejak@linux.dev
-Subject: [RFC PATCH v1 7/9] wifi: rtw88: 8723bs: implement the SDIO association sequence
-Date: Tue, 14 Jul 2026 19:51:05 +0200
-Message-ID: <2476eb115868b8adb4761a90156acd2cf5ae1f70.1784047561.git.luka.gejak@linux.dev>
+Subject: [RFC PATCH v1 8/9] wifi: rtw88: 8723bs: implement the SDIO transfer contract
+Date: Tue, 14 Jul 2026 19:51:06 +0200
+Message-ID: <b0d0a5fb2769e582aeb6b0a42b0b6aa16320efc0.1784047561.git.luka.gejak@linux.dev>
 In-Reply-To: <cover.1784047561.git.luka.gejak@linux.dev>
 References: <cover.1784047561.git.luka.gejak@linux.dev>
 Precedence: bulk
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[luka.gejak@linux.dev,linux-wireless@vger.kernel.org];
 	FREEMAIL_CC(0.00)[realtek.com,gmail.com,linux.dev];
-	TAGGED_FROM(0.00)[bounces-39096-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-39097-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:pkshih@realtek.com,m:straube.linux@gmail.com,m:luka.gejak@linux.dev,m:straubelinux@gmail.com,s:lists@lfdr.de];
@@ -98,626 +98,787 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FROM_NO_DN(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,linux-wireless@vger.kernel.org]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ED7DB757A82
+X-Rspamd-Queue-Id: 86ABB757A88
 
 From: Luka Gejak <luka.gejak@linux.dev>
 
-The vendor firmware expects the driver to drive association the way the
-vendor start_clnt_join() does. Implement it in mgd_prepare_tx: program the
-vendor join register state (MSR, beacon control, response SIFS, retry
-limit, RX filter, security config), wait for a beacon from the target BSSID
-before authenticating, send a pre-auth deauth, and replay the pre-auth coex
-H2Cs. On association send MACID_CFG then the media-status report and the
-channel info, matching the vendor mlmeext_joinbss flow.
+Feed received beacons and probe responses to the association beacon wait,
+and use the RTL8723BS RX aggregation thresholds and RX-only interrupt
+contract.
 
-Reset the pre-auth state whenever the BSSID changes, restore the no-link
-opmode when it is cleared, and follow ERP preamble and slot-time changes so
-response timing stays synchronized with the associated BSS.
+Match the vendor SDIO TX path: preserve the response-recognition control
+bit, route management and voice traffic through the high-priority FIFO,
+separate the FIFO dword length from the block-rounded CMD53 transfer size,
+zero-pad transfers, gate writes on OQT and cached dedicated/public free
+pages, and relatch the RQPN split when the hardware counters are empty.
+Keep the fixed management/reserved-page descriptor offset, yield after each
+management write, and report management completion at SDIO DMA completion
+because the vendor SW_DEFINE value cannot uniquely match asynchronous TX
+reports.
+
+Finally, bound the per-AC software TX FIFO: stop a mac80211 queue at the
+high watermark and resume it after the drain path reaches the low
+watermark.
+This prevents unbounded queueing latency and uplink congestion collapse.
 
 Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
 ---
- drivers/net/wireless/realtek/rtw88/mac80211.c | 538 +++++++++++++++++-
- 1 file changed, 535 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw88/sdio.c | 443 +++++++++++++++++++---
+ drivers/net/wireless/realtek/rtw88/sdio.h |  18 +
+ 2 files changed, 408 insertions(+), 53 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index b01b98d24b0a..280a5a51abc7 100644
---- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -15,6 +15,459 @@
- #include "wow.h"
- #include "sar.h"
+diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+index 5b40d74b16ee..6b55716b063b 100644
+--- a/drivers/net/wireless/realtek/rtw88/sdio.c
++++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+@@ -20,6 +20,15 @@
+ #include "tx.h"
  
-+/* 8723BS SDIO: record a beacon/probe-resp seen from the target BSSID during
-+ * the pre-auth window so the join sequence (mgd_prepare_tx) can wait for it,
-+ * mirroring the vendor start_clnt_join(). Called from the SDIO RX path.
+ #define RTW_SDIO_INDIRECT_RW_RETRIES			50
++#define RTW_SDIO_OQT_TIMEOUT_MS				1000
++
++/* 8723BS SDIO TX FIFO back-pressure watermarks: stop the mac80211 queue once
++ * the per-AC software FIFO fills past the high watermark, and wake it from the
++ * TX drain path once it falls back to the low one. Bounds the queueing latency
++ * that otherwise causes uplink bufferbloat / congestion collapse.
 + */
-+void rtw8723bs_auth_sync_rx(struct rtw_dev *rtwdev,
-+			    const struct ieee80211_hdr *hdr, u32 len,
-+			    const struct rtw_rx_pkt_stat *pkt_stat,
-+			    const struct ieee80211_rx_status *rx_status)
-+{
-+	struct rtw_auth_sync *sync = &rtwdev->auth_sync;
-+	unsigned long flags;
-+	__le16 fc = hdr->frame_control;
-+
-+	if (!rtw_is_8723bs_sdio(rtwdev) ||
-+	    test_bit(RTW_FLAG_SCANNING, rtwdev->flags) ||
-+	    pkt_stat->crc_err || pkt_stat->icv_err)
-+		return;
-+
-+	if (!ieee80211_is_beacon(fc) && !ieee80211_is_probe_resp(fc))
-+		return;
-+
-+	spin_lock_irqsave(&sync->lock, flags);
-+	if (sync->active && ether_addr_equal(hdr->addr3, sync->bssid)) {
-+		sync->seen = true;
-+		sync->seen_count++;
-+		wake_up(&sync->wait);
-+	}
-+	spin_unlock_irqrestore(&sync->lock, flags);
-+}
-+EXPORT_SYMBOL(rtw8723bs_auth_sync_rx);
-+
-+/* ---- 8723BS SDIO association sequence (vendor start_clnt_join) ---- */
-+
-+#define RTW8723BS_JOIN_RETRY_LIMIT		0x30
-+#define RTW8723BS_AUTH_SYNC_WAIT_FALLBACK_MS	120
-+#define RTW8723BS_AUTH_SYNC_WAIT_MIN_MS		80
-+#define RTW8723BS_AUTH_SYNC_WAIT_MAX_MS		160
-+#define RTW8723BS_ACK_PREAMBLE_SHORT		BIT(7)
-+#define RTW8723BS_SHORT_SLOT_TIME		9
-+#define RTW8723BS_LONG_SLOT_TIME		20
-+#define RTW8723BS_RRSR_1M			BIT(0)
-+#define RTW8723BS_RRSR_2M			BIT(1)
-+#define RTW8723BS_RRSR_5_5M			BIT(2)
-+#define RTW8723BS_RRSR_11M			BIT(3)
-+#define RTW8723BS_RRSR_6M			BIT(4)
-+#define RTW8723BS_RRSR_9M			BIT(5)
-+#define RTW8723BS_RRSR_12M			BIT(6)
-+#define RTW8723BS_RRSR_18M			BIT(7)
-+#define RTW8723BS_RRSR_24M			BIT(8)
-+#define RTW8723BS_RRSR_36M			BIT(9)
-+#define RTW8723BS_RRSR_48M			BIT(10)
-+#define RTW8723BS_RRSR_54M			BIT(11)
-+#define RTW8723BS_RRSR_CCK_RATES \
-+	(RTW8723BS_RRSR_1M | RTW8723BS_RRSR_2M | \
-+	 RTW8723BS_RRSR_5_5M | RTW8723BS_RRSR_11M)
-+#define RTW8723BS_RRSR_2G_FORCE			RTW8723BS_RRSR_CCK_RATES
-+#define RTW8723BS_RRSR_2G_ALLOW \
-+	(RTW8723BS_RRSR_CCK_RATES | RTW8723BS_RRSR_6M | \
-+	 RTW8723BS_RRSR_12M | RTW8723BS_RRSR_24M)
-+
-+/* Keep the RCR at the vendor target-only state (AMF + CBSSID) across the whole
-+ * connect window, matching the vendor STA path. accept_all is kept only for the
-+ * caller's intent; both paths converge the filter to target-only.
-+ */
-+static void rtw8723bs_auth_rx_filter(struct rtw_dev *rtwdev, bool accept_all)
-+{
-+	rtwdev->hal.rcr |= BIT_AMF | BIT_CBSSID_DATA | BIT_CBSSID_BCN;
-+	rtwdev->hal.rcr &= ~BIT_AAP;
-+	rtw_write32(rtwdev, REG_RCR, rtwdev->hal.rcr);
-+}
-+
-+static void rtw8723bs_config_sec_cfg(struct rtw_dev *rtwdev)
-+{
-+	u16 sec = rtw_read16(rtwdev, RTW_SEC_CONFIG);
-+
-+	sec |= RTW_SEC_CHK_KEYID | RTW_SEC_TX_DEC_EN | RTW_SEC_RX_DEC_EN;
-+	rtw_write16(rtwdev, RTW_SEC_CONFIG, sec);
-+}
-+
-+static void rtw8723bs_config_default_key_search(struct rtw_dev *rtwdev,
-+						bool enable)
-+{
-+	u16 sec = rtw_read16(rtwdev, RTW_SEC_CONFIG);
-+
-+	if (enable)
-+		sec |= RTW_SEC_TX_BC_USE_DK | RTW_SEC_TX_UNI_USE_DK |
-+		       RTW_SEC_RX_UNI_USE_DK;
-+	else
-+		sec &= ~(RTW_SEC_TX_UNI_USE_DK | RTW_SEC_RX_UNI_USE_DK |
-+			 RTW_SEC_TX_BC_USE_DK | RTW_SEC_RX_BC_USE_DK);
-+	rtw_write16(rtwdev, RTW_SEC_CONFIG, sec);
-+}
-+
-+static void rtw8723bs_enable_tsf_update(struct rtw_dev *rtwdev)
-+{
-+	rtw_write8_clr(rtwdev, REG_BCN_CTRL, BIT_DIS_TSF_UDT);
-+}
-+
-+static void rtw8723bs_set_ack_preamble(struct rtw_dev *rtwdev,
-+				       bool short_preamble)
-+{
-+	u8 val = rtw_read8(rtwdev, REG_RRSR + 2) & ~RTW8723BS_ACK_PREAMBLE_SHORT;
-+
-+	if (short_preamble)
-+		val |= RTW8723BS_ACK_PREAMBLE_SHORT;
-+	rtw_write8(rtwdev, REG_RRSR + 2, val);
-+}
-+
-+static void rtw8723bs_set_slot_time(struct rtw_dev *rtwdev, bool short_slot)
-+{
-+	rtw_write8(rtwdev, REG_SLOT,
-+		   short_slot ? RTW8723BS_SHORT_SLOT_TIME :
-+				RTW8723BS_LONG_SLOT_TIME);
-+}
-+
-+static u16 rtw8723bs_rrsr_from_ie_rate(u8 rate)
-+{
-+	switch (rate & 0x7f) {
-+	case 2:   return RTW8723BS_RRSR_1M;
-+	case 4:   return RTW8723BS_RRSR_2M;
-+	case 11:  return RTW8723BS_RRSR_5_5M;
-+	case 22:  return RTW8723BS_RRSR_11M;
-+	case 12:  return RTW8723BS_RRSR_6M;
-+	case 18:  return RTW8723BS_RRSR_9M;
-+	case 24:  return RTW8723BS_RRSR_12M;
-+	case 36:  return RTW8723BS_RRSR_18M;
-+	case 48:  return RTW8723BS_RRSR_24M;
-+	case 72:  return RTW8723BS_RRSR_36M;
-+	case 96:  return RTW8723BS_RRSR_48M;
-+	case 108: return RTW8723BS_RRSR_54M;
-+	default:  return 0;
-+	}
-+}
-+
-+static void rtw8723bs_collect_basic_rates(const u8 *ie, u16 *basic_rates,
-+					  bool *valid)
-+{
-+	int i;
-+
-+	if (!ie)
-+		return;
-+
-+	for (i = 0; i < ie[1]; i++) {
-+		u16 r;
-+
-+		if (!(ie[i + 2] & 0x80))
-+			continue;
-+		r = rtw8723bs_rrsr_from_ie_rate(ie[i + 2]);
-+		if (!r)
-+			continue;
-+		*basic_rates |= r;
-+		*valid = true;
-+	}
-+}
-+
-+static void rtw8723bs_reset_response_rates(struct rtw_dev *rtwdev)
-+{
-+	rtw_write32(rtwdev, REG_RRSR, 0xffff1);
-+	rtwdev->dm_info.rrsr_val_init = 0xffff1;
-+}
-+
-+static void rtw8723bs_apply_basic_rates(struct rtw_dev *rtwdev,
-+					struct ieee80211_vif *vif,
-+					const u8 *bssid)
-+{
-+	struct ieee80211_bss_conf *conf = &vif->bss_conf;
-+	struct cfg80211_bss *lookup_bss = NULL;
-+	struct cfg80211_bss *bss = NULL;
-+	bool valid = false;
-+	u16 basic_rates = 0;
-+
-+	if (!rtw_is_8723bs_sdio(rtwdev) || vif->type != NL80211_IFTYPE_STATION)
-+		return;
-+
-+	if (conf->bss)
-+		bss = conf->bss;
-+	else if (bssid && is_valid_ether_addr(bssid))
-+		bss = lookup_bss = cfg80211_get_bss(rtwdev->hw->wiphy, NULL,
-+						    bssid, NULL, 0,
-+						    IEEE80211_BSS_TYPE_ESS,
-+						    IEEE80211_PRIVACY_ANY);
-+
-+	if (bss) {
-+		const u8 *rates, *ext;
-+
-+		rcu_read_lock();
-+		rates = ieee80211_bss_get_ie(bss, WLAN_EID_SUPP_RATES);
-+		ext = ieee80211_bss_get_ie(bss, WLAN_EID_EXT_SUPP_RATES);
-+		rtw8723bs_collect_basic_rates(rates, &basic_rates, &valid);
-+		rtw8723bs_collect_basic_rates(ext, &basic_rates, &valid);
-+		rcu_read_unlock();
-+	}
-+
-+	if (valid) {
-+		basic_rates |= RTW8723BS_RRSR_2G_FORCE;
-+		basic_rates &= RTW8723BS_RRSR_2G_ALLOW;
-+		rtw_write16(rtwdev, REG_RRSR, basic_rates);
-+		rtw_write8(rtwdev, REG_RRSR + 2,
-+			   rtw_read8(rtwdev, REG_RRSR + 2) & 0xf0);
-+		rtwdev->dm_info.rrsr_val_init = basic_rates;
-+	}
-+
-+	if (lookup_bss)
-+		cfg80211_put_bss(rtwdev->hw->wiphy, lookup_bss);
-+}
-+
-+/* Program response slot time (and, when set_preamble, the ACK preamble) from
-+ * the selected scan BSS capabilities; the AP capabilities are not yet in
-+ * bss_conf at mgd_prepare_tx() time.
-+ */
-+static void rtw8723bs_apply_bss_cap(struct rtw_dev *rtwdev,
-+				    struct ieee80211_vif *vif,
-+				    const u8 *bssid, bool set_preamble)
-+{
-+	struct ieee80211_bss_conf *conf = &vif->bss_conf;
-+	struct cfg80211_bss *lookup_bss = NULL;
-+	struct cfg80211_bss *bss = NULL;
-+	bool short_preamble, short_slot;
-+	u16 cap = 0;
-+
-+	if (!rtw_is_8723bs_sdio(rtwdev) || vif->type != NL80211_IFTYPE_STATION)
-+		return;
-+
-+	if (conf->bss)
-+		bss = conf->bss;
-+	else if (bssid && is_valid_ether_addr(bssid))
-+		bss = lookup_bss = cfg80211_get_bss(rtwdev->hw->wiphy, NULL,
-+						    bssid, NULL, 0,
-+						    IEEE80211_BSS_TYPE_ESS,
-+						    IEEE80211_PRIVACY_ANY);
-+
-+	if (bss) {
-+		cap = bss->capability;
-+	} else if (conf->assoc_capability) {
-+		cap = conf->assoc_capability;
-+	} else {
-+		short_preamble = conf->use_short_preamble;
-+		short_slot = conf->use_short_slot;
-+		goto program;
-+	}
-+	short_preamble = !!(cap & WLAN_CAPABILITY_SHORT_PREAMBLE);
-+	short_slot = !!(cap & WLAN_CAPABILITY_SHORT_SLOT_TIME);
-+
-+program:
-+	if (set_preamble)
-+		rtw8723bs_set_ack_preamble(rtwdev, short_preamble);
-+	rtw8723bs_set_slot_time(rtwdev, short_slot);
-+
-+	if (lookup_bss)
-+		cfg80211_put_bss(rtwdev->hw->wiphy, lookup_bss);
-+}
-+
-+static unsigned int rtw8723bs_auth_sync_wait_ms(struct ieee80211_vif *vif)
-+{
-+	u16 beacon_int = vif->bss_conf.beacon_int;
-+	unsigned int wait_ms;
-+
-+	if (!beacon_int)
-+		return RTW8723BS_AUTH_SYNC_WAIT_FALLBACK_MS;
-+
-+	wait_ms = DIV_ROUND_UP(beacon_int * 1024, 1000) + 20;
-+	return clamp_t(unsigned int, wait_ms, RTW8723BS_AUTH_SYNC_WAIT_MIN_MS,
-+		       RTW8723BS_AUTH_SYNC_WAIT_MAX_MS);
-+}
-+
-+static void rtw8723bs_auth_sync_start(struct rtw_dev *rtwdev, const u8 *bssid)
-+{
-+	struct rtw_auth_sync *sync = &rtwdev->auth_sync;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&sync->lock, flags);
-+	ether_addr_copy(sync->bssid, bssid);
-+	sync->seen = false;
-+	sync->seen_count = 0;
-+	sync->active = true;
-+	spin_unlock_irqrestore(&sync->lock, flags);
-+}
-+
-+static void rtw8723bs_auth_sync_stop(struct rtw_dev *rtwdev)
-+{
-+	struct rtw_auth_sync *sync = &rtwdev->auth_sync;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&sync->lock, flags);
-+	sync->active = false;
-+	spin_unlock_irqrestore(&sync->lock, flags);
-+}
-+
-+static bool rtw8723bs_auth_sync_seen(struct rtw_dev *rtwdev)
-+{
-+	struct rtw_auth_sync *sync = &rtwdev->auth_sync;
-+	unsigned long flags;
-+	bool seen;
-+
-+	spin_lock_irqsave(&sync->lock, flags);
-+	seen = sync->seen;
-+	spin_unlock_irqrestore(&sync->lock, flags);
-+
-+	return seen;
-+}
-+
-+static bool rtw8723bs_auth_sync_wait(struct rtw_dev *rtwdev,
-+				     unsigned int wait_ms)
-+{
-+	struct rtw_auth_sync *sync = &rtwdev->auth_sync;
-+
-+	return wait_event_timeout(sync->wait, rtw8723bs_auth_sync_seen(rtwdev),
-+				  msecs_to_jiffies(wait_ms)) > 0;
-+}
-+
-+static bool rtw8723bs_mgd_prepare_is_auth(struct rtw_dev *rtwdev,
-+					  struct ieee80211_prep_tx_info *info)
-+{
-+	return rtw_is_8723bs_sdio(rtwdev) && info &&
-+	       info->subtype == IEEE80211_STYPE_AUTH;
-+}
-+
-+/* Replicate the vendor start_clnt_join() register programming right before
-+ * auth. Returns true for a fresh join (BSSID changed).
-+ */
-+static bool rtw8723bs_mgd_prepare_join(struct rtw_dev *rtwdev,
-+				       struct ieee80211_vif *vif,
-+				       const u8 *bssid)
-+{
-+	struct rtw_vif *rtwvif = (struct rtw_vif *)vif->drv_priv;
-+	bool fresh_join;
-+	u16 retry_limit;
-+
-+	if (!is_valid_ether_addr(bssid))
-+		return false;
-+
-+	fresh_join = !ether_addr_equal(rtwvif->bssid, bssid);
-+
-+	ether_addr_copy(rtwvif->bssid, bssid);
-+	rtwvif->aid = 0;
-+	rtwvif->net_type = RTW_NET_MGD_LINKED;
-+	rtw_vif_port_config(rtwdev, rtwvif,
-+			    PORT_SET_BSSID | PORT_SET_AID | PORT_SET_NET_TYPE);
-+
-+	/* Do not narrow RRSR or switch to short-preamble responses before the
-+	 * exchange: the whole auth/assoc runs on the init response set
-+	 * (0xffff1, long preamble). Only slot time is programmed early.
-+	 */
-+	rtw8723bs_apply_bss_cap(rtwdev, vif, bssid, false);
-+
-+	rtw_fw_beacon_filter_config(rtwdev, false, vif);
-+
-+	/* Match the vendor start_clnt_join() TX state (Set_MSR directly, keep
-+	 * BCN_CTRL / BCNQ_DL set, reassert TBTT/RESP_SIFS every join).
-+	 */
-+	rtw_write8(rtwdev, REG_BCN_CTRL,
-+		   BIT_DIS_TSF_UDT | BIT_EN_BCN_FUNCTION);
-+	rtw_write32_set(rtwdev, REG_FWHW_TXQ_CTRL, BIT_EN_BCNQ_DL);
-+	rtw_write8(rtwdev, REG_TBTT_PROHIBIT + 1, 0x64 & 0xff);
-+	rtw_write8(rtwdev, REG_TBTT_PROHIBIT + 2,
-+		   (rtw_read8(rtwdev, REG_TBTT_PROHIBIT + 2) & 0xf0) | (0x64 >> 8));
-+	rtw_write16(rtwdev, REG_RESP_SIFS_CCK, 0x0808);
-+	rtw_write16(rtwdev, REG_RESP_SIFS_OFDM, 0x0a0a);
-+
-+	rtw_write16(rtwdev, REG_RXFLTMAP0, 0xffff);
-+	rtw_write16(rtwdev, REG_RXFLTMAP2, 0xffff);
-+	rtw8723bs_auth_rx_filter(rtwdev, true);
-+
-+	retry_limit = (RTW8723BS_JOIN_RETRY_LIMIT << 8) |
-+		      RTW8723BS_JOIN_RETRY_LIMIT;
-+	rtw_write16(rtwdev, REG_RETRY_LIMIT, retry_limit);
-+
-+	rtw8723bs_config_sec_cfg(rtwdev);
-+
-+	return fresh_join;
-+}
-+
-+/* The vendor sends a deauth to the target before auth to clear stale AP-side
-+ * state; synthesize and TX one, then let the AP settle.
-+ */
-+static void rtw8723bs_tx_pre_auth_deauth(struct rtw_dev *rtwdev,
-+					 struct ieee80211_vif *vif,
-+					 const u8 *bssid)
-+{
-+	struct ieee80211_tx_control control = {};
-+	struct ieee80211_tx_info *info;
-+	struct ieee80211_mgmt *mgmt;
-+	struct sk_buff *skb;
-+	unsigned int frame_len, headroom;
-+
-+	frame_len = sizeof(struct ieee80211_hdr_3addr) + sizeof(mgmt->u.deauth);
-+	headroom = rtwdev->chip->tx_pkt_desc_sz + 8;
-+
-+	skb = dev_alloc_skb(headroom + frame_len);
-+	if (!skb)
-+		return;
-+
-+	skb_reserve(skb, headroom);
-+	mgmt = skb_put_zero(skb, frame_len);
-+	mgmt->frame_control = cpu_to_le16(IEEE80211_FTYPE_MGMT |
-+					  IEEE80211_STYPE_DEAUTH);
-+	memcpy(mgmt->da, bssid, ETH_ALEN);
-+	memcpy(mgmt->sa, vif->addr, ETH_ALEN);
-+	memcpy(mgmt->bssid, bssid, ETH_ALEN);
-+	mgmt->u.deauth.reason_code = cpu_to_le16(WLAN_REASON_DEAUTH_LEAVING);
-+
-+	info = IEEE80211_SKB_CB(skb);
-+	memset(info, 0, sizeof(*info));
-+	info->control.vif = vif;
-+
-+	rtw_tx(rtwdev, &control, skb);
-+	msleep(100);
-+}
-+
-+/* Orchestrate the pre-auth join: program the vendor join state, send the
-+ * pre-auth deauth, wait for a beacon from the target, then replay the
-+ * pre-auth coex H2Cs - once per fresh BSSID.
-+ */
-+static void rtw8723bs_mgd_prepare_auth_join(struct rtw_dev *rtwdev,
-+					    struct ieee80211_vif *vif,
-+					    struct ieee80211_prep_tx_info *info)
-+{
-+	struct rtw_vif *rtwvif;
-+	const u8 *bssid = NULL;
-+	bool fresh_join;
-+
-+	if (!rtw8723bs_mgd_prepare_is_auth(rtwdev, info) || !vif ||
-+	    test_bit(RTW_FLAG_SCANNING, rtwdev->flags))
-+		return;
-+
-+	rtwvif = (struct rtw_vif *)vif->drv_priv;
-+
-+	if (!is_zero_ether_addr(vif->cfg.ap_addr))
-+		bssid = vif->cfg.ap_addr;
-+	else if (vif->bss_conf.bssid && !is_zero_ether_addr(vif->bss_conf.bssid))
-+		bssid = vif->bss_conf.bssid;
-+
-+	if (!bssid)
-+		return;
-+
-+	fresh_join = rtw8723bs_mgd_prepare_join(rtwdev, vif, bssid);
-+
-+	if (fresh_join || !rtwvif->pre_auth_join_done) {
-+		unsigned int wait_ms = rtw8723bs_auth_sync_wait_ms(vif);
-+
-+		rtw8723bs_auth_sync_start(rtwdev, bssid);
-+		rtw8723bs_tx_pre_auth_deauth(rtwdev, vif, bssid);
-+		rtw8723bs_auth_sync_wait(rtwdev, wait_ms);
-+		rtw8723bs_auth_sync_stop(rtwdev);
-+		rtwvif->pre_auth_join_done = true;
-+	}
-+
-+	if (!rtwvif->pre_auth_h2c_sent) {
-+		rtw_coex_8723bs_pre_auth_h2c(rtwdev);
-+		rtwvif->pre_auth_h2c_sent = true;
-+	}
-+}
-+
- static void rtw_ops_tx(struct ieee80211_hw *hw,
- 		       struct ieee80211_tx_control *control,
- 		       struct sk_buff *skb)
-@@ -393,6 +846,28 @@ static void rtw_ops_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_ASSOC) {
- 		rtw_vif_assoc_changed(rtwvif, conf);
- 		if (vif->cfg.assoc) {
-+			if (rtw_is_8723bs_sdio(rtwdev) &&
-+			    vif->type == NL80211_IFTYPE_STATION) {
-+				rtw8723bs_auth_rx_filter(rtwdev, false);
-+				rtw8723bs_apply_bss_cap(rtwdev, vif, NULL, true);
-+				rtw8723bs_apply_basic_rates(rtwdev, vif, NULL);
-+				rtw8723bs_enable_tsf_update(rtwdev);
-+				/* Vendor mlmeext_joinbss sends MACID_CFG before
-+				 * MEDIA_STATUS_RPT, then WL_CH_INFO.
-+				 */
-+				rtw_fw_macid_cfg(rtwdev, rtwvif->mac_id,
-+						 1, 0, 1, 0x0ff015);
-+				if (!rtwvif->fw_media_connected) {
-+					rtw_fw_media_status_report(rtwdev,
-+								   rtwvif->mac_id,
-+								   true);
-+					rtwvif->fw_media_connected = true;
-+				}
-+				rtw_fw_send_wl_ch_info(rtwdev,
-+						rtwdev->hal.current_channel,
-+						rtwdev->hal.current_band_width);
-+			}
-+
- 			rtw_coex_connect_notify(rtwdev, COEX_ASSOCIATE_FINISH);
++#define RTW_SDIO_TX_FIFO_HIWATER			16
++#define RTW_SDIO_TX_FIFO_LOWATER			8
  
- 			rtw_fw_download_rsvd_page(rtwdev);
-@@ -414,6 +889,13 @@ static void rtw_ops_bss_info_changed(struct ieee80211_hw *hw,
- 			if (test_bit(RTW_FLAG_SCANNING, rtwdev->flags))
- 				rtw_hw_scan_abort(rtwdev);
- 
-+			if (rtw_is_8723bs_sdio(rtwdev) &&
-+			    vif->type == NL80211_IFTYPE_STATION) {
-+				rtw8723bs_auth_rx_filter(rtwdev, false);
-+				rtw8723bs_reset_response_rates(rtwdev);
-+				rtwvif->pre_auth_h2c_sent = false;
-+				rtwvif->pre_auth_join_done = false;
-+			}
- 		}
- 
- 		config |= PORT_SET_NET_TYPE;
-@@ -421,8 +903,26 @@ static void rtw_ops_bss_info_changed(struct ieee80211_hw *hw,
- 	}
- 
- 	if (changed & BSS_CHANGED_BSSID) {
-+		bool bssid_cleared = is_zero_ether_addr(conf->bssid);
-+		bool bssid_changed = !ether_addr_equal(rtwvif->bssid,
-+						       conf->bssid);
-+
-+		if (rtw_is_8723bs_sdio(rtwdev) &&
-+		    vif->type == NL80211_IFTYPE_STATION && bssid_changed) {
-+			rtwvif->pre_auth_h2c_sent = false;
-+			rtwvif->pre_auth_join_done = false;
-+		}
- 		ether_addr_copy(rtwvif->bssid, conf->bssid);
- 		config |= PORT_SET_BSSID;
-+		if (rtw_is_8723bs_sdio(rtwdev) &&
-+		    vif->type == NL80211_IFTYPE_STATION && bssid_cleared) {
-+			rtwvif->aid = 0;
-+			rtwvif->net_type = RTW_NET_NO_LINK;
-+			config |= PORT_SET_NET_TYPE | PORT_SET_AID;
-+			rtw_write8(rtwdev, REG_BCN_CTRL,
-+				   BIT_DIS_TSF_UDT | BIT_EN_BCN_FUNCTION |
-+				   BIT_DIS_ATIM);
-+		}
- 		if (!rtw_core_check_sta_active(rtwdev))
- 			rtw_clear_op_chan(rtwdev);
- 		else
-@@ -454,8 +954,17 @@ static void rtw_ops_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_MU_GROUPS)
- 		rtw_chip_set_gid_table(rtwdev, vif, conf);
- 
--	if (changed & BSS_CHANGED_ERP_SLOT)
-+	if (changed & BSS_CHANGED_ERP_PREAMBLE &&
-+	    rtw_is_8723bs_sdio(rtwdev) &&
-+	    vif->type == NL80211_IFTYPE_STATION)
-+		rtw8723bs_set_ack_preamble(rtwdev, conf->use_short_preamble);
-+
-+	if (changed & BSS_CHANGED_ERP_SLOT) {
-+		if (rtw_is_8723bs_sdio(rtwdev) &&
-+		    vif->type == NL80211_IFTYPE_STATION)
-+			rtw8723bs_set_slot_time(rtwdev, conf->use_short_slot);
- 		rtw_conf_tx(rtwdev, rtwvif);
-+	}
- 
- 	if (changed & BSS_CHANGED_PS)
- 		rtw_recalc_lps(rtwdev, NULL);
-@@ -615,11 +1124,19 @@ static int rtw_ops_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 		key->hw_key_idx = hw_key_idx;
- 		rtw_sec_write_cam(rtwdev, sec, sta, key,
- 				  hw_key_type, hw_key_idx);
-+		if (rtw_is_8723bs_sdio(rtwdev) && vif &&
-+		    vif->type == NL80211_IFTYPE_STATION &&
-+		    !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
-+			rtw8723bs_config_default_key_search(rtwdev, true);
+ static bool rtw_sdio_is_bus_addr(u32 addr)
+ {
+@@ -479,8 +488,14 @@ static u32 rtw_sdio_get_tx_addr(struct rtw_dev *rtwdev, size_t size,
+ 		txaddr = FIELD_PREP(REG_SDIO_CMD_ADDR_MSK,
+ 				    REG_SDIO_CMD_ADDR_TXFF_HIGH);
  		break;
- 	case DISABLE_KEY:
- 		rtw_hci_flush_all_queues(rtwdev, false);
- 		rtw_mac_flush_all_queues(rtwdev, false);
- 		rtw_sec_clear_cam(rtwdev, sec, key->hw_key_idx);
-+		if (rtw_is_8723bs_sdio(rtwdev) && vif &&
-+		    vif->type == NL80211_IFTYPE_STATION &&
-+		    !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
-+			rtw8723bs_config_default_key_search(rtwdev, false);
- 		break;
- 	}
- 
-@@ -709,8 +1226,23 @@ static void rtw_ops_mgd_prepare_tx(struct ieee80211_hw *hw,
- 
- 	mutex_lock(&rtwdev->mutex);
- 	rtw_leave_lps_deep(rtwdev);
--	rtw_coex_connect_notify(rtwdev, COEX_ASSOCIATE_START);
--	rtw_chip_prepare_tx(rtwdev);
-+
-+	if (rtw_is_8723bs_sdio(rtwdev)) {
-+		/* Wake from soft IPS and run the vendor join sequence. The RFK
-+		 * is handled by the once-only power-on IQK plus the ps.c
-+		 * post-IPS RF-bus recovery, not a fresh calibration here.
-+		 */
-+		if (rtw_leave_ips(rtwdev)) {
-+			rtw_err(rtwdev, "failed to leave idle state for mgd tx\n");
-+			goto out;
+-	case RTW_TX_QUEUE_VI:
+ 	case RTW_TX_QUEUE_VO:
++		if (rtw_is_8723bs_sdio(rtwdev)) {
++			txaddr = FIELD_PREP(REG_SDIO_CMD_ADDR_MSK,
++					    REG_SDIO_CMD_ADDR_TXFF_HIGH);
++			break;
 +		}
-+		rtw_coex_connect_notify(rtwdev, COEX_ASSOCIATE_START);
-+		rtw8723bs_mgd_prepare_auth_join(rtwdev, vif, info);
-+	} else {
-+		rtw_coex_connect_notify(rtwdev, COEX_ASSOCIATE_START);
-+		rtw_chip_prepare_tx(rtwdev);
-+	}
-+out:
- 	mutex_unlock(&rtwdev->mutex);
++		fallthrough;
++	case RTW_TX_QUEUE_VI:
+ 		txaddr = FIELD_PREP(REG_SDIO_CMD_ADDR_MSK,
+ 				    REG_SDIO_CMD_ADDR_TXFF_NORMAL);
+ 		break;
+@@ -491,6 +506,8 @@ static u32 rtw_sdio_get_tx_addr(struct rtw_dev *rtwdev, size_t size,
+ 		break;
+ 	case RTW_TX_QUEUE_MGMT:
+ 		txaddr = FIELD_PREP(REG_SDIO_CMD_ADDR_MSK,
++				    rtw_is_8723bs_sdio(rtwdev) ?
++				    REG_SDIO_CMD_ADDR_TXFF_HIGH :
+ 				    REG_SDIO_CMD_ADDR_TXFF_EXTRA);
+ 		break;
+ 	default:
+@@ -548,40 +565,111 @@ static int rtw_sdio_read_port(struct rtw_dev *rtwdev, u8 *buf, size_t count)
+ 	return ret;
  }
  
++static void rtw_sdio_init_free_txpg(struct rtw_dev *rtwdev)
++{
++	struct rtw_sdio *rtwsdio = (struct rtw_sdio *)rtwdev->priv;
++	const struct rtw_page_table *pg_tbl;
++	u32 free_txpg;
++	u16 pubq_num;
++
++	if (!rtw_is_8723bs_sdio(rtwdev))
++		return;
++
++	pg_tbl = &rtwdev->chip->page_table[0];
++	pubq_num = rtwdev->fifo.acq_pg_num - pg_tbl->hq_num - pg_tbl->lq_num -
++		   pg_tbl->nq_num - pg_tbl->exq_num - pg_tbl->gapq_num;
++	free_txpg = rtw_read32(rtwdev, REG_SDIO_FREE_TXPG);
++	if (free_txpg) {
++		atomic_set(&rtwsdio->free_pg_high, free_txpg & 0xff);
++		atomic_set(&rtwsdio->free_pg_normal, (free_txpg >> 8) & 0xff);
++		atomic_set(&rtwsdio->free_pg_low, (free_txpg >> 16) & 0xff);
++		atomic_set(&rtwsdio->free_pg_pub, (free_txpg >> 24) & 0xff);
++	} else {
++		atomic_set(&rtwsdio->free_pg_high, pg_tbl->hq_num);
++		atomic_set(&rtwsdio->free_pg_normal, pg_tbl->nq_num);
++		atomic_set(&rtwsdio->free_pg_low, pg_tbl->lq_num);
++		atomic_set(&rtwsdio->free_pg_pub, pubq_num);
++	}
++
++	atomic_set(&rtwsdio->tx_oqt_free,
++		   rtw_read8(rtwdev, REG_SDIO_OQT_FREE_PG));
++}
++
++static void rtw_sdio_sync_free_txpg(struct rtw_dev *rtwdev)
++{
++	struct rtw_sdio *rtwsdio = (struct rtw_sdio *)rtwdev->priv;
++	u32 free_txpg = rtw_read32(rtwdev, REG_SDIO_FREE_TXPG);
++
++	if (!free_txpg)
++		return;
++
++	atomic_set(&rtwsdio->free_pg_high, free_txpg & 0xff);
++	atomic_set(&rtwsdio->free_pg_normal, (free_txpg >> 8) & 0xff);
++	atomic_set(&rtwsdio->free_pg_low, (free_txpg >> 16) & 0xff);
++	atomic_set(&rtwsdio->free_pg_pub, (free_txpg >> 24) & 0xff);
++}
++
++static int rtw_sdio_8723bs_free_txpg(struct rtw_dev *rtwdev, u8 queue)
++{
++	struct rtw_sdio *rtwsdio = (struct rtw_sdio *)rtwdev->priv;
++
++	switch (queue) {
++	case RTW_TX_QUEUE_BCN:
++	case RTW_TX_QUEUE_H2C:
++	case RTW_TX_QUEUE_HI0:
++	case RTW_TX_QUEUE_MGMT:
++	case RTW_TX_QUEUE_VO:
++		return atomic_read(&rtwsdio->free_pg_high);
++	case RTW_TX_QUEUE_VI:
++		return atomic_read(&rtwsdio->free_pg_normal);
++	case RTW_TX_QUEUE_BE:
++	case RTW_TX_QUEUE_BK:
++		return atomic_read(&rtwsdio->free_pg_low);
++	default:
++		return -EINVAL;
++	}
++}
++
+ static int rtw_sdio_check_free_txpg(struct rtw_dev *rtwdev, u8 queue,
+ 				    size_t count)
+ {
+ 	unsigned int pages_free, pages_needed;
+ 
+-	if (rtw_chip_wcpu_8051(rtwdev)) {
+-		u32 free_txpg;
++	if (rtw_is_8723bs_sdio(rtwdev)) {
++		struct rtw_sdio *rtwsdio = (struct rtw_sdio *)rtwdev->priv;
++		int dedicated = rtw_sdio_8723bs_free_txpg(rtwdev, queue);
+ 
+-		free_txpg = rtw_sdio_read32(rtwdev, REG_SDIO_FREE_TXPG);
++		if (dedicated < 0)
++			return dedicated;
++		pages_free = dedicated + atomic_read(&rtwsdio->free_pg_pub);
++		pages_needed = DIV_ROUND_UP(count, rtwdev->chip->page_size);
++		if (pages_needed <= pages_free)
++			return 0;
++
++		rtw_sdio_sync_free_txpg(rtwdev);
++		dedicated = rtw_sdio_8723bs_free_txpg(rtwdev, queue);
++		pages_free = dedicated + atomic_read(&rtwsdio->free_pg_pub);
++	} else if (rtw_chip_wcpu_8051(rtwdev)) {
++		u32 free_txpg = rtw_sdio_read32(rtwdev, REG_SDIO_FREE_TXPG);
+ 
+ 		switch (queue) {
+ 		case RTW_TX_QUEUE_BCN:
+ 		case RTW_TX_QUEUE_H2C:
+ 		case RTW_TX_QUEUE_HI0:
+ 		case RTW_TX_QUEUE_MGMT:
+-			/* high */
+ 			pages_free = free_txpg & 0xff;
+ 			break;
+ 		case RTW_TX_QUEUE_VI:
+ 		case RTW_TX_QUEUE_VO:
+-			/* normal */
+ 			pages_free = (free_txpg >> 8) & 0xff;
+ 			break;
+ 		case RTW_TX_QUEUE_BE:
+ 		case RTW_TX_QUEUE_BK:
+-			/* low */
+ 			pages_free = (free_txpg >> 16) & 0xff;
+ 			break;
+ 		default:
+-			rtw_warn(rtwdev, "Unknown mapping for queue %u\n", queue);
+ 			return -EINVAL;
+ 		}
+-
+-		/* add the pages from the public queue */
+ 		pages_free += (free_txpg >> 24) & 0xff;
+ 	} else {
+ 		u32 free_txpg[3];
+@@ -632,44 +720,137 @@ static int rtw_sdio_check_free_txpg(struct rtw_dev *rtwdev, u8 queue,
+ 	return 0;
+ }
+ 
++static int rtw_sdio_wait_tx_oqt(struct rtw_dev *rtwdev)
++{
++	struct rtw_sdio *rtwsdio = (struct rtw_sdio *)rtwdev->priv;
++	int i;
++	u8 free;
++
++	if (!rtw_is_8723bs_sdio(rtwdev))
++		return 0;
++
++	if (atomic_add_unless(&rtwsdio->tx_oqt_free, -1, 0))
++		return 0;
++
++	for (i = 0; i < RTW_SDIO_OQT_TIMEOUT_MS; i++) {
++		free = rtw_read8(rtwdev, REG_SDIO_OQT_FREE_PG);
++		if (free) {
++			atomic_set(&rtwsdio->tx_oqt_free, free - 1);
++			return 0;
++		}
++		usleep_range(1000, 2000);
++	}
++
++	return -EBUSY;
++}
++
++static void rtw_sdio_8723bs_consume_txpg(struct rtw_dev *rtwdev, u8 queue,
++					 unsigned int pages)
++{
++	struct rtw_sdio *rtwsdio = (struct rtw_sdio *)rtwdev->priv;
++	atomic_t *dedicated;
++	int free;
++
++	switch (queue) {
++	case RTW_TX_QUEUE_VI:
++		dedicated = &rtwsdio->free_pg_normal;
++		break;
++	case RTW_TX_QUEUE_BE:
++	case RTW_TX_QUEUE_BK:
++		dedicated = &rtwsdio->free_pg_low;
++		break;
++	default:
++		dedicated = &rtwsdio->free_pg_high;
++		break;
++	}
++
++	free = atomic_read(dedicated);
++	if (pages <= free) {
++		atomic_sub(pages, dedicated);
++	} else {
++		atomic_set(dedicated, 0);
++		atomic_sub(pages - free, &rtwsdio->free_pg_pub);
++	}
++}
++
++static struct rtw_sdio_tx_data *rtw_sdio_get_tx_data(struct sk_buff *skb);
++
+ static int rtw_sdio_write_port(struct rtw_dev *rtwdev, struct sk_buff *skb,
+ 			       enum rtw_tx_queue_type queue)
+ {
+ 	struct rtw_sdio *rtwsdio = (struct rtw_sdio *)rtwdev->priv;
++	struct rtw_sdio_tx_data *tx_data = rtw_sdio_get_tx_data(skb);
++	unsigned int orig_len = skb->len;
++	bool rtl8723bs = rtw_is_8723bs_sdio(rtwdev);
++	bool quiet = rtl8723bs && tx_data->is_mgmt;
++	unsigned int pages;
+ 	bool bus_claim;
+ 	size_t txsize;
++	size_t write_size;
+ 	u32 txaddr;
+ 	int ret;
+ 
+-	txaddr = rtw_sdio_get_tx_addr(rtwdev, skb->len, queue);
+-	if (!txaddr)
+-		return -EINVAL;
++	if (rtl8723bs) {
++		txsize = round_up(orig_len, 4);
++		write_size = txsize > RTW_SDIO_BLOCK_SIZE ?
++			     round_up(txsize, RTW_SDIO_BLOCK_SIZE) : txsize;
++	} else {
++		txsize = sdio_align_size(rtwsdio->sdio_func, orig_len);
++		write_size = txsize;
++	}
+ 
+-	txsize = sdio_align_size(rtwsdio->sdio_func, skb->len);
++	if (write_size > orig_len) {
++		unsigned int padding = write_size - orig_len;
++
++		if (skb_tailroom(skb) < padding) {
++			ret = pskb_expand_head(skb, 0,
++					       padding - skb_tailroom(skb),
++					       GFP_KERNEL);
++			if (ret)
++				return ret;
++		}
++		skb_put_zero(skb, padding);
++	}
++
++	txaddr = rtw_sdio_get_tx_addr(rtwdev, txsize, queue);
++	if (!txaddr) {
++		ret = -EINVAL;
++		goto out_trim;
++	}
+ 
+ 	ret = rtw_sdio_check_free_txpg(rtwdev, queue, txsize);
+ 	if (ret)
+-		return ret;
++		goto out_trim;
++	ret = rtw_sdio_wait_tx_oqt(rtwdev);
++	if (ret)
++		goto out_trim;
+ 
+ 	if (!IS_ALIGNED((unsigned long)skb->data, RTW_SDIO_DATA_PTR_ALIGN))
+ 		rtw_warn(rtwdev, "Got unaligned SKB in %s() for queue %u\n",
+ 			 __func__, queue);
+ 
+ 	bus_claim = rtw_sdio_bus_claim_needed(rtwsdio);
+-
+ 	if (bus_claim)
+ 		sdio_claim_host(rtwsdio->sdio_func);
+-
+-	ret = sdio_memcpy_toio(rtwsdio->sdio_func, txaddr, skb->data, txsize);
+-
++	ret = sdio_memcpy_toio(rtwsdio->sdio_func, txaddr, skb->data,
++			       write_size);
+ 	if (bus_claim)
+ 		sdio_release_host(rtwsdio->sdio_func);
+ 
++	if (!ret && quiet)
++		usleep_range(1000, 2000);
++	if (!ret && rtl8723bs) {
++		pages = DIV_ROUND_UP(txsize, rtwdev->chip->page_size);
++		rtw_sdio_8723bs_consume_txpg(rtwdev, queue, pages);
++	}
+ 	if (ret)
+ 		rtw_warn(rtwdev,
+ 			 "Failed to write %zu byte(s) to SDIO port 0x%08x",
+-			 txsize, txaddr);
++			 write_size, txaddr);
+ 
++out_trim:
++	if (write_size > orig_len)
++		skb_trim(skb, orig_len);
+ 	return ret;
+ }
+ 
+@@ -677,7 +858,11 @@ static void rtw_sdio_init(struct rtw_dev *rtwdev)
+ {
+ 	struct rtw_sdio *rtwsdio = (struct rtw_sdio *)rtwdev->priv;
+ 
+-	rtwsdio->irq_mask = REG_SDIO_HIMR_RX_REQUEST | REG_SDIO_HIMR_CPWM1;
++	if (rtw_is_8723bs_sdio(rtwdev))
++		rtwsdio->irq_mask = REG_SDIO_HIMR_RX_REQUEST;
++	else
++		rtwsdio->irq_mask = REG_SDIO_HIMR_RX_REQUEST |
++				       REG_SDIO_HIMR_CPWM1;
+ }
+ 
+ static void rtw_sdio_enable_rx_aggregation(struct rtw_dev *rtwdev)
+@@ -685,6 +870,7 @@ static void rtw_sdio_enable_rx_aggregation(struct rtw_dev *rtwdev)
+ 	u8 size, timeout;
+ 
+ 	switch (rtwdev->chip->id) {
++	case RTW_CHIP_TYPE_8723B:
+ 	case RTW_CHIP_TYPE_8703B:
+ 	case RTW_CHIP_TYPE_8821A:
+ 	case RTW_CHIP_TYPE_8812A:
+@@ -712,6 +898,8 @@ static void rtw_sdio_enable_rx_aggregation(struct rtw_dev *rtwdev)
+ 		    FIELD_PREP(BIT_DMA_AGG_TO_V1, timeout));
+ 
+ 	rtw_write8_set(rtwdev, REG_RXDMA_MODE, BIT_DMA_MODE);
++	if (rtw_is_8723bs_sdio(rtwdev))
++		rtw_write8_set(rtwdev, REG_RXDMA_MODE, 3 << 2);
+ }
+ 
+ static void rtw_sdio_enable_interrupt(struct rtw_dev *rtwdev)
+@@ -749,9 +937,50 @@ static int rtw_sdio_setup(struct rtw_dev *rtwdev)
+ 	return 0;
+ }
+ 
++static void rtw_sdio_8723bs_check_rqpn(struct rtw_dev *rtwdev)
++{
++	const struct rtw_chip_info *chip = rtwdev->chip;
++	struct rtw_fifo_conf *fifo = &rtwdev->fifo;
++	const struct rtw_page_table *pg_tbl;
++	u32 free_txpg;
++	u16 pubq_num;
++
++	if (!rtw_is_8723bs_sdio(rtwdev))
++		return;
++
++	free_txpg = rtw_read32(rtwdev, REG_SDIO_FREE_TXPG);
++	if (free_txpg || !fifo->acq_pg_num)
++		return;
++
++	pg_tbl = &chip->page_table[0];
++	if (fifo->acq_pg_num <= pg_tbl->hq_num + pg_tbl->lq_num +
++				    pg_tbl->nq_num + pg_tbl->exq_num +
++				    pg_tbl->gapq_num)
++		return;
++
++	pubq_num = fifo->acq_pg_num - pg_tbl->hq_num - pg_tbl->lq_num -
++		   pg_tbl->nq_num - pg_tbl->exq_num - pg_tbl->gapq_num;
++	rtw_write32(rtwdev, REG_RQPN_NPQ,
++		    BIT_RQPN_NE(pg_tbl->nq_num, pg_tbl->exq_num));
++	rtw_write32(rtwdev, REG_RQPN,
++		    BIT_RQPN_HLP(pg_tbl->hq_num, pg_tbl->lq_num, pubq_num));
++}
++
+ static int rtw_sdio_start(struct rtw_dev *rtwdev)
+ {
++	u32 clear;
++
++	rtw_sdio_8723bs_check_rqpn(rtwdev);
++	rtw_sdio_init_free_txpg(rtwdev);
+ 	rtw_sdio_enable_rx_aggregation(rtwdev);
++
++	if (rtw_is_8723bs_sdio(rtwdev)) {
++		clear = rtw_read32(rtwdev, REG_SDIO_HISR) &
++			RTW_SDIO_HISR_CLEAR_MASK;
++		if (clear)
++			rtw_write32(rtwdev, REG_SDIO_HISR, clear);
++	}
++
+ 	rtw_sdio_enable_interrupt(rtwdev);
+ 
+ 	return 0;
+@@ -831,6 +1060,8 @@ static void rtw_sdio_interface_cfg(struct rtw_dev *rtwdev)
+ 
+ 	val = rtw_read32(rtwdev, REG_SDIO_TX_CTRL);
+ 	val &= 0xfff8;
++	if (rtw_is_8723bs_sdio(rtwdev))
++		val |= BIT_SDIO_TX_CTRL_ALWAYS_RECOGNIZE;
+ 	rtw_write32(rtwdev, REG_SDIO_TX_CTRL, val);
+ }
+ 
+@@ -844,42 +1075,82 @@ static struct rtw_sdio_tx_data *rtw_sdio_get_tx_data(struct sk_buff *skb)
+ 	return (struct rtw_sdio_tx_data *)info->status.status_driver_data;
+ }
+ 
+-static void rtw_sdio_tx_skb_prepare(struct rtw_dev *rtwdev,
+-				    struct rtw_tx_pkt_info *pkt_info,
+-				    struct sk_buff *skb,
+-				    enum rtw_tx_queue_type queue)
++static int rtw_sdio_align_tx_skb(struct sk_buff *skb, unsigned int headroom)
++{
++	unsigned int misalign, needed;
++	int ret;
++
++	misalign = (unsigned long)skb->data & (RTW_SDIO_DATA_PTR_ALIGN - 1);
++	if (!misalign)
++		return 0;
++
++	needed = headroom + RTW_SDIO_DATA_PTR_ALIGN - 1;
++	if (skb_headroom(skb) < needed) {
++		ret = pskb_expand_head(skb, needed - skb_headroom(skb), 0,
++				       GFP_KERNEL);
++		if (ret)
++			return ret;
++
++		misalign = (unsigned long)skb->data &
++			   (RTW_SDIO_DATA_PTR_ALIGN - 1);
++		if (!misalign)
++			return 0;
++	}
++
++	needed = headroom + misalign;
++	if (skb_headroom(skb) < needed)
++		return -ENOSPC;
++
++	skb_push(skb, misalign);
++	memmove(skb->data, skb->data + misalign, skb->len - misalign);
++	skb_trim(skb, skb->len - misalign);
++
++	return 0;
++}
++
++static int rtw_sdio_tx_skb_prepare(struct rtw_dev *rtwdev,
++				   struct rtw_tx_pkt_info *pkt_info,
++				   struct sk_buff *skb,
++				   enum rtw_tx_queue_type queue)
+ {
+ 	const struct rtw_chip_info *chip = rtwdev->chip;
+ 	unsigned long data_addr, aligned_addr;
++	bool fixed_8723bs_offset;
+ 	size_t offset;
+ 	u8 *pkt_desc;
++	int ret;
++
++	fixed_8723bs_offset = rtw_is_8723bs_sdio(rtwdev) &&
++			      (queue == RTW_TX_QUEUE_MGMT ||
++			       queue == RTW_TX_QUEUE_BCN);
++
++	if (fixed_8723bs_offset) {
++		ret = rtw_sdio_align_tx_skb(skb, chip->tx_pkt_desc_sz);
++		if (ret)
++			return ret;
++	}
+ 
+ 	pkt_desc = skb_push(skb, chip->tx_pkt_desc_sz);
+ 
+ 	data_addr = (unsigned long)pkt_desc;
+ 	aligned_addr = ALIGN(data_addr, RTW_SDIO_DATA_PTR_ALIGN);
+ 
+-	if (data_addr != aligned_addr) {
++	if (!fixed_8723bs_offset && data_addr != aligned_addr) {
+ 		/* Ensure that the start of the pkt_desc is always aligned at
+ 		 * RTW_SDIO_DATA_PTR_ALIGN.
+ 		 */
+ 		offset = RTW_SDIO_DATA_PTR_ALIGN - (aligned_addr - data_addr);
+-
+ 		pkt_desc = skb_push(skb, offset);
+-
+-		/* By inserting padding to align the start of the pkt_desc we
+-		 * need to inform the firmware that the actual data starts at
+-		 * a different offset than normal.
+-		 */
+ 		pkt_info->offset += offset;
++		memset(pkt_desc + chip->tx_pkt_desc_sz, 0, offset);
+ 	}
+ 
+ 	memset(pkt_desc, 0, chip->tx_pkt_desc_sz);
+-
+ 	pkt_info->qsel = rtw_sdio_get_tx_qsel(rtwdev, skb, queue);
+-
+ 	rtw_tx_fill_tx_desc(rtwdev, pkt_info, skb);
+ 	rtw_tx_fill_txdesc_checksum(rtwdev, pkt_info, pkt_desc);
++
++	return 0;
+ }
+ 
+ static int rtw_sdio_write_data(struct rtw_dev *rtwdev,
+@@ -889,9 +1160,10 @@ static int rtw_sdio_write_data(struct rtw_dev *rtwdev,
+ {
+ 	int ret;
+ 
+-	rtw_sdio_tx_skb_prepare(rtwdev, pkt_info, skb, queue);
+-
+-	ret = rtw_sdio_write_port(rtwdev, skb, queue);
++	memset(rtw_sdio_get_tx_data(skb), 0, sizeof(struct rtw_sdio_tx_data));
++	ret = rtw_sdio_tx_skb_prepare(rtwdev, pkt_info, skb, queue);
++	if (!ret)
++		ret = rtw_sdio_write_port(rtwdev, skb, queue);
+ 	dev_kfree_skb_any(skb);
+ 
+ 	return ret;
+@@ -929,14 +1201,37 @@ static int rtw_sdio_tx_write(struct rtw_dev *rtwdev,
+ 	struct rtw_sdio *rtwsdio = (struct rtw_sdio *)rtwdev->priv;
+ 	enum rtw_tx_queue_type queue = rtw_tx_queue_mapping(skb);
+ 	struct rtw_sdio_tx_data *tx_data;
+-
+-	rtw_sdio_tx_skb_prepare(rtwdev, pkt_info, skb, queue);
++	int ret;
+ 
+ 	tx_data = rtw_sdio_get_tx_data(skb);
++	memset(tx_data, 0, sizeof(*tx_data));
++	if (skb->len >= sizeof(struct ieee80211_hdr_3addr)) {
++		struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
++
++		tx_data->is_mgmt = ieee80211_is_mgmt(hdr->frame_control);
++	}
++
++	ret = rtw_sdio_tx_skb_prepare(rtwdev, pkt_info, skb, queue);
++	if (ret)
++		return ret;
++
+ 	tx_data->sn = pkt_info->sn;
++	tx_data->tx_pkt_offset = pkt_info->offset;
+ 
+ 	skb_queue_tail(&rtwsdio->tx_queue[queue], skb);
+ 
++	/* Back-pressure on the data ACs (BK/BE/VI/VO): once the FIFO fills past
++	 * the high watermark, stop the corresponding mac80211 queue so it stops
++	 * handing us frames, bounding the queueing latency. Resumed from the TX
++	 * drain path once the FIFO drains below the low watermark.
++	 */
++	if (rtw_is_8723bs_sdio(rtwdev) && queue < RTW_TX_QUEUE_BCN &&
++	    !rtwsdio->queue_stopped[queue] &&
++	    skb_queue_len(&rtwsdio->tx_queue[queue]) >= RTW_SDIO_TX_FIFO_HIWATER) {
++		rtwsdio->queue_stopped[queue] = true;
++		ieee80211_stop_queue(rtwdev->hw, skb_get_queue_mapping(skb));
++	}
++
+ 	return 0;
+ }
+ 
+@@ -965,6 +1260,11 @@ static void rtw_sdio_rx_skb(struct rtw_dev *rtwdev, struct sk_buff *skb,
+ 	rtw_update_rx_freq_for_invalid(rtwdev, skb, rx_status, pkt_stat);
+ 	rtw_rx_stats(rtwdev, pkt_stat->vif, skb);
+ 
++	if (skb->len >= sizeof(struct ieee80211_hdr_3addr))
++		rtw8723bs_auth_sync_rx(rtwdev,
++				       (struct ieee80211_hdr *)skb->data,
++				       skb->len, pkt_stat, rx_status);
++
+ 	ieee80211_rx_irqsafe(rtwdev->hw, skb);
+ }
+ 
+@@ -1079,15 +1379,14 @@ static void rtw_sdio_handle_interrupt(struct sdio_func *sdio_func)
+ 	struct ieee80211_hw *hw = sdio_get_drvdata(sdio_func);
+ 	struct rtw_sdio *rtwsdio;
+ 	struct rtw_dev *rtwdev;
++	u32 clear;
+ 	u32 hisr;
+ 
+ 	rtwdev = hw->priv;
+ 	rtwsdio = (struct rtw_sdio *)rtwdev->priv;
+-
+ 	rtwsdio->irq_thread = current;
+ 
+ 	hisr = rtw_read32(rtwdev, REG_SDIO_HISR);
+-
+ 	if (hisr & REG_SDIO_HISR_TXERR)
+ 		rtw_sdio_tx_err_isr(rtwdev);
+ 	if (hisr & REG_SDIO_HISR_RX_REQUEST) {
+@@ -1095,7 +1394,12 @@ static void rtw_sdio_handle_interrupt(struct sdio_func *sdio_func)
+ 		rtw_sdio_rx_isr(rtwdev);
+ 	}
+ 
+-	rtw_write32(rtwdev, REG_SDIO_HISR, hisr);
++	if (rtw_is_8723bs_sdio(rtwdev))
++		clear = hisr & rtwsdio->irq_mask & RTW_SDIO_HISR_CLEAR_MASK;
++	else
++		clear = hisr & RTW_SDIO_HISR_CLEAR_MASK;
++	if (clear)
++		rtw_write32(rtwdev, REG_SDIO_HISR, clear);
+ 
+ 	rtwsdio->irq_thread = NULL;
+ }
+@@ -1212,11 +1516,20 @@ static void rtw_sdio_indicate_tx_status(struct rtw_dev *rtwdev,
+ 	struct rtw_sdio_tx_data *tx_data = rtw_sdio_get_tx_data(skb);
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 	struct ieee80211_hw *hw = rtwdev->hw;
+-
+-	skb_pull(skb, rtwdev->chip->tx_pkt_desc_sz);
+-
+-	/* enqueue to wait for tx report */
+-	if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
++	u8 tx_pkt_offset = tx_data->tx_pkt_offset;
++
++	if (!tx_pkt_offset)
++		tx_pkt_offset = rtwdev->chip->tx_pkt_desc_sz;
++	skb_pull(skb, tx_pkt_offset);
++
++	/* The RTL8723BS vendor descriptor uses SW_DEFINE/sn=0 for management
++	 * frames, so there is no unique key for matching asynchronous C2H TX
++	 * reports. Report completion at SDIO DMA completion, as the vendor
++	 * dump_mgntframe_and_wait() path does; data frames keep the normal C2H
++	 * report queue.
++	 */
++	if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS &&
++	    !(rtw_is_8723bs_sdio(rtwdev) && tx_data->is_mgmt)) {
+ 		rtw_tx_report_enqueue(rtwdev, skb, tx_data->sn);
+ 		return;
+ 	}
+@@ -1231,24 +1544,38 @@ static void rtw_sdio_indicate_tx_status(struct rtw_dev *rtwdev,
+ 	ieee80211_tx_status_irqsafe(hw, skb);
+ }
+ 
+-static void rtw_sdio_process_tx_queue(struct rtw_dev *rtwdev,
+-				      enum rtw_tx_queue_type queue)
++static int rtw_sdio_process_tx_queue(struct rtw_dev *rtwdev,
++				     enum rtw_tx_queue_type queue,
++				     bool *processed)
+ {
+ 	struct rtw_sdio *rtwsdio = (struct rtw_sdio *)rtwdev->priv;
+ 	struct sk_buff *skb;
++	u16 q_map;
+ 	int ret;
+ 
++	*processed = false;
+ 	skb = skb_dequeue(&rtwsdio->tx_queue[queue]);
+ 	if (!skb)
+-		return;
++		return 0;
+ 
++	*processed = true;
++	q_map = skb_get_queue_mapping(skb);
+ 	ret = rtw_sdio_write_port(rtwdev, skb, queue);
+ 	if (ret) {
+ 		skb_queue_head(&rtwsdio->tx_queue[queue], skb);
+-		return;
++		return ret;
+ 	}
+ 
+ 	rtw_sdio_indicate_tx_status(rtwdev, skb);
++
++	if (rtw_is_8723bs_sdio(rtwdev) && queue < RTW_TX_QUEUE_BCN &&
++	    rtwsdio->queue_stopped[queue] &&
++	    skb_queue_len(&rtwsdio->tx_queue[queue]) <= RTW_SDIO_TX_FIFO_LOWATER) {
++		rtwsdio->queue_stopped[queue] = false;
++		ieee80211_wake_queue(rtwdev->hw, q_map);
++	}
++
++	return 0;
+ }
+ 
+ static void rtw_sdio_tx_handler(struct work_struct *work)
+@@ -1257,6 +1584,7 @@ static void rtw_sdio_tx_handler(struct work_struct *work)
+ 		container_of(work, struct rtw_sdio_work_data, work);
+ 	struct rtw_sdio *rtwsdio;
+ 	struct rtw_dev *rtwdev;
++	bool processed;
+ 	int limit, queue;
+ 
+ 	rtwdev = work_data->rtwdev;
+@@ -1267,7 +1595,14 @@ static void rtw_sdio_tx_handler(struct work_struct *work)
+ 
+ 	for (queue = RTK_MAX_TX_QUEUE_NUM - 1; queue >= 0; queue--) {
+ 		for (limit = 0; limit < 1000; limit++) {
+-			rtw_sdio_process_tx_queue(rtwdev, queue);
++			if (rtw_sdio_process_tx_queue(rtwdev, queue, &processed))
++				break;
++
++			if (rtw_is_8723bs_sdio(rtwdev) &&
++			    queue == RTW_TX_QUEUE_MGMT && processed) {
++				queue_work(rtwsdio->txwq, &work_data->work);
++				return;
++			}
+ 
+ 			if (skb_queue_empty(&rtwsdio->tx_queue[queue]))
+ 				break;
+@@ -1294,8 +1629,10 @@ static int rtw_sdio_init_tx(struct rtw_dev *rtwdev)
+ 		return -ENOMEM;
+ 	}
+ 
+-	for (i = 0; i < RTK_MAX_TX_QUEUE_NUM; i++)
++	for (i = 0; i < RTK_MAX_TX_QUEUE_NUM; i++) {
+ 		skb_queue_head_init(&rtwsdio->tx_queue[i]);
++		rtwsdio->queue_stopped[i] = false;
++	}
+ 	rtwsdio->tx_handler_data = kmalloc_obj(*rtwsdio->tx_handler_data);
+ 	if (!rtwsdio->tx_handler_data)
+ 		goto err_destroy_wq;
+diff --git a/drivers/net/wireless/realtek/rtw88/sdio.h b/drivers/net/wireless/realtek/rtw88/sdio.h
+index 457e8b02380e..00f28ecfaf7d 100644
+--- a/drivers/net/wireless/realtek/rtw88/sdio.h
++++ b/drivers/net/wireless/realtek/rtw88/sdio.h
+@@ -22,6 +22,7 @@
+ 
+ /* SDIO Tx Control */
+ #define REG_SDIO_TX_CTRL			(SDIO_LOCAL_OFFSET + 0x0000)
++#define BIT_SDIO_TX_CTRL_ALWAYS_RECOGNIZE	BIT(4)
+ 
+ /*SDIO status timeout*/
+ #define REG_SDIO_TIMEOUT			(SDIO_LOCAL_OFFSET + 0x0002)
+@@ -77,6 +78,14 @@
+ /* the following two are RTL8188 SDIO Specific */
+ #define REG_SDIO_HISR_MCU_ERR			BIT(28)
+ #define REG_SDIO_HISR_TSF_BIT32_TOGGLE		BIT(29)
++#define RTW_SDIO_HISR_CLEAR_MASK		\
++	(REG_SDIO_HISR_TXERR | REG_SDIO_HISR_RXERR | \
++	 REG_SDIO_HISR_TXFOVW | REG_SDIO_HISR_RXFOVW | \
++	 REG_SDIO_HISR_TXBCNOK | REG_SDIO_HISR_TXBCNERR | \
++	 REG_SDIO_HISR_C2HCMD | REG_SDIO_HISR_CPWM1 | \
++	 REG_SDIO_HISR_CPWM2 | REG_SDIO_HISR_HSISR_IND | \
++	 REG_SDIO_HISR_GTINT3_IND | REG_SDIO_HISR_GTINT4_IND | \
++	 REG_SDIO_HISR_PSTIMEOUT | REG_SDIO_HISR_OCPINT)
+ 
+ /* HCI Current Power Mode */
+ #define REG_SDIO_HCPWM				(SDIO_LOCAL_OFFSET + 0x0019)
+@@ -140,6 +149,8 @@ struct sdio_device_id;
+ 
+ struct rtw_sdio_tx_data {
+ 	u8 sn;
++	u8 tx_pkt_offset;
++	bool is_mgmt;
+ };
+ 
+ struct rtw_sdio_work_data {
+@@ -159,6 +170,13 @@ struct rtw_sdio {
+ 	struct workqueue_struct *txwq;
+ 	struct rtw_sdio_work_data *tx_handler_data;
+ 	struct sk_buff_head tx_queue[RTK_MAX_TX_QUEUE_NUM];
++	bool queue_stopped[RTK_MAX_TX_QUEUE_NUM];
++
++	atomic_t free_pg_high;
++	atomic_t free_pg_normal;
++	atomic_t free_pg_low;
++	atomic_t free_pg_pub;
++	atomic_t tx_oqt_free;
+ };
+ 
+ extern const struct dev_pm_ops rtw_sdio_pm_ops;
 -- 
 2.55.0
 
