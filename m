@@ -1,276 +1,169 @@
-Return-Path: <linux-wireless+bounces-39078-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-39079-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KJkdCltSVmpo3QAAu9opvQ
-	(envelope-from <linux-wireless+bounces-39078-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 17:14:35 +0200
+	id wh+kHglWVmpz3gAAu9opvQ
+	(envelope-from <linux-wireless+bounces-39079-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 17:30:17 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 697C1756497
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 17:14:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDDAA756735
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 17:30:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RPLv8QsF;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39078-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39078-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=R53fNbg8;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39079-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39079-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5190B3024C82
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 15:14:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A59BA304C900
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 15:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50004483BD;
-	Tue, 14 Jul 2026 15:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A226635E952;
+	Tue, 14 Jul 2026 15:23:08 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9EB47ECF0
-	for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 15:13:57 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784042038; cv=pass; b=Loz1Kdk4h+RmANurksJ0HGvx94EdcOoc/lmXaR/tZNHOjF328n+0VgOnaO0DLvVwc350p03N1OfHgDhru9Nu7DeeHMsG4XC7Rb3frUsSrasBoNj36qR4d887k67fuymr742bisO4sA1roX7MZsYW5OO9v+ZybCITbzoZRp6OsoI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784042038; c=relaxed/simple;
-	bh=UgoS0j4K78MlIyl1+UAw3ILDHgBghJ5jb/4dajKUK1A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A9cBNnV9LRUtdZAFC4QZvZNKxIBX2p5mAxXDY0ZvorSpaAnmYAttI1TdNeiVkq5UJC7ki3v2yg69hWz+iBfdPAvbia8FXM4Ki1YhQl5x/XDXMFgQR5rmtBBDicoVghOgWda69LMoMw+ISxnsa0J3YFrSWdG+nv6bPvLOWrdnJ5g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RPLv8QsF; arc=pass smtp.client-ip=209.85.214.172
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cad68425a7so6415905ad.1
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 08:13:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784042037; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qWyXR/dwWbkd/QTgGgxoVk6SUq39GvCyayltLMBHUH74sD0uqDGq37c1Il0z/GdEbo
-         yh8z5vsnLLdQPm2fFtE9tkX+4GmAw5EMV8/SEzKnmi6a8q3Dl8Jb81ABQnqF4W5wWOrT
-         2Uw/JM4f5MpwZ+U2ii/rRwVdFj+6J44a3/fDcUXwCPmcyaHGqtDGc1KhhtCjCgPfM/3E
-         8JSLO565rBcZiIh7IlGHSdfPYdgHd9aE1DIty0VJPdavanieckU92d1H8TecTugHGyk6
-         B3nYZym0lQ4BTcUzw5J5shJShCxPCPjRh6WOB8iIUbmonqTsvWY5NOYxqizvw09WxjPH
-         fSDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vK5QmwsUTvO+w3mfeVvzuue37ffn3bjmkO1DFTx2Qa4=;
-        fh=k1GXrmuolDxEN40ZxVAeDMeBQISXEr9ydmD9mjIqrNk=;
-        b=seVzqJvISCQnhR5MQcZgeHLq27YMhn/LBG6kYpc1wLkAXMzIei4FH49neXm7L8uDsp
-         qvZzGntOBpHTn6HyWFullASwDLziDNVi6M+q3juJ49YH48Y5r8oA2QboUs0/PEfXy0Pd
-         f4JTPY5cUnT4L01dy8aAJwo8n8NMIEzfhNEhErcM+sjSdTykszrBTWjwGwAZEP1aSJYo
-         xFHPSwzcdn0hjQN31pcVye2xBj1aGwYsjnbMLcoMTIaEmbrIsP4vS2HPhGMhZHp4rc5L
-         VtHogaii3YK4DJpJlNPPC8TiqFfj2EbrZw2MfJn5kYD6URSHIsGM85sGbObUmFXfvlyO
-         XrpQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259EC47DF9C
+	for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 15:23:06 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784042588; cv=none; b=u549r0j+nmamQT6iaHxwCmLRZjxzUd+8IeZwo+a3hy1d4Akpndm8KhcZ6U01keFiF7FMsq9ASghhEv9USBFnF3qZ0sHzmS+5cUfYFND646Iu+VvVfaVu3+c9/dDaF2UPWFXdTlCbkbrn8Sb25lyEefPOCdhS8J0XzzCSjglnfm4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784042588; c=relaxed/simple;
+	bh=pP3RuGJEOJYMGueBByoBF8Qd1tVMJ/RQr3Wk9VJA1nc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kfj83rW0LdsVEpVsOnz4JshyWcN+szPU4QCtm9S3GYAYChkukeSYWLNW0AOidEdEJhBNmmwpg9Qojt4J3Xmekx4AWQe0lmm0o4lpB17umr3djvxwfrtt1EmIY1gHHfhX9ThFrhkl3Rsg4jy/2+mWcZF/dDnu2bczb2o9Bi6ayeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R53fNbg8; arc=none smtp.client-ip=209.85.128.48
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so37819885e9.0
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 08:23:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784042037; x=1784646837; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=vK5QmwsUTvO+w3mfeVvzuue37ffn3bjmkO1DFTx2Qa4=;
-        b=RPLv8QsFgv4QJCH0cTEnkpPfhxePWDma6kqbHLCZRYGJJQGHSW5C6ntzU0Cyf1k42k
-         aAM5rRInImd6VrsBoYCdYFjH5u3wUNdfZaCUXzHODmzy4koGlcCB5NLEz9g9wR1lldf+
-         N/Hk0B7eFq5xdcHx+VedqqZ/N85AYQwzPHs6vC+Dtkn6oWhXCf96I4nw+L2YqtjjeFx3
-         nrUHO6UtdwOcfK9aSsfHuOTVS6lYp7c18fE+gULFhVp8/Im5iW/eh1atpQrhnQ27tfae
-         0dEOSPMVof9ciNJdZe6IAb6p1I2kKlQtY6DYrdcqV7vYBvIPejVuedOw1sHrha5mQiDl
-         vFAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784042037; x=1784646837;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1784042585; x=1784647385; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=vK5QmwsUTvO+w3mfeVvzuue37ffn3bjmkO1DFTx2Qa4=;
-        b=NLL51hurxAK1Pdoan2d8fv5X9jdfk8GKhS/StY1tlyaTn4bHu7z2QTIMtN7tl1P1Js
-         P1vg3K2j1Amw3k9tANy34O1UOj9HnS49sO7nhvOeRjCvMRafScA11KX1hEuSXU37XuY/
-         xr+DB3KZfEksJ5UkgdDSfF0VL84udw3fZ1V8nFb8K3+FmqlRbOc7weaU4aJoRKgrIes3
-         jIZ4Y6kyuYW6I7+iz8XDkvqPuNxXF86o3PDMS/bLB+K3mA13bmhvcgO3ma23jFUx+oZp
-         um/BKKtQ0o6YPOl/AXDqa7Jvz+whp/jK2xYvH0DojeIclkxv5XMXMbHjeGjjhKOa3DHC
-         DJVA==
-X-Forwarded-Encrypted: i=1; AHgh+RqPfAwlWNzDYjhGkgvme1mFxtAdJkduhf5bsOYr5xk4nzr/FJ47NCKgR+lgOq4Gefc47MgVWWNwaRO9ggC9Ow==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwB65sjfYVdPi8V+q88gyXHOzgo7wpAmZ/V3/VZUA7I0d7pbXV6
-	IB5dLKyDFoPgqVy80AwGa3iaU8D6dgYFufg5lM29HIlJ5/maDcmM8XfNZIVh13wzn5WeMmjCujj
-	D7AFDiwwa8VoY0auyqwF9a+57HMBtv+c=
-X-Gm-Gg: AfdE7cmytxdmie3CFlGTLy1QVGxpeEqGdiJuDU2Izc4B13Ls4g18qCL7MoV8tQRMAmQ
-	MP6433Z0hDvWBzhhGjPMFs50LLZwL94XV7mkxur9a8uMPLZT+qaTJ0KVGdbe1cSBIM+nhh9e70V
-	uqqGHB4Gr3BdIooBVJqfrj5FCiiLWytvyQzhKAqeBd4vfCFUBv4T6JNYJr7BfnPAf6sQ/rF96MW
-	HKFbsNW/CrS0HLGaaBpDkNlS9f3UyDY+fXbCHyH115vdab4mQ0rnysa6TjdlqCSfRLdbHx/MbtW
-	DojGZB4LuwLmWsL9gsaJficn4F4jXirJ307oKTSTSmfbIdpazqNiCuyLm5rYngeem6sE7Uk=
-X-Received: by 2002:a17:902:c40f:b0:2c9:d298:6c0a with SMTP id
- d9443c01a7336-2ce9e59ee7cmr124563185ad.2.1784042036663; Tue, 14 Jul 2026
- 08:13:56 -0700 (PDT)
+        bh=Hjqr0KeiKvdS+CWD8xOUQjQsATKLi76iMcacJPH1zto=;
+        b=R53fNbg8QH1SDxOJ16i8qkizUuvrAmOG4UcjDziUrYnP5LGzigvBP7Mlc/vBzv/aIl
+         knWKLEc63TEIl7NJZsDFL0VxvCmXs/z5Mh9U7muGRJ+NTh6eByM8o+H84ZSGQ7SzLidz
+         xRf9kIqH3l95CFlslQ9vmqN79FC3JY+loNrrIIKFxSfbTkXJUPHxrRcxSiKm0FtH5zF9
+         Yjt1a8+1SuoLvZU8RbTAHe8sdhDWf0F6CRVWUVlmsUSldXJBuoIyD0HBhc0fgT7Ugb0A
+         iip5ZdJ8F3vbmTtl0HEriCOfytf5FolytN++LZlGRGtnhRCiAF7geyMK8dR4VanAwpoh
+         EeCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784042585; x=1784647385;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Hjqr0KeiKvdS+CWD8xOUQjQsATKLi76iMcacJPH1zto=;
+        b=a1Xtfuuey38C33qjFpFtMCZQdI5nYryl6ddxPxaOP8W72stloh2TOyg3WY0iMn0Z5X
+         PYN4qG1arsinSxc07N8o7FkrSYXSfMHLOTPB4zEE/FdOkJ48BO1ve+6K28hK3KnCPzgC
+         4VHE4FYqTfJzA23vLo1UgILtoRPWKVFBD2/5zrqDx1a19Xl1tkZ9/SxNEUJkQTURv/uG
+         WrlPfkL4nYCWPp6kTy2dsS/tlch57obVxhsVJVkL/OwG9gMeVFTK4k2e36XUNxUKKD1z
+         LW7xsP97O7XT88W0hsXUrHWMpYgHNJs8Q6tFasae9wyu6A/YtPdZO1IvNOd5Bd3FfQsb
+         ec6g==
+X-Gm-Message-State: AOJu0YxdjRRAk8pBCEUmtuuAQp2tfhcqC6ya6b2L91HlngLaaoU+qd2Q
+	Ygae4rFBOdCqBQyvTwKa7V81dyjUKzUpcx4MIWAJEP231a37Fnj9jM0hb58meg==
+X-Gm-Gg: AfdE7cn9v3+CJGi9+XTmd0in1JT78QWZIFiKOaL22HFlPq2JBmc5CCw1z39jTwX2rWE
+	nlyssFzX8/Q22CayEZxke+weX3b8Pgqn0O/uiuE8KgQauUj0PQlrrUI/TEImwzSaRUEyBF7J60N
+	lzYVVQtV2hvkOuOISk+QYoMXfrfCzxgOS8JwGRs5ZaT3/e32mxP8UgZCIM/W7f0iqTQb+U5n4tP
+	Y/B6FtQB2nNMUZvi3/Bs8UIiAMVz1nnpDqIAa0JeIS0hiC/n110Bfv4RpO0ysXfTfAI9IVfGoiq
+	//PHDbAWX1xE5o5dsgQ1XYZWl40/gE4E3APBfMxJbsIilScNtfdyI1YdFGb9ZfpejUqYrIg7dhv
+	EoKqJikQFP9AsYcLNRTFjCW87CjBzQhnE8LFErXzha/wSfyIIFZ+qbc2+sAtLkc73qn/jRxFQpC
+	8Hsl/EO/9Rsjlok5mYY9H9
+X-Received: by 2002:a05:600c:c4ab:b0:493:a960:a0bf with SMTP id 5b1f17b1804b1-495389bcc4dmr34160385e9.21.1784042584970;
+        Tue, 14 Jul 2026 08:23:04 -0700 (PDT)
+Received: from [192.168.1.50] ([79.118.68.203])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493f86556acsm248747635e9.1.2026.07.14.08.23.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jul 2026 08:23:04 -0700 (PDT)
+Message-ID: <af31a567-ad40-4bbd-85db-4b6242680423@gmail.com>
+Date: Tue, 14 Jul 2026 18:23:02 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260709122315.11400-1-bogdan.nicolae@gmail.com>
- <99c2c345-c594-46e1-b48a-de7f6e52e1c6@broadcom.com> <CA+ORkNTNytDi56RJbWHoFXLR2mSAgosz4UxHPgEvCBojmaFOdw@mail.gmail.com>
- <cnztilpxknxuyofx2pfdqissbhqtopwoygzr73ux2qmyasqebv@iesg7d6rvxsw>
-In-Reply-To: <cnztilpxknxuyofx2pfdqissbhqtopwoygzr73ux2qmyasqebv@iesg7d6rvxsw>
-From: Bogdan Nicolae <bogdan.nicolae@gmail.com>
-Date: Tue, 14 Jul 2026 10:13:27 -0500
-X-Gm-Features: AUfX_mxGWHBpBRJQmPI31ArrZDWfrMpuuVcSaRw4MGfRobcdoK48Ob8bRnS2z2c
-Message-ID: <CA+ORkNQ40+xO2+aOc302Z9OZ4qcaWXRE7J-xOR51=-k91prdgQ@mail.gmail.com>
-Subject: Re: [PATCH] wifi: brcmfmac: cyw: clean up PMKID and cookie code
-To: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
-Cc: Arend van Spriel <arend.vanspriel@broadcom.com>, linux-wireless@vger.kernel.org, 
-	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com, 
-	linux-kernel@vger.kernel.org, Bogdan Nicolae <bogdan.nicolae@acm.org>, 
-	wlan-kernel-dev-list@infineon.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re:
+To: nurofen55@meta.ua, pkshih@realtek.com
+Cc: linux-wireless@vger.kernel.org
+References: <44184.185.179.215.97.1784041719.metamail@mail.meta.ua>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <44184.185.179.215.97.1784041719.metamail@mail.meta.ua>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-39078-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gokulkumar.sivakumar@infineon.com,m:arend.vanspriel@broadcom.com,m:linux-wireless@vger.kernel.org,m:brcm80211@lists.linux.dev,m:brcm80211-dev-list.pdl@broadcom.com,m:linux-kernel@vger.kernel.org,m:bogdan.nicolae@acm.org,m:wlan-kernel-dev-list@infineon.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[bogdannicolae@gmail.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-39079-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:nurofen55@meta.ua,m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[meta.ua,realtek.com];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FROM_HAS_DN(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bogdannicolae@gmail.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid,acm.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,wikipedia.org:url,infineon.com:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[meta.ua:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 697C1756497
+X-Rspamd-Queue-Id: BDDAA756735
 
-On Tue, Jul 14, 2026 at 8:03=E2=80=AFAM Gokul Sivakumar
-<gokulkumar.sivakumar@infineon.com> wrote:
->
-> On 07/14, Bogdan Nicolae wrote:
-> > Hi Arend,
-> >
-> > The code already sets *cookie=3D0 in the beginning, which according to
-> > my understanding tells the driver it does not require async tracking
-> > upstream. This is correct, because the function calls
-> > wait_for_completion_timeout, so mgmt tx completes by the time we exit
-> > the function and doesn't need to be tracked upstream. However, while
-> > we are waiting for mgmt tx to finish, the firmware may generate
-> > non-matching completion events captured by notify_mgmt_tx_status.
-> > That's why setting a non-zero packed_id (sent to and returned by
-> > firmware as part of a completion event) and checking against
-> > vif->mgmt_tx_id is important.
->
-> Avoid top-posting. Need to use interleaved style.
-> https://en.wikipedia.org/wiki/Posting_style#Interleaved_style
->
-> > Cheers,
-> > Bogdan
-> >
-> > On Sun, Jul 12, 2026 at 5:30=E2=80=AFPM Arend van Spriel
-> > <arend.vanspriel@broadcom.com> wrote:
-> > >
-> > > On 09/07/2026 14:23, Bogdan Nicolae wrote:
-> > > > Avoid setting packet_id to cookie, which is always 0. Instead, use =
-an
-> > > > increasing atomic counter. Avoids mismatches of completion events l=
-ater
-> > > > in brcmf_notify_mgmt_tx_status, where packet_id !=3D vif->mgmt_tx_i=
-d is
-> > > > checked.
-> > > >
-> > > > Also, zero out auth_status on initialization. Otherwise, garbage wi=
-ll
-> > > > leak from the stack to the firmware (when bssid is less than 32 byt=
-es
->
-> BSSID will always be less than 32, you must have meant to say "ssid" here
-> instead of "bssid". Also the auth_req_status struct does not have any "bs=
-sid"
-> member, it only has an "ssid" struct member. Need to fix in commit messag=
-e.
+On 14/07/2026 18:08, nurofen55@meta.ua wrote:
+> Hi Ping-Ke,
+> Thank you for the quick and insightful analysis!
+> Here are the results from your suggestions:
+> 1. Firmware Check:
+> 
+> You were absolutely right. I ran `dmesg | grep -i rtw89` on the 7.1.x kernel, and it confirmed that it is indeed loading the new v2 firmware:
+> 
+> rtw89_8852be 0000:02:00.0: loaded firmware rtw89/rtw8852b_fw-2.bin
+> 
+> Firmware version 0.29.29.18 (9e3d777f)
+> 2. Power Save Test:
+> 
+> I identified my interface as wlp2s0 and completely disabled power saving:
+> 
+> sudo iw dev wlp2s0 set power_save off
+> 
+> Unfortunately, this did not improve the 2.4GHz stability; the intermittent packet loss and high latency spikes still persist under the same conditions.
+> 3. Testing Nearby the AP:
+> 
+> Moving the laptop closer to the router (stronger signal) slightly mitigates the frequency of the drops, but the latency spikes still occur randomly on 2.4GHz, whereas 5GHz remains flawlessly stable.
+> Since I am on openSUSE Tumbleweed (a rolling release distribution) and use it for my daily hospital workflow, compiling a custom kernel to manually apply patch 63ccdfac8677 is quite problematic for me at the moment.
+> Given that commit 63ccdfac8677 fixes the exact AMPDU drop logic bug introduced in 7.0, it sounds like the perfect candidate to resolve this. Could you please queue this fix for inclusion into the upstream 7.1.x stable kernel tree? Once it is merged there, the openSUSE maintainers will pull it automatically, and I will gladly test the updated repository kernel to confirm the fix!
+> Best regards,
+> 
+> Svyatoslav
+> 
+> 
 
-Fixed
+Hi,
 
-> > > > and/or when params->pmkid is set). Then, pass the params->pmkid to =
-the
-> > > > firmware (without it, the firmware caches a garbage PMKID on succes=
-sful
-> > > > authentication and denies a subsequent association request that inc=
-ludes
-> > > > the PMKID).
-> > > >
-> > > > Signed-off-by: Bogdan Nicolae <bogdan.nicolae@acm.org>
-> > >
-> > > I always get a bit confused when people use different email addresses=
- to
-> > > send and sign-off patches.
-> > >    > ---
-> > > >   .../net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c   | 8 +++=
-+++--
-> > > >   1 file changed, 6 insertions(+), 2 deletions(-)
-> > > >
-> > > > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/c=
-ore.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-> > > > index ce09d44fa..cca53ff19 100644
-> > > > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-> > > > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-> > > > @@ -23,6 +23,8 @@
-> > > >   #define MGMT_AUTH_FRAME_DWELL_TIME  4000
-> > > >   #define MGMT_AUTH_FRAME_WAIT_TIME   (MGMT_AUTH_FRAME_DWELL_TIME +=
- 100)
-> > > >
-> > > > +static atomic_t brcmf_cyw_mgmt_tx_id =3D ATOMIC_INIT(0);
-> > > > +
-> > > >   static int brcmf_cyw_set_sae_pwd(struct brcmf_if *ifp,
-> > > >                                struct cfg80211_crypto_settings *cry=
-pto)
-> > > >   {
-> > > > @@ -155,7 +157,7 @@ int brcmf_cyw_mgmt_tx(struct wiphy *wiphy, stru=
-ct wireless_dev *wdev,
-> > > >
-> > > >       memcpy(&mf_params->da[0], &mgmt->da[0], ETH_ALEN);
-> > > >       memcpy(&mf_params->bssid[0], &mgmt->bssid[0], ETH_ALEN);
-> > > > -     mf_params->packet_id =3D cpu_to_le32(*cookie);
-> > > > +     mf_params->packet_id =3D cpu_to_le32(atomic_inc_return(&brcmf=
-_cyw_mgmt_tx_id));
-> > >
-> > > As I understand things the cookie value here is an output parameter. =
-The
-> > > driver should assign it:
-> > >
-> > > +       *cookie =3D atomic_inc_return(&brcmf_cyw_mgmt_tx_id);
-> > >         mf_params->packet_id =3D cpu_to_le32(*cookie);
->
-> Agree with Arend's suggestion here. It is not correct to leave *cookie =
-=3D 0 as it
-> is and only assign a different packet_id while sending requst to firmware=
-, because
-> in that case the driver will not return the real cookie for this TX to cf=
-g80211.
-> Driver should assign the generated ID to *cookie and then copy that into =
-packet_id.
+That patch is already queued for 7.1:
 
-Fixed
-
->
->
-> Gokul
->
-> > > >       memcpy(mf_params->data, &buf[DOT11_MGMT_HDR_LEN],
-> > > >              le16_to_cpu(mf_params->len));
-> > > >
-> > > Regards,
-> > > Arend
-
-Regards,
-Bogdan
+https://lore.kernel.org/stable/20260712105304.agent5-0001@kernel.org/
 
