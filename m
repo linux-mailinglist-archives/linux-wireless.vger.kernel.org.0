@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-39091-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-39093-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5lK1LFJ4VmqO6QAAu9opvQ
-	(envelope-from <linux-wireless+bounces-39091-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 19:56:34 +0200
+	id tl0XG1R4VmqP6QAAu9opvQ
+	(envelope-from <linux-wireless+bounces-39093-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 19:56:36 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF61757A6F
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 19:56:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 031E5757A72
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 19:56:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=baFPRVJX;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39091-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39091-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LHS9MitT;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39093-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39093-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 925E630D3B18
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 17:52:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2A89B311CA55
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 17:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B353A3128CA;
-	Tue, 14 Jul 2026 17:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD7A3148A7;
+	Tue, 14 Jul 2026 17:52:16 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB05A13D503
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608D530D3EF
 	for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 17:52:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784051534; cv=none; b=IlWyE6S3d0JawBPipzdWZtvkGMu2zmnETlporPYMbLTsY+DadBU8fqOKhR2AcEKQI3b90zBEd2uQtSmXhUseYZdYLUkQwJwrJNappvH5oH8iIIQidQA5pITUTYQ90mZtSBs+qP6tgkPZiKi9fxPJF2X21haxr8EYJCrdjZnF5Ho=
+	t=1784051535; cv=none; b=UbK/UBm9Qab55jPIXqhDhrjxT67uvG+ZP9lqRk+H3V3lkepfFQJgcxfkjtEN4LG2j97eyTLCoxyjpplVrallN4voymQyxqQ2cbSrZ3H5fF4t2teLWMQDkqT4aJY6IztAlamsL7QqaPAVi8WqY7P0qqES5o4yzCZyRrK8g5b+Cr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784051534; c=relaxed/simple;
-	bh=jnZxvEnZDAPn3oL4QUYVtnEmwZHmMDUiBbVPfTKJx08=;
+	s=arc-20240116; t=1784051535; c=relaxed/simple;
+	bh=toQAI1zZqUDCZkS74eNF/dY7xWGT/KmpVLxJPamwP1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QYYwElxwpncDFg3fABQCQQGoFGR+u3hoTWK47PYefs65e6vfSi13ZuFr82BG9p1OutKj1s7QbMN1Cj5+eheDUvhbiK0zsAf3BOoeVVdtLvmpq6/ng4BClRpKfJWqC8qbSktROcAlvzGYvvNgclmiU+7Y4shfA0vcbL7BV09Odh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=baFPRVJX; arc=none smtp.client-ip=95.215.58.173
+	 MIME-Version; b=h4nt+vXkOEqXRGIbhu8HaiSbUYOY86L1pIEYR4j/tKZ+imyPh3fPO33V7BgnCc3tbN+OLg2wU1at8XUQsQODjazDmhvz2re0rW18hxtk0HGi3Phxr5HegseiersAu/r20sjiVjAdrl2Oy4ViLof8davlJ4K/1BCKuuIbvOQraiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LHS9MitT; arc=none smtp.client-ip=95.215.58.189
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784051527;
+	t=1784051528;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zqTooyytXZlfVBzqXtozAQEQQ+L8Mg4wXyViVCZI0F4=;
-	b=baFPRVJXjLqtX373esG/7mKcSPfAfUJmYVaXP0I7qUE6KaNGD2ZD3xc0pIHp4sIg1FRwBu
-	C1uzKhiphKKsXkl8ER3iFjd6D9IJPGDNvQ8ei4IZwA1hIRMveFryrPX/rsdbijuKCUnhHc
-	9qc5IClFJe67AKOFNKHmK4a0by2omDc=
+	bh=T2C33EMb71ABqI6dO4qZVt8Apf3urMMy5BLxLiHZBOU=;
+	b=LHS9MitTLpwX/B0amCE6RkQ4TB64z6pcdSJ0+hAvLPf3P+N4qe2zmMV+bG3noC59c7/6qC
+	fuTu5zM919tS1o/a5dyWCkOF58XMR9VA2D7t9/HpWGFLotyPYpvcI+f4JdOemoIP8kyFjj
+	Bx6ZbuNd+pS+i8yq95XzinbzCcE8spg=
 From: luka.gejak@linux.dev
 To: linux-wireless@vger.kernel.org
 Cc: pkshih@realtek.com,
 	straube.linux@gmail.com,
 	luka.gejak@linux.dev
-Subject: [RFC PATCH v1 3/9] wifi: rtw88: 8723bs: add the firmware host-to-chip interface
-Date: Tue, 14 Jul 2026 19:51:01 +0200
-Message-ID: <bb413d9c2319f4f2f3b0f6f3091c82e6a6758463.1784047561.git.luka.gejak@linux.dev>
+Subject: [RFC PATCH v1 4/9] wifi: rtw88: 8723bs: add WiFi/BT coexistence antenna handling
+Date: Tue, 14 Jul 2026 19:51:02 +0200
+Message-ID: <d55f51724af10c76d61721b4ce456780908f8bca.1784047561.git.luka.gejak@linux.dev>
 In-Reply-To: <cover.1784047561.git.luka.gejak@linux.dev>
 References: <cover.1784047561.git.luka.gejak@linux.dev>
 Precedence: bulk
@@ -71,14 +71,14 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[luka.gejak@linux.dev,linux-wireless@vger.kernel.org];
 	FREEMAIL_CC(0.00)[realtek.com,gmail.com,linux.dev];
-	TAGGED_FROM(0.00)[bounces-39091-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-39093-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:pkshih@realtek.com,m:straube.linux@gmail.com,m:luka.gejak@linux.dev,m:straubelinux@gmail.com,s:lists@lfdr.de];
@@ -92,351 +92,304 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	DKIM_TRACE(0.00)[linux.dev:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MISSING_XM_UA(0.00)[];
 	FROM_NO_DN(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,linux-wireless@vger.kernel.org]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3DF61757A6F
+X-Rspamd-Queue-Id: 031E5757A72
 
 From: Luka Gejak <luka.gejak@linux.dev>
 
-The RTL8723BS SDIO uses the Realtek vendor firmware, which speaks a
-different H2C/C2H protocol than the other rtw88 chips. Add the vendor
-byte-layout H2C builders (RSSI monitor, rate-adaptation MACID_CFG with
-no-update gating, media status, channel info, GNT_BT and the coex antenna
-reserve), route the vendor CCX TX reports (C2H 0x03/0x12, and 0x32 which
-the firmware reuses for scan-probe reports) to the 8723b handler, and fix
-the reserved-page BIT_BCN_VALID handshake for SDIO by clearing the beacon
-download-queue and SW-beacon-select bits during the upload.
+On RTL8723BS SDIO boards the scan and authentication windows route through
+the PTA antenna mux even when BT is disabled. Add the vendor-shaped
+antenna-path forcing (BB_SEL_BTG / PAD control / CCK priority / GNT_BT) and
+the scan- and connect-notify handling that keeps WiFi owning the antenna
+across the site survey and the pre-auth window, so directed management
+frames reach the air.
 
 Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
 ---
- drivers/net/wireless/realtek/rtw88/fw.c | 171 ++++++++++++++++++++++--
- drivers/net/wireless/realtek/rtw88/fw.h |  17 +++
- drivers/net/wireless/realtek/rtw88/rx.c |   8 +-
- 3 files changed, 185 insertions(+), 11 deletions(-)
+ drivers/net/wireless/realtek/rtw88/coex.c | 237 ++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/coex.h |   4 +
+ 2 files changed, 241 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 945fedcd375b..30091d43d908 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -315,8 +315,22 @@ void rtw_fw_c2h_cmd_handle(struct rtw_dev *rtwdev, struct sk_buff *skb)
+diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
+index 37c336def419..c34c283b79b6 100644
+--- a/drivers/net/wireless/realtek/rtw88/coex.c
++++ b/drivers/net/wireless/realtek/rtw88/coex.c
+@@ -1443,6 +1443,205 @@ static void rtw_coex_set_ant_path(struct rtw_dev *rtwdev, bool force, u8 phase)
+ #define case_ALGO(src) \
+ 	case COEX_ALGO_##src: return #src
  
- 	switch (c2h->id) {
- 	case C2H_CCX_TX_RPT:
-+		if (rtw_is_8723bs_sdio(rtwdev)) {
-+			rtw_tx_report_handle_8723b(rtwdev, c2h->id,
-+						   c2h->payload, len);
-+			break;
-+		}
- 		rtw_tx_report_handle(rtwdev, skb, C2H_CCX_TX_RPT);
- 		break;
-+	case C2H_VENDOR_TX_RPT:
-+	case C2H_WLAN_RFON:
-+		/* 8723BS SDIO: vendor management TX reports (0x12, and 0x32
-+		 * which the v41 firmware reuses for scan-probe TX reports).
-+		 */
-+		if (rtw_is_8723bs_sdio(rtwdev))
-+			rtw_tx_report_handle_8723b(rtwdev, c2h->id,
-+						   c2h->payload, len);
-+		break;
- 	case C2H_BT_INFO:
- 		rtw_coex_bt_info_notify(rtwdev, c2h->payload, len);
- 		break;
-@@ -365,6 +379,15 @@ void rtw_fw_c2h_cmd_rx_irqsafe(struct rtw_dev *rtwdev, u32 pkt_offset,
- 		rtw_coex_info_response(rtwdev, skb);
- 		break;
- 	case C2H_WLAN_RFON:
-+		/* On 8723BS SDIO with v41 firmware, C2H 0x32 carries a scan TX
-+		 * report, not a WLAN_RFON event: defer it to rtw_fw_c2h_cmd_handle().
-+		 */
-+		if (rtw_is_8723bs_sdio(rtwdev)) {
-+			*((u32 *)skb->cb) = pkt_offset;
-+			skb_queue_tail(&rtwdev->c2h_queue, skb);
-+			ieee80211_queue_work(rtwdev->hw, &rtwdev->c2h_work);
-+			break;
-+		}
- 		complete(&rtwdev->lps_leave_check);
- 		dev_kfree_skb_any(skb);
- 		break;
-@@ -726,9 +749,19 @@ void rtw_fw_send_rssi_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si)
- 
- 	SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_RSSI_MONITOR);
- 
--	SET_RSSI_INFO_MACID(h2c_pkt, si->mac_id);
--	SET_RSSI_INFO_RSSI(h2c_pkt, rssi);
--	SET_RSSI_INFO_STBC(h2c_pkt, stbc_en);
-+	if (rtw_is_8723bs_sdio(rtwdev)) {
-+		/* Vendor v5.2.17 RA_INFO byte layout (H2C 0x42):
-+		 * [1] mac_id, [2] 0x00, [3] rssi, [4] stbc?0x04:0x00.
-+		 */
-+		h2c_pkt[1] = si->mac_id & 0x7f;
-+		h2c_pkt[2] = 0x00;
-+		h2c_pkt[3] = rssi;
-+		h2c_pkt[4] = stbc_en ? 0x04 : 0x00;
-+	} else {
-+		SET_RSSI_INFO_MACID(h2c_pkt, si->mac_id);
-+		SET_RSSI_INFO_RSSI(h2c_pkt, rssi);
-+		SET_RSSI_INFO_STBC(h2c_pkt, stbc_en);
++/* 8723BS SDIO WiFi/BT coexistence antenna handling. On BT-disabled boards the
++ * scan/auth window still routes through the PTA mux; these helpers force the
++ * vendor-shaped WiFi-owned antenna path so directed management TX reaches air.
++ */
++#define REG_8723BS_BT_COEX_CTRL		0x0039
++#define REG_8723BS_BB_ANT_CFG		0x0930
++#define REG_8723BS_BB_ANT_CFG1		0x0944
++#define REG_8723BS_BB_ANT_BUF		0x0974
++#define RTW8723BS_COEX_H_WLAN_ACTIVE	0x1800101b
++
++static bool rtw_coex_8723bs_ant_is_aux(struct rtw_dev *rtwdev)
++{
++	return !!(rtwdev->efuse.bt_setting & BIT(6));
++}
++
++static bool rtw_coex_8723bs_bt_disabled(struct rtw_dev *rtwdev)
++{
++	return rtw_is_8723bs_sdio(rtwdev) && rtwdev->coex.stat.bt_disabled;
++}
++
++static u32 rtw_coex_8723bs_pta_ant_path(struct rtw_dev *rtwdev)
++{
++	return rtw_coex_8723bs_ant_is_aux(rtwdev) ? 0x80 : 0x200;
++}
++
++/* Write BB_SEL_BTG (0x948), retrying once with SYS_FUNC BB reset if the first
++ * write does not stick (RF/BB clock may have been gated).
++ */
++static u32 rtw_coex_8723bs_write_bb_sel_btg(struct rtw_dev *rtwdev, u32 value)
++{
++	u8 sys_func_before;
++	u32 readback;
++
++	sys_func_before = rtw_read8(rtwdev, REG_SYS_FUNC_EN);
++	if ((sys_func_before & (BIT(0) | BIT(1))) != (BIT(0) | BIT(1))) {
++		rtw_write8_set(rtwdev, REG_SYS_FUNC_EN, BIT(0) | BIT(1));
++		usleep_range(10, 11);
 +	}
- 
- 	rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
- }
-@@ -742,6 +775,37 @@ void rtw_fw_send_ra_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si,
- 
- 	SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_RA_INFO);
- 
-+	if (rtw_is_8723bs_sdio(rtwdev)) {
-+		/* The v41 firmware parses the vendor v5.2.17 MACID_CFG (0x40)
-+		 * byte layout, not the bit-packed rtw88 RA_INFO below:
-+		 * [1] mac_id, [2] rate_id | sgi_en(bit7),
-+		 * [3] bw(bits 1-0) | no_update(bit3), [4..7] 4-byte mask.
-+		 *
-+		 * no_update(bit3)=1 tells the firmware to keep its existing
-+		 * rate mask, so a mask that changes under no_update is dropped.
-+		 * Force no_update=0 whenever the mask actually changes so the
-+		 * update is applied, and keep no_update=1 for identical
-+		 * refreshes so the firmware retains the rate it has learned.
-+		 */
-+		bool apply = reset_ra_mask || si->ra_mask != si->ra_mask_last;
 +
-+		h2c_pkt[1] = si->mac_id & 0x7f;
-+		h2c_pkt[2] = (si->rate_id & 0x1f) |
-+			     (si->sgi_enable ? BIT(7) : 0);
-+		h2c_pkt[3] = ((si->bw_mode ? 3 : 1) & 0x3) |
-+			     (apply ? 0 : BIT(3));
-+		h2c_pkt[4] = si->ra_mask & 0xff;
-+		h2c_pkt[5] = (si->ra_mask >> 8) & 0xff;
-+		h2c_pkt[6] = (si->ra_mask >> 16) & 0xff;
-+		h2c_pkt[7] = (si->ra_mask >> 24) & 0xff;
++	rtw_write32(rtwdev, 0x948, value);
++	readback = rtw_read32(rtwdev, 0x948);
++	if (readback == value)
++		return readback;
 +
-+		si->ra_mask_last = si->ra_mask;
-+		si->init_ra_lv = 0;
++	usleep_range(10, 11);
++	rtw_write8_set(rtwdev, REG_SYS_FUNC_EN, BIT(0) | BIT(1));
++	rtw_write32(rtwdev, 0x948, value);
 +
-+		rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
++	return rtw_read32(rtwdev, 0x948);
++}
++
++static u32 rtw_coex_8723bs_reassert_pta_ant(struct rtw_dev *rtwdev)
++{
++	return rtw_coex_8723bs_write_bb_sel_btg(rtwdev,
++					rtw_coex_8723bs_pta_ant_path(rtwdev));
++}
++
++static void rtw_coex_8723bs_set_cck_pri(struct rtw_dev *rtwdev, bool high)
++{
++	if (!rtw_coex_8723bs_bt_disabled(rtwdev))
++		return;
++
++	if (high)
++		rtw_write32(rtwdev, REG_BT_COEX_TABLE_H,
++			    RTW8723BS_COEX_H_WLAN_ACTIVE);
++	else {
++		rtw_coex_set_wl_pri_mask(rtwdev, COEX_WLPRI_TX_CCK, false);
++		rtw_coex_set_wl_pri_mask(rtwdev, COEX_WLPRI_RX_CCK, false);
++	}
++}
++
++static void rtw_coex_8723bs_restore_pad_ctrl(struct rtw_dev *rtwdev,
++					     bool keep_pta_owner)
++{
++	u32 before, after;
++
++	before = rtw_read32(rtwdev, REG_PAD_CTRL1);
++	after = before & ~(BIT_LNAON_WLBT_SEL | BIT_SW_DPDT_SEL_DATA);
++	if (keep_pta_owner)
++		after |= BIT_PAPE_WLBT_SEL;
++	else
++		after &= ~BIT_PAPE_WLBT_SEL;
++	if (after != before)
++		rtw_write32(rtwdev, REG_PAD_CTRL1, after);
++}
++
++static void rtw_coex_8723bs_fw_gnt_bt_low(struct rtw_dev *rtwdev)
++{
++	if (!rtw_coex_8723bs_bt_disabled(rtwdev))
++		return;
++
++	if (rtw_read8(rtwdev, 0x765) == 0x00 &&
++	    rtw_read8(rtwdev, 0x76e) == 0x0c)
++		return;
++
++	rtw_fw_set_gnt_bt(rtwdev, 0);
++}
++
++static void rtw_coex_8723bs_force_assoc_pta_ant(struct rtw_dev *rtwdev)
++{
++	u32 ant_target;
++
++	if (!rtw_coex_8723bs_bt_disabled(rtwdev))
++		return;
++
++	ant_target = rtw_coex_8723bs_pta_ant_path(rtwdev);
++
++	rtw_coex_8723bs_fw_gnt_bt_low(rtwdev);
++	rtw_coex_set_ant_switch(rtwdev, COEX_SWITCH_CTRL_BY_PTA,
++				COEX_SWITCH_TO_NOCARE);
++	rtw_coex_8723bs_set_cck_pri(rtwdev, true);
++	rtw_coex_8723bs_write_bb_sel_btg(rtwdev, ant_target);
++	rtw_coex_8723bs_restore_pad_ctrl(rtwdev, true);
++}
++
++static void rtw_coex_8723bs_reassert_ant_buffer(struct rtw_dev *rtwdev)
++{
++	u8 sys_func_before;
++
++	sys_func_before = rtw_read8(rtwdev, REG_SYS_FUNC_EN);
++	if ((sys_func_before & (BIT(0) | BIT(1))) != (BIT(0) | BIT(1))) {
++		rtw_write8_set(rtwdev, REG_SYS_FUNC_EN, BIT(0) | BIT(1));
++		usleep_range(10, 11);
++	}
++
++	rtw_write8_mask(rtwdev, REG_8723BS_BT_COEX_CTRL, BIT(3), 0x1);
++	rtw_write8(rtwdev, REG_8723BS_BB_ANT_BUF, 0xff);
++	rtw_write8_mask(rtwdev, REG_8723BS_BB_ANT_CFG1, 0x3, 0x3);
++	rtw_write8(rtwdev, REG_8723BS_BB_ANT_CFG, 0x77);
++}
++
++static void rtw_coex_8723bs_apply_scan_table(struct rtw_dev *rtwdev)
++{
++	rtwdev->coex.dm.cur_table = 2;
++	rtw_coex_set_table(rtwdev, true, 0x5a5a5a5a, 0x5a5a5a5a);
++}
++
++/* Non-connected scan/auth workaround: PS-TDMA type 8 off, PTA antenna path,
++ * coex table type 2 (matches the vendor non-connected arbitration).
++ */
++void rtw_coex_8723bs_scan_workaround(struct rtw_dev *rtwdev)
++{
++	struct rtw_coex_dm *coex_dm = &rtwdev->coex.dm;
++	struct rtw_coex_stat *coex_stat = &rtwdev->coex.stat;
++
++	if (!rtw_is_8723bs_sdio(rtwdev))
++		return;
++
++	coex_dm->cur_ps_tdma_on = false;
++	coex_dm->cur_ps_tdma = 8;
++	coex_dm->ps_tdma_para[0] = 0x08;
++	coex_dm->ps_tdma_para[1] = 0x00;
++	coex_dm->ps_tdma_para[2] = 0x00;
++	coex_dm->ps_tdma_para[3] = 0x00;
++	coex_dm->ps_tdma_para[4] = 0x00;
++
++	rtw_fw_coex_tdma_type(rtwdev, 0x08, 0x00, 0x00, 0x00, 0x00);
++	rtw_coex_8723bs_fw_gnt_bt_low(rtwdev);
++	rtw_coex_set_ant_path(rtwdev, true, COEX_SET_ANT_2G);
++	rtw_coex_8723bs_reassert_ant_buffer(rtwdev);
++	rtw_coex_8723bs_apply_scan_table(rtwdev);
++	if (coex_stat->bt_disabled)
++		rtw_coex_8723bs_set_cck_pri(rtwdev, true);
++	rtw_coex_8723bs_reassert_pta_ant(rtwdev);
++	rtw_coex_8723bs_restore_pad_ctrl(rtwdev, true);
++}
++
++/* Replayed immediately before start_clnt_join()/auth: BT_INFO + PS-TDMA type 8
++ * then the forced WiFi PTA antenna path, so the auth window is clean.
++ */
++void rtw_coex_8723bs_pre_auth_h2c(struct rtw_dev *rtwdev)
++{
++	lockdep_assert_held(&rtwdev->mutex);
++
++	if (!rtw_coex_8723bs_bt_disabled(rtwdev))
++		return;
++
++	rtw_fw_query_bt_info(rtwdev);
++	rtw_fw_coex_tdma_type(rtwdev, 0x08, 0x00, 0x00, 0x00, 0x00);
++	rtw_fw_coex_tdma_type(rtwdev, 0x08, 0x00, 0x00, 0x00, 0x00);
++	rtw_fw_coex_tdma_type(rtwdev, 0x08, 0x00, 0x00, 0x00, 0x00);
++	rtw_coex_8723bs_fw_gnt_bt_low(rtwdev);
++	rtw_coex_8723bs_force_assoc_pta_ant(rtwdev);
++}
++
++/* Minimal PTA antenna path so RF register writes reach the chip after IPS
++ * leave / power-on (before rtw_set_channel()).
++ */
++void rtw_coex_8723bs_ensure_pta_path(struct rtw_dev *rtwdev)
++{
++	if (!rtw_is_8723bs_sdio(rtwdev))
++		return;
++
++	rtw_coex_8723bs_reassert_ant_buffer(rtwdev);
++	rtw_coex_8723bs_write_bb_sel_btg(rtwdev,
++					 rtw_coex_8723bs_pta_ant_path(rtwdev));
++	rtw_coex_8723bs_restore_pad_ctrl(rtwdev, false);
++}
++
+ static const char *rtw_coex_get_algo_string(u8 algo)
+ {
+ 	switch (algo) {
+@@ -2877,6 +3076,33 @@ void rtw_coex_scan_notify(struct rtw_dev *rtwdev, u8 type)
+ 	coex->freeze = false;
+ 	rtw_coex_write_scbd(rtwdev, COEX_SCBD_ACTIVE | COEX_SCBD_ONOFF, true);
+ 
++	/* 8723BS SDIO BT-disabled: keep the scan/auth PTA antenna state the
++	 * vendor uses and skip the generic coex run. At scan start (firmware
++	 * has been up long enough for stable RX DMA) replay the vendor BT_MP /
++	 * BT_INFO queries, then re-establish the scan-path PTA setup.
++	 */
++	if (rtw_coex_8723bs_bt_disabled(rtwdev)) {
++		if (type == COEX_SCAN_START_2G || type == COEX_SCAN_START) {
++			struct rtw_coex_info_req req = {};
++
++			coex_stat->cnt_wl[COEX_CNT_WL_SCANAP] = 0;
++			coex_stat->wl_hi_pri_task2 = true;
++
++			req.seq = 0x0e;
++			req.op_code = BT_MP_INFO_OP_SUPP_VER;
++			rtw_fw_query_bt_mp_info(rtwdev, &req);
++			req.seq = 0x0f;
++			req.op_code = BT_MP_INFO_OP_PATCH_VER;
++			rtw_fw_query_bt_mp_info(rtwdev, &req);
++			rtw_fw_query_bt_info(rtwdev);
++
++			rtw_coex_8723bs_scan_workaround(rtwdev);
++		} else {
++			coex_stat->wl_hi_pri_task2 = false;
++		}
 +		return;
 +	}
 +
- 	SET_RA_INFO_MACID(h2c_pkt, si->mac_id);
- 	SET_RA_INFO_RATE_ID(h2c_pkt, si->rate_id);
- 	SET_RA_INFO_INIT_RA_LVL(h2c_pkt, si->init_ra_lv);
-@@ -780,8 +844,78 @@ void rtw_fw_media_status_report(struct rtw_dev *rtwdev, u8 mac_id, bool connect)
- 	u8 h2c_pkt[H2C_PKT_SIZE] = {0};
+ 	if (type == COEX_SCAN_START_5G) {
+ 		rtw_dbg(rtwdev, RTW_DBG_COEX,
+ 			"[BTCoex], SCAN START notify (5G)\n");
+@@ -2938,6 +3164,17 @@ void rtw_coex_connect_notify(struct rtw_dev *rtwdev, u8 type)
+ 	if (coex->manual_control || coex->stop_dm)
+ 		return;
  
- 	SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_MEDIA_STATUS_RPT);
--	MEDIA_STATUS_RPT_SET_OP_MODE(h2c_pkt, connect);
--	MEDIA_STATUS_RPT_SET_MACID(h2c_pkt, mac_id);
-+
-+	if (rtw_is_8723bs_sdio(rtwdev)) {
-+		/* Vendor v5.2.17 MEDIA_STATUS_RPT: connect = 21 00 00,
-+		 * disconnect = 00 00 00. Byte1[0]=OPMODE, [5]=ROLE(STA=0),
-+		 * [1]=MACID_IND; byte2=MACID; byte3=MACID_END.
-+		 */
-+		h2c_pkt[1] = connect ? 0x21 : 0x00;
-+		h2c_pkt[2] = mac_id & 0x7f;
-+		h2c_pkt[3] = 0x00;
-+	} else {
-+		MEDIA_STATUS_RPT_SET_OP_MODE(h2c_pkt, connect);
-+		MEDIA_STATUS_RPT_SET_MACID(h2c_pkt, mac_id);
++	/* 8723BS SDIO BT-disabled: the vendor ConnectNotify() early-returns
++	 * without sending H2Cs; scan_workaround already established the PTA
++	 * path / coex table / PS-TDMA. Keep only the register-level PTA
++	 * reassertion at associate-start.
++	 */
++	if (rtw_coex_8723bs_bt_disabled(rtwdev)) {
++		if (type == COEX_ASSOCIATE_START)
++			rtw_coex_8723bs_force_assoc_pta_ant(rtwdev);
++		return;
 +	}
 +
-+	rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
-+}
-+
-+/* 8723BS SDIO: post-assoc rate-adaptation config in the vendor v5.2.17
-+ * MACID_CFG byte layout. disra (bit7 of [2]) must stay 0 so the firmware keeps
-+ * running rate adaptation for this mac_id.
-+ */
-+void rtw_fw_macid_cfg(struct rtw_dev *rtwdev, u8 mac_id, u8 raid, u8 bw,
-+		      u8 sgi, u32 rate_mask)
-+{
-+	u8 h2c_pkt[H2C_PKT_SIZE] = {0};
-+
-+	SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_RA_INFO);
-+
-+	h2c_pkt[1] = mac_id & 0x7f;
-+	h2c_pkt[2] = (raid & 0x1f) | (sgi ? BIT(7) : 0) | 0x60;
-+	h2c_pkt[3] = (bw ? 3 : 1) & 0x3;
-+	h2c_pkt[4] = rate_mask & 0xff;
-+	h2c_pkt[5] = (rate_mask >> 8) & 0xff;
-+	h2c_pkt[6] = (rate_mask >> 16) & 0xff;
-+	h2c_pkt[7] = (rate_mask >> 24) & 0xff;
-+
-+	rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
-+}
-+
-+/* 8723BS SDIO: report the connected channel/bandwidth to the vendor firmware. */
-+void rtw_fw_send_wl_ch_info(struct rtw_dev *rtwdev, u8 ch, u8 bw)
-+{
-+	u8 h2c_pkt[H2C_PKT_SIZE] = {0};
-+	u8 bw_byte = bw == RTW_CHANNEL_WIDTH_40 ? 0x30 : 0x20;
-+
-+	SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_WL_CH_INFO);
-+	h2c_pkt[1] = 0x00;
-+	h2c_pkt[2] = ch;
-+	h2c_pkt[3] = bw_byte;
-+
-+	rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
-+}
-+
-+/* 8723BS SDIO: set the firmware GNT_BT state (0 = WiFi owns the antenna). */
-+void rtw_fw_set_gnt_bt(struct rtw_dev *rtwdev, u8 state)
-+{
-+	u8 h2c_pkt[H2C_PKT_SIZE] = {0};
-+
-+	SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_GNT_BT);
-+	SET_GNT_BT_STATE(h2c_pkt, state);
-+
-+	rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
-+}
-+
-+/* 8723BS SDIO: vendor coex antenna-select reserve H2C (part of the init toggle). */
-+void rtw_fw_coex_ant_sel_rsv(struct rtw_dev *rtwdev, u8 inverse, u8 type)
-+{
-+	u8 h2c_pkt[H2C_PKT_SIZE] = {0};
-+
-+	SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_COEX_ANT_SEL_RSV);
-+	SET_COEX_ANT_SEL_RSV_INVERSE(h2c_pkt, inverse);
-+	SET_COEX_ANT_SEL_RSV_TYPE(h2c_pkt, type);
+ 	rtw_coex_write_scbd(rtwdev, COEX_SCBD_ACTIVE | COEX_SCBD_ONOFF, true);
  
- 	rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
- }
-@@ -1466,10 +1600,14 @@ void rtw_add_rsvd_page_sta(struct rtw_dev *rtwdev,
- 	rtw_add_rsvd_page(rtwdev, rtwvif, RSVD_LPS_PG_INFO, true);
+ 	if (type == COEX_ASSOCIATE_5G_START) {
+diff --git a/drivers/net/wireless/realtek/rtw88/coex.h b/drivers/net/wireless/realtek/rtw88/coex.h
+index c398be8391f7..1f0aa17d4050 100644
+--- a/drivers/net/wireless/realtek/rtw88/coex.h
++++ b/drivers/net/wireless/realtek/rtw88/coex.h
+@@ -430,4 +430,8 @@ static inline void rtw_coex_active_query_bt_info(struct rtw_dev *rtwdev)
+ 		rtw_coex_query_bt_info(rtwdev);
  }
  
-+/* REG_DWBCN1_CTRL bit 20 (SW_BCN_SEL for port 0), relative to byte +2 */
-+#define BIT_OFFSET_DWBCN1_SW_BCN_SEL_PORT0	(20 - 16)
++void rtw_coex_8723bs_scan_workaround(struct rtw_dev *rtwdev);
++void rtw_coex_8723bs_pre_auth_h2c(struct rtw_dev *rtwdev);
++void rtw_coex_8723bs_ensure_pta_path(struct rtw_dev *rtwdev);
 +
- int rtw_fw_write_data_rsvd_page(struct rtw_dev *rtwdev, u16 pg_addr,
- 				u8 *buf, u32 size)
- {
--	u8 bckp[3];
-+	const bool is_8723bs_sdio = rtw_is_8723bs_sdio(rtwdev);
-+	u8 bckp[4];
- 	u8 val;
- 	u16 rsvd_pg_head;
- 	u32 bcn_valid_addr;
-@@ -1499,13 +1637,28 @@ int rtw_fw_write_data_rsvd_page(struct rtw_dev *rtwdev, u16 pg_addr,
- 	rtw_write8(rtwdev, REG_BCN_CTRL,
- 		   (bckp[2] & ~BIT_EN_BCN_FUNCTION) | BIT_DIS_TSF_UDT);
- 
--	if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_PCIE) {
-+	/* Clear BIT_EN_BCNQ_DL so the chip does not treat the reserved-page
-+	 * upload as a real beacon; otherwise BIT_BCN_VALID never asserts. The
-+	 * vendor rtl8723bs driver does this unconditionally; rtw88 only did it
-+	 * for PCIe, which left 8723BS SDIO's BCN_VALID handshake failing.
-+	 */
-+	if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_PCIE || is_8723bs_sdio) {
- 		val = rtw_read8(rtwdev, REG_FWHW_TXQ_CTRL + 2);
- 		bckp[1] = val;
- 		val &= ~(BIT_EN_BCNQ_DL >> 16);
- 		rtw_write8(rtwdev, REG_FWHW_TXQ_CTRL + 2, val);
- 	}
- 
-+	/* 8723BS SDIO: point the SW beacon download path at port 0, else
-+	 * BIT_BCN_VALID is never asserted after the SDIO upload completes.
-+	 */
-+	if (is_8723bs_sdio) {
-+		val = rtw_read8(rtwdev, REG_DWBCN1_CTRL + 2);
-+		bckp[3] = val;
-+		val &= ~BIT(BIT_OFFSET_DWBCN1_SW_BCN_SEL_PORT0);
-+		rtw_write8(rtwdev, REG_DWBCN1_CTRL + 2, val);
-+	}
-+
- 	ret = rtw_hci_write_data_rsvd_page(rtwdev, buf, size);
- 	if (ret) {
- 		rtw_err(rtwdev, "failed to write data to rsvd page\n");
-@@ -1526,11 +1679,13 @@ int rtw_fw_write_data_rsvd_page(struct rtw_dev *rtwdev, u16 pg_addr,
- 	}
- 
- restore:
-+	if (is_8723bs_sdio)
-+		rtw_write8(rtwdev, REG_DWBCN1_CTRL + 2, bckp[3]);
- 	rsvd_pg_head = rtwdev->fifo.rsvd_boundary;
- 	rtw_write16(rtwdev, REG_FIFOPAGE_CTRL_2,
- 		    rsvd_pg_head | BIT_BCN_VALID_V1);
- 	rtw_write8(rtwdev, REG_BCN_CTRL, bckp[2]);
--	if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_PCIE)
-+	if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_PCIE || is_8723bs_sdio)
- 		rtw_write8(rtwdev, REG_FWHW_TXQ_CTRL + 2, bckp[1]);
- 	rtw_write8(rtwdev, REG_CR + 1, bckp[0]);
- 
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.h b/drivers/net/wireless/realtek/rtw88/fw.h
-index 48ad9ceab6ea..8b238b41decf 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.h
-+++ b/drivers/net/wireless/realtek/rtw88/fw.h
-@@ -54,6 +54,10 @@ enum rtw_c2h_cmd_id {
- 	C2H_BT_MP_INFO = 0x0b,
- 	C2H_BT_HID_INFO = 0x45,
- 	C2H_RA_RPT = 0x0c,
-+	/* 8723BS SDIO vendor v41 firmware management TX report (0x32 is
-+	 * reported as C2H_WLAN_RFON, handled per-chip in the C2H dispatch).
-+	 */
-+	C2H_VENDOR_TX_RPT = 0x12,
- 	C2H_HW_FEATURE_REPORT = 0x19,
- 	C2H_WLAN_INFO = 0x27,
- 	C2H_WLAN_RFON = 0x32,
-@@ -568,10 +572,12 @@ static inline void rtw_h2c_pkt_set_header(u8 *h2c_pkt, u8 sub_id)
- #define H2C_CMD_QUERY_BT_INFO		0x61
- #define H2C_CMD_FORCE_BT_TX_POWER	0x62
- #define H2C_CMD_IGNORE_WLAN_ACTION	0x63
-+#define H2C_CMD_COEX_ANT_SEL_RSV	0x65
- #define H2C_CMD_WL_CH_INFO		0x66
- #define H2C_CMD_QUERY_BT_MP_INFO	0x67
- #define H2C_CMD_BT_WIFI_CONTROL		0x69
- #define H2C_CMD_WIFI_CALIBRATION	0x6d
-+#define H2C_CMD_GNT_BT			0x6e
- #define H2C_CMD_QUERY_BT_HID_INFO	0x73
- 
- #define H2C_CMD_KEEP_ALIVE		0x03
-@@ -684,6 +690,12 @@ static inline void rtw_h2c_pkt_set_header(u8 *h2c_pkt, u8 sub_id)
- 	le32p_replace_bits((__le32 *)(h2c_pkt) + 0x01, value, GENMASK(31, 24))
- #define SET_QUERY_BT_INFO(h2c_pkt, value)                                      \
- 	le32p_replace_bits((__le32 *)(h2c_pkt) + 0x00, value, BIT(8))
-+#define SET_GNT_BT_STATE(h2c_pkt, value)                                       \
-+	le32p_replace_bits((__le32 *)(h2c_pkt) + 0x00, value, BIT(8))
-+#define SET_COEX_ANT_SEL_RSV_INVERSE(h2c_pkt, value)                           \
-+	le32p_replace_bits((__le32 *)(h2c_pkt) + 0x00, value, GENMASK(15, 8))
-+#define SET_COEX_ANT_SEL_RSV_TYPE(h2c_pkt, value)                              \
-+	le32p_replace_bits((__le32 *)(h2c_pkt) + 0x00, value, GENMASK(23, 16))
- #define SET_WL_CH_INFO_LINK(h2c_pkt, value)                                    \
- 	le32p_replace_bits((__le32 *)(h2c_pkt) + 0x00, value, GENMASK(15, 8))
- #define SET_WL_CH_INFO_CHNL(h2c_pkt, value)                                    \
-@@ -849,6 +861,11 @@ void rtw_fw_send_rssi_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si);
- void rtw_fw_send_ra_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si,
- 			 bool reset_ra_mask);
- void rtw_fw_media_status_report(struct rtw_dev *rtwdev, u8 mac_id, bool conn);
-+void rtw_fw_macid_cfg(struct rtw_dev *rtwdev, u8 mac_id, u8 raid, u8 bw,
-+		      u8 sgi, u32 rate_mask);
-+void rtw_fw_send_wl_ch_info(struct rtw_dev *rtwdev, u8 ch, u8 bw);
-+void rtw_fw_set_gnt_bt(struct rtw_dev *rtwdev, u8 state);
-+void rtw_fw_coex_ant_sel_rsv(struct rtw_dev *rtwdev, u8 inverse, u8 type);
- void rtw_fw_update_wl_phy_info(struct rtw_dev *rtwdev);
- void rtw_fw_beacon_filter_config(struct rtw_dev *rtwdev, bool connect,
- 				 struct ieee80211_vif *vif);
-diff --git a/drivers/net/wireless/realtek/rtw88/rx.c b/drivers/net/wireless/realtek/rtw88/rx.c
-index 01fd299abb7f..57facbc1b41f 100644
---- a/drivers/net/wireless/realtek/rtw88/rx.c
-+++ b/drivers/net/wireless/realtek/rtw88/rx.c
-@@ -253,10 +253,12 @@ static void rtw_rx_fill_rx_status(struct rtw_dev *rtwdev,
- 
- 	rtw_rx_addr_match(rtwdev, pkt_stat, hdr);
- 
--	/* Rtl8723cs driver checks for size < 14 or size > 8192 and
--	 * simply drops the packet.
-+	/* Rtl8723cs and rtl8723bs drivers check for size < 14 or size > 8192
-+	 * and simply drop the packet.
- 	 */
--	if (rtwdev->chip->id == RTW_CHIP_TYPE_8703B && pkt_stat->pkt_len == 0) {
-+	if ((rtwdev->chip->id == RTW_CHIP_TYPE_8703B ||
-+	     rtwdev->chip->id == RTW_CHIP_TYPE_8723B) &&
-+	    pkt_stat->pkt_len == 0) {
- 		rx_status->flag |= RX_FLAG_NO_PSDU;
- 		rtw_dbg(rtwdev, RTW_DBG_RX, "zero length packet");
- 	}
+ #endif
 -- 
 2.55.0
 
