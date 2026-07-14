@@ -1,73 +1,73 @@
-Return-Path: <linux-wireless+bounces-39072-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-39073-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rSwYK+1CVmqf2QAAu9opvQ
-	(envelope-from <linux-wireless+bounces-39072-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 16:08:45 +0200
+	id nJr9NbNBVmoz2QAAu9opvQ
+	(envelope-from <linux-wireless+bounces-39073-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 16:03:31 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 172D875589C
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 16:08:45 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96576755767
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 16:03:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=QAU4P7R7;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39072-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39072-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=intel.com header.s=Intel header.b=HxYijmXM;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39073-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39073-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5921731E9682
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 14:03:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CFF09300DED5
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 14:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E08B47CC7A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95BF147D92B;
 	Tue, 14 Jul 2026 14:03:22 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F0037106A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406E7441022
 	for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 14:03:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784037801; cv=none; b=kDtLVTrOJdwbepu0zjFaMlXcgDZY+PFS/0EOL459vdiU2rAA4DnrLZDICDPthvq9YANKqYoSVDW8wxs3VuXY5wAP0JBRy1xJs8TEeWtWzj9Q1paIUlstwrhO5i+twbiVPRKpc4uoce/7OI3nkM80fcPZOtPUBl32jgOeN/iCywg=
+	t=1784037802; cv=none; b=FBsdQ27U9FjkzJDQ2KzuMJHZbX7GfMMiLRwE9lO5uXbgbnAJBG/05y03c3vDQxtHusOwBwJIlMix2+UkfiLfnmyPX0Y0mcsYEF4NTvIKew0KIPr14/ChsMuCQTu2LST3EMA7dJEoa9sdRxp97k1GUx+wrGVsP0UwLQTU5d8QECk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784037801; c=relaxed/simple;
-	bh=IQUc0nZimLwzbW/BXUVMiGO68xJDJqQ9W8XvhVnSV9s=;
+	s=arc-20240116; t=1784037802; c=relaxed/simple;
+	bh=HBu8PlSRn2ZR8PsmR4sfTdOq2xxnJD5YP8it0W0I7hM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=k3sySPMdF36NO8kEa/d0KogIautxJdH9fq/5cWw1O1uwV56dV4CGUv6MvTqZpBJskPJPsulBhe9ftPKBgE1Ok6ugns3K8gDvBlSmsoUXRuO3FWRU5K4VibLwcyQ4x1Ez6QyTosupveNpXBnrPFkUjNuu7brHbQhd28Uf1p4dRis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QAU4P7R7; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=OqJ6rKB9MaR4L86WThCqg7VLoubcE8ifGpUr6tqA9KIuGxVTzShAbIw+C2whiX/VZ5kfVWOXBzDDBTrTXcctGngZKxbqWAFc6bqu5xKtWHxCuTaCMtq/BerkLBLyj+G5uc85f1rxU28uBW4ajL//T3X+mlFC54rVJ3K7OvG+OxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HxYijmXM; arc=none smtp.client-ip=198.175.65.16
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1784037799; x=1815573799;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=IQUc0nZimLwzbW/BXUVMiGO68xJDJqQ9W8XvhVnSV9s=;
-  b=QAU4P7R7B5krN6/F+BB2SVwsRrE5AMS1mt/9xEKCd4H7i7InLRb6ZBgP
-   6iNGvKwcpXVlGsKw+ZFc3c6ZhQZTbow9hoJKRZPJv+/GHle6F5ThkSq5v
-   kVDk5GNIEFoDTCgQcIpYomLRwaMbjfZehIN/szbdH0S1q6PKUbnZzrEhY
-   qxCoRilMWw9INL1lfdwx2PuVSCGxJxSFT9w0gTT52XTkdOCn63pdXnZ4G
-   sDyDD/9GynP8BPW8sHI4XCuhyvfG/UGtugAUGIzsDl0JyD7p7fM6yBYUu
-   7Pqx7IfrL+ARrZnWDVVgGn0t5CyivEsRUmBa8zHyuFFgOTen+LlmmhSGO
-   Q==;
-X-CSE-ConnectionGUID: lCT2myomSnmbyQiaGBriyA==
-X-CSE-MsgGUID: 9OeGzbw7S3yQJlh1PToIoA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="84855160"
+  bh=HBu8PlSRn2ZR8PsmR4sfTdOq2xxnJD5YP8it0W0I7hM=;
+  b=HxYijmXM3FTRFjpiaO8GtH3WrkHhgmZcNQ3FVE3ysW+MdotCabH3yaz5
+   0nILgZw3tmRie/zEB1KRopIjtSBAOd04vSTdrAXXTrQ1yVG9/JvBpFftG
+   baOreTUdZ2GPEeR+6xa9PjvVRS4GgA90ACW0z9j13jwQuiY0tm22lE/nz
+   JM8R8GE6h99PY2UioU2NOxd+Q4cfXFmlnz1ihSg0PDi/8UjtUo5zVyGte
+   yfr751XTwTeaeQAZtZSQ4ZWzRQnRDrXSVGvawjAULyyYNGljvebemTDah
+   Sct/6XrMnPdX2+L+hpTyGmIvv3Po2/5KaTKIAng+wR0O2jXEdx+nAIbUG
+   w==;
+X-CSE-ConnectionGUID: zD68bmfNSFSV9BP1334P9w==
+X-CSE-MsgGUID: ytyM1cFnQ4aBEfviLugCZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="84855166"
 X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; 
-   d="scan'208";a="84855160"
+   d="scan'208";a="84855166"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 07:03:02 -0700
-X-CSE-ConnectionGUID: Cp+iPng0SNiyUSd7mxDl+Q==
-X-CSE-MsgGUID: XA7RcsyHSN+JkHXjPbpR/Q==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 07:03:03 -0700
+X-CSE-ConnectionGUID: +b8g4M2SRGy2JcVLpuVPMA==
+X-CSE-MsgGUID: wDZZF4jkSC6RoAyNZ4cBoQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; 
-   d="scan'208";a="254737945"
+   d="scan'208";a="254737978"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 07:03:00 -0700
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 07:03:02 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH v2 iwlwifi-next 13/15] wifi: iwlwifi: mvm: reset the smart fifo state upon FW stop
-Date: Tue, 14 Jul 2026 17:02:16 +0300
-Message-Id: <20260714165826.7d3c5efe2d1a.I16b23c328a677257257f695fa6f439e41fbcd081@changeid>
+Subject: [PATCH v2 iwlwifi-next 14/15] wifi: iwlwifi: mvm: cleanup the driver state after device_powered_off
+Date: Tue, 14 Jul 2026 17:02:17 +0300
+Message-Id: <20260714165826.dc33533ac962.I6d7cca9c4e5643a477eae1d0a4f5fc83a10d0ee7@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260714140218.2887000-1-miriam.rachel.korenblit@intel.com>
 References: <20260714140218.2887000-1-miriam.rachel.korenblit@intel.com>
@@ -87,12 +87,12 @@ X-Spamd-Result: default: False [-4.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-39072-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-39073-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	HAS_ORG_HEADER(0.00)[];
@@ -110,44 +110,69 @@ X-Spamd-Result: default: False [-4.16 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:from_mime,intel.com:email,intel.com:dkim,changeid:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:from_mime,intel.com:email,intel.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,changeid:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 172D875589C
+X-Rspamd-Queue-Id: 96576755767
 
 From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-The smart fifo is a feature in the firmware configured by the driver.
-The driver keeps a state to remember what was the last configuration
-sent to the firmware. Obviously, if the firmware stops, we need to
-reconfigure the smart fifo. Since we didn't reset that state upon
-firmware stop, we thought the firmware is already properly
-configured and we didn't send the smart fifo configuration command
-as part of the init sequence.
+If the device was powered off during suspend, we need to reload the
+firmware in resume which also means that we need to reconfigure it.
 
-Reset the smart fifo state in iwl_mvm_stop_device() so that we
-will properly send the command during the init that will come
-later.
+It could be tempting to just set IWL_MVM_STATUS_HW_RESTART_REQUESTED
+but that would leave IWL_MVM_STATUS_IN_HW_RESTART set forever since that
+recovery is not managed by mac80211.
+
+Just call iwl_mvm_restart_cleanup() from device_powered_off().
 
 Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h      | 1 +
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c      | 2 +-
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 74bd4038fd56..fd2a50563ab5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -1129,7 +1129,7 @@ static void iwl_mvm_cleanup_iterator(void *data, u8 *mac,
+ 	RCU_INIT_POINTER(mvmvif->deflink.probe_resp_data, NULL);
+ }
+ 
+-static void iwl_mvm_restart_cleanup(struct iwl_mvm *mvm)
++void iwl_mvm_restart_cleanup(struct iwl_mvm *mvm)
+ {
+ 	iwl_mvm_stop_device(mvm);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index 979b39314981..d6bed2c08606 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -1660,6 +1660,7 @@ void iwl_mvm_hwrate_to_tx_rate(u32 rate_n_flags,
+ u8 iwl_mvm_rate_idx_to_fw_idx(const struct iwl_fw *fw, int rate_idx);
+ u8 iwl_mvm_mac80211_ac_to_ucode_ac(enum ieee80211_ac_numbers ac);
+ bool iwl_mvm_is_nic_ack_enabled(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
++void iwl_mvm_restart_cleanup(struct iwl_mvm *mvm);
+ 
+ static inline void iwl_mvm_dump_nic_error_log(struct iwl_mvm *mvm)
+ {
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index f43895c2f3c6..09150feb330d 100644
+index 09150feb330d..6ae9f87d5221 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -1535,6 +1535,7 @@ void iwl_mvm_stop_device(struct iwl_mvm *mvm)
- 	iwl_fw_cancel_timestamp(&mvm->fwrt);
+@@ -2091,7 +2091,7 @@ static void iwl_op_mode_mvm_device_powered_off(struct iwl_op_mode *op_mode)
  
- 	clear_bit(IWL_MVM_STATUS_FIRMWARE_RUNNING, &mvm->status);
-+	mvm->sf_state = SF_UNINIT;
- 
- 	iwl_mvm_pause_tcm(mvm, false);
- 
+ 	mutex_lock(&mvm->mutex);
+ 	clear_bit(IWL_MVM_STATUS_IN_D3, &mvm->status);
+-	iwl_mvm_stop_device(mvm);
++	iwl_mvm_restart_cleanup(mvm);
+ 	mvm->fast_resume = false;
+ 	mutex_unlock(&mvm->mutex);
+ }
 -- 
 2.34.1
 
