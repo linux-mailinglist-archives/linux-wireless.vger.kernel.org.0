@@ -1,238 +1,184 @@
-Return-Path: <linux-wireless+bounces-39020-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-39021-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EFUtHBj/VWpqxgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-39020-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 11:19:20 +0200
+	id KRmOIdQOVmqDygAAu9opvQ
+	(envelope-from <linux-wireless+bounces-39021-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 12:26:28 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADECC752C02
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 11:19:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6276753603
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 12:26:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=smu.edu.sg header.s=selector1 header.b=fcy2+L+J;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39020-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39020-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=smu.edu.sg;
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fIg0Efnp;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39021-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39021-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 28485301F8C8
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 09:19:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7529A3038A63
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jul 2026 10:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528A93F9F5E;
-	Tue, 14 Jul 2026 09:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3EE36D51B;
+	Tue, 14 Jul 2026 10:26:22 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11022077.outbound.protection.outlook.com [52.101.126.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45B82DB7BD;
-	Tue, 14 Jul 2026 09:19:10 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784020756; cv=fail; b=c5otyO0CCp/FqGko6YFD0soqsut3ng2zoDVdxmQQL0gpHVQWZ6j/le1Vg/3W8g9gg/BS5zHncPWIyhtMr88j/oGRyUqi+zbtJtt+/ic1Z/T1W9toBuMsxmaQpovn+kVWOXhtQmuuKozx8PFY6eC1Rdl8P4nS9H0LKmRS6scBd2w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784020756; c=relaxed/simple;
-	bh=Cx5lg4j784fg62doZ0WootStYcgiz/YdvWhb2d2ogto=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=tsLJ85ww1kxPMeXmwUrzvfgLfcHMGm+NSi8e0RXqkv6t8kVICCeR6hyruUioC7tAr0IytZVKlZ7B+L/jwfDcnwlGwM7BWUAWzeieo2RITvpB9Kl2s2UUKi8QGmn1X4NUoMOaY8PrmgjR+B4WkFjVj3Hxwmhe3xL2T66K2rrOFZI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=smu.edu.sg; spf=pass smtp.mailfrom=smu.edu.sg; dkim=pass (2048-bit key) header.d=smu.edu.sg header.i=@smu.edu.sg header.b=fcy2+L+J; arc=fail smtp.client-ip=52.101.126.77
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x99NGkXRq/BhL92KnJDI6Ql10GOkwQenH25rAStq2dIBXKnfERMhSdwgtPoCsgsce8Y3vaoia0SXCkhfRYZTIE0nLNV99sjW1oQs9RoI8ZC2LfYy7TGeQZ7mGNRSLzt50uGDLahwcJ7opuiZTNwacncwPMbnac6VBslpQunarKqBhSjFFElU+wRFQDjOd5XxB0pFim7SwN9EgYXDeRHmqzdgaN5ENqeVvwq6U2O/Ff0o0TTEgh+46gDAtZ0V4aiJ80EG9tQPWXLDPiW/d/pGcHEpQJzyrOGgWUTeUfu0p+tU79Z5F3KiPJ9Z6O/vt++RPksa+i2GHy24Ehx2EIJwQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kFEPdT5nteN2CBLjqqc5IuMFb8hVYbt1UJf5qfE8+fI=;
- b=UXaq9i3g/bgALocrA+d6jCRSIcOwb8+rfwgQ/CXSoxwM9/eLpXfgoDdiX/Tkw7dhXPs2f2wq/yeaBbJs8R1FXZUP7E95oMF7WtzEOc+c8ysILtOgySLgfAibOnsJSR92X5im5nv3B0YyJKmTSyRl5QK6AyYco1DjX41xxwdhTW7yU3vdF0inCSjeRrVOu6EYW1sdirURJDAvq6lDN2RHSWUC4h+niZ3enTS4QMnjegAiHt5vbj8NSb3fm+1kL3A/7NrS3XLVJYiZ5Sy67oPCkkiU3Zr24DEuxUagOg4a80Mf+D15DbsXB9AQXXaJ1YBGBqLPSN4zgAWRXe4KsQuTjA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=smu.edu.sg; dmarc=pass action=none header.from=smu.edu.sg;
- dkim=pass header.d=smu.edu.sg; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smu.edu.sg;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kFEPdT5nteN2CBLjqqc5IuMFb8hVYbt1UJf5qfE8+fI=;
- b=fcy2+L+JyzMG57sL5eLz5ZZoTgLpcodcYxiwZBWL64CbFqvrN82KuOSXhZZfZm3xP4YFBhO7KTXMBP4nekaOcZBEA0DwaT7U8LbpN2JJDIpaBXuliyOT48UTWkCRFF+msu+hy/XZnabcNHLjVpQ4FQKAAeJeMSzmlfL6fU3RZlG/yVHLJjT1aSF/1YIwd6bb4bJIL38RpydNx/nOQdQdUz+UW0RdW5GY5kTBJohs4DvH4zmAJmzgsl66aryxgZxQQBQ+rNxLg6ZA0L9eFmsrccRcc/HDEklgdxOo3EMYQUVY/H0PvZAlEtlpw4MHGi/ib1R8rLK5FQQEKnEA6q0u2g==
-Received: from KUXPR01MB7791.apcprd01.prod.exchangelabs.com
- (2603:1096:d10:3f::9) by SG2PPFA603A64E4.apcprd01.prod.exchangelabs.com
- (2603:1096:f:fff6::440) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.20; Tue, 14 Jul
- 2026 09:19:06 +0000
-Received: from KUXPR01MB7791.apcprd01.prod.exchangelabs.com
- ([fe80::6bd0:d704:7d90:a595]) by KUXPR01MB7791.apcprd01.prod.exchangelabs.com
- ([fe80::6bd0:d704:7d90:a595%5]) with mapi id 15.21.0202.014; Tue, 14 Jul 2026
- 09:19:06 +0000
-From: Huihui Huang <hhhuang@smu.edu.sg>
-To: linux-wireless@vger.kernel.org
-Cc: Huihui Huang <hhhuang@smu.edu.sg>,
-	Ajay Singh <ajay.kathat@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH wireless] wifi: wilc1000: validate assoc response length before subtracting header
-Date: Tue, 14 Jul 2026 17:17:58 +0800
-Message-ID: <20260714091811.3596126-1-hhhuang@smu.edu.sg>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D1836F411
+	for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 10:26:20 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784024782; cv=none; b=Gl6l2h/17OvLfzByQb5hO0JnsFs/LUainQJkFSorXZQa0oVqDngBuy+huAipneIWFlwF8pJ9im60KKLS4P4lVPB85GmtLGK5meYCX8J7hxJ8qWuk20Ap90pjCXiICrkZkVoEz1Fhv0gNNeaOlxIaFPClpy7QIHT658qVFPa0oK4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784024782; c=relaxed/simple;
+	bh=7kCG6wbCKXLsahDdJnrOKLAF9jhTwNhCixXjjgWTe0Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rADpgc2cy6fEA/5rB/8ow7ZL+Tr66wvt119jKqx0Q3iYltsitIGUn8O9NtND1upcBX/omKEMWcX+TykrNEdzFTyYBFslEXOugCdmxYnSKdJSyXoD4f5m/+OCe+8x2N+BBzP6i7XKxFOJ0WDPaYn64fBTi6Xk59F3aOcwGiJHEic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fIg0Efnp; arc=none smtp.client-ip=209.85.221.48
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-47de008b020so431018f8f.1
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 03:26:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784024779; x=1784629579; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VMn+zsgq4KlhgLUxgzGJqjMCuofU/l6ZDLRETL0UxKw=;
+        b=fIg0EfnpsupYntHtpHXFzjie8bZQn+W26tXfBuXvKpyUdc6L2d3cuW1NVQMAhEKBcC
+         FaS71hKl3FbsK0OI4Ilx6KJpGE9SgKFXt44FPyz+ma8jyxGb39mkg5wbK35wIgpSUIOa
+         cRwmFoy7BklJbakUWnFTQh02mox8270DRoMzZp0WlK8r+6JPVzRxwwD20RJCP77FcHSY
+         jbYMmoHyWkhF7AhSVHBkyHdYqAkmNz3u+qirBBbadnA8/GHBJLBMJzaEXEv/3AWDxaXB
+         pEEinTR6qHR9H0076KEMGBGiru96JHpJOWBbFeob/JyLduKaJOZveppbNbttOO93hmzy
+         lGzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784024779; x=1784629579;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=VMn+zsgq4KlhgLUxgzGJqjMCuofU/l6ZDLRETL0UxKw=;
+        b=aCwWXKq+tZcAtJ8eeoIwOUImY0YgHTPfKTPdxVEeAYNa31ro5Xum212Wk/ANoVHcv1
+         SEghVwrkXupoZltd9tVN1tOsnjNK4IOPQG6Ukzy7l7DI6nAonIbZfTR7jHEZey5imdFG
+         /jbNaJiPJtyWPxeCJsOpj8TW5jb/yKuminrlTc/EK/ygQk5rAD0WyHs6vWbgq13izOEY
+         s9LDnYWTtORifRWsKiPNas7Df45gKYo+JkU7/JoPBhS2BCd7T9KGJEMcRmNUNH8wMygt
+         FAnTq98tCiXDWyc3po32rjSTTYLKRpR7IqBUlgvWHzXLyDZytwUBSLVfqtqppcAlA4xD
+         0hvw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp+UWgyiw/VbS+2vzssGOZ5ktQtgtMjrUV5BtjT8mUBMcKR5DHzyRnYU8ggzDY2oRnk8z9kHKr89ieQtWGNWw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNoO3MEHeNkfKM8A7HWd2/YxBYnZg3CUG3AQl/X5MpysmDQomo
+	N8gY/yCwh3UA005tWod8PHEIa+8hPgn62Q/nUbmuMbsC58hWKGFAM4Hk
+X-Gm-Gg: AfdE7cljYcl5/wrEpujAjeRgnIbSH5UhcWZMXRyK5U7QSvF4qb8CHiIsV5khI3fbdG5
+	aN1Ttw2rNSJmE/6hyS27Hi/lHd628luZUAyljqo7Pa2R5YsVM4Y668ES2wAmsJeR2PM0NhKIeGK
+	eZyLMdIpsnHOuEB1d/p6axnSyhVhuyj6baR72XIHeX7Z378hNuJ/a0TxGadcgs6Bwj49RH7FBq0
+	yBk0Bofe8f8H5MTQbfwpYIRg/ZXLSxkeVFrx0j3KLodrzIYduzv23hAJFNtFmOn8RQke+L43Bff
+	BpOYO1FfDMgxfQFfzI6aTfuxHKJm2QsIySrEw8XZRgI7KIX90OQR2FzdgqUjJmARURelAVxoW7W
+	e37VnssTjDEUmp1nVAP0c3zVWmiAkdsqkm5THMUVYA1F1A9kWm2hAZaLqwuIm34ANvYeQDWLVPu
+	dzEM0TV7TPTpmw7DenrI6lEv0SvIKEmoqyBLbXLXh0R0oa+/r6nS5UExaE6s3lPojyEY6gP5W62
+	jSbYWU=
+X-Received: by 2002:a05:6000:4810:b0:47e:96f6:ab7f with SMTP id ffacd0b85a97d-47f2dcc1174mr15902133f8f.16.1784024778833;
+        Tue, 14 Jul 2026 03:26:18 -0700 (PDT)
+Received: from localhost.localdomain (ip-89-176-136-191.bb.vodafone.cz. [89.176.136.191])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464c1f84sm7251991f8f.29.2026.07.14.03.26.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 03:26:18 -0700 (PDT)
+From: Petr Wozniak <petr.wozniak@gmail.com>
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com
+Cc: shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	linux-wireless@vger.kernel.org,
+	matthias.bgg@gmail.com,
+	rex.lu@mediatek.com,
+	linux-mediatek@lists.infradead.org,
+	angelogioacchino.delregno@collabora.com,
+	linux-arm-kernel@lists.infradead.org,
+	Petr Wozniak <petr.wozniak@gmail.com>
+Subject: [PATCH wireless-next v2 0/2] wifi: mt76: fix per-band LEDs under single-wiphy MLO
+Date: Tue, 14 Jul 2026 12:26:13 +0200
+Message-ID: <20260714102615.2943-1-petr.wozniak@gmail.com>
 X-Mailer: git-send-email 2.50.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI3PR03CA0013.apcprd03.prod.outlook.com
- (2603:1096:4:297::19) To KUXPR01MB7791.apcprd01.prod.exchangelabs.com
- (2603:1096:d10:3f::9)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: KUXPR01MB7791:EE_|SG2PPFA603A64E4:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9f313fe8-f327-4fc8-7477-08dee188f42b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|786006|366016|52116014|376014|23010399003|11063799006|56012099006|18002099003|3023799007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	e5plu51BadXL6WO3ucaSjoSKTBBsDAw5YpOCBz2uLPHxcppWqO3t+L5SOIq8FBB9HnNGu8bkiVFFPIn07UtDpHTr7tQUU5YSIjKxJ+IDLvw1aseeDcj0R4bDEYWK4SBcA3unpOCNB/m6CuHSujhPNnJQytooz/aRo/hTfEGzGH9C/hVO6A8az6pw8rb7znqrE7BNzhyRedjPSnVN7tAAnub5WGdeWa57Y+7BpL03iN5Ht9jtyQwOd3UE3f/esIWZMGOdo8eP7KxgoutCUqxY85nQBEhpfO2g33tCLtTvSnFsTnQ7deozlxodj8Z78l0SwTtmO0Fxq9GMdl8jKNZgI8s5Z6f1wTy2lVuWlZkXods0ogYTA7UA+rWTPamThwe3sg3SOrTg7/QDYQBOodrK05tHzJs4Q2yS8+WWx1ruJyPoW5f9/+gXNoken7kotzr68i9LV7TES16LAzYSnB6ZMItK/GK1inhJHvW/GpruNp0+WTwDs8AWK3HixyHwhBIgXKaZEJc6BTo7SYTNaorSjP1Qv+T/iMDFBZD/8+LQJvGtsbRDaiV6MVdNF/uuxxuWbI+OUypCsIky9i44rHpsy4pBqlRKcDjW8F9T8L122I670lATYdEht5aywCpWLLnKuqootaII4iNS9eDgbeZjZBO352kLIOjqpzsCtF+DAX6MGClHEOSnVtVTR9VtXC1k8Y/OCdVHpSWyBIhBIeJ8wcTD8RkrNIoa5WJORzYTidQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:KUXPR01MB7791.apcprd01.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(786006)(366016)(52116014)(376014)(23010399003)(11063799006)(56012099006)(18002099003)(3023799007)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?iml3W1VX12ARo2/bYVqvqvujksvFyeQGwexKNlOvA9jEfwkjDXUG1g2Mj+fB?=
- =?us-ascii?Q?g/+eKsculispi6kdm4IplWLRSk44RZhGZadbdoLvvOA16xIoKfcFBonHvL5h?=
- =?us-ascii?Q?W674y4ACiC9JixwxDHlGwXR8BnO/+JMfDup8CXE7f6tBfB0w/4i1QRxarX9Z?=
- =?us-ascii?Q?sSu6TINIJ+erHNv/XeT1VJKpacV9nDToKDmAm+JsYMf/iXWpfzntb6uPVEE7?=
- =?us-ascii?Q?zOsejv3lkXm2plCbocUuEhprCFm6Gj+t1jPX9rDIuJlL8/oHhnKtHz4vZpO3?=
- =?us-ascii?Q?cmVfo4Lnkm+8cw1Rxb2kvXLQm6JAKeXeXNXMa+ENDvSpwyZfoUPT8EfSE/Ek?=
- =?us-ascii?Q?9lB+UCvIJ+8Lg3UYUnlSU2iFsSodMnr6TKF5Dpm0pjYLIYthX4NK0/d2zati?=
- =?us-ascii?Q?5YzM84HAYxUE2vZgpudU128P9ZbNBm4567RHrUganXj4He80SV4wpvC/8aTY?=
- =?us-ascii?Q?NaxjFVKY9livBfXC2GYNuyYdIjenfWE8TsbtqB7wij3H2iPRzuqk6/FpSAu7?=
- =?us-ascii?Q?0evaEe6ZwmtvmkQma65dH4bq2rtuyb6m7rFypSydudsMb7T50yMtPsCW9lcx?=
- =?us-ascii?Q?sijkVrj0pShhPdUFBotFDib25p+hoR5S2ZbtVFLsTykENA6bAyLGBOniFZhh?=
- =?us-ascii?Q?GchkqRaKI0RVorBhietnz1ZsrngUctBej10VV4unLo0ggd33jqpjK1TVznSC?=
- =?us-ascii?Q?8MDJVvCbfO7B5zn76uZYVvQJk+Y19ySOcsOcspeSvsTQP91ZqQ+1LjsraTm+?=
- =?us-ascii?Q?+zhNWWDcMM5G7w+N7RhyD3ZkHNydVjUw1s3+SL9A7DMrYrlZAI6R8ipVavhR?=
- =?us-ascii?Q?992s23uR1krXvSGQt5uSXmdS9TzrrZNCBFw55aGxvVjVhjYk46HGiicoTjFE?=
- =?us-ascii?Q?xg2fnTQ905vy3ixqRlbFx7DN+KN4P625YOtnSHL14d7XI4qOCL6AAgE4okNe?=
- =?us-ascii?Q?XhDbtUleaDKblZ96wtRIWD8OzDvVmJRhs4Tt9kWYX0xhiBrPyk4yZ9DkzfBw?=
- =?us-ascii?Q?PKfRrrwZPfaD3VExi+Mx05+eh6Ooi1vkPRjL0bOihGD69D0KXvsybnFSo1yy?=
- =?us-ascii?Q?CYYgLJjrwkC449L1apxDqSKMcroQqzSPKXkuxTSXQWO5dJzZjPsysfbokPCx?=
- =?us-ascii?Q?nIezjaJNVmp2kGCk2ZIbbEIJ40J2qSV60OViGFAoCFDRYW/Keej2MkPg9zNp?=
- =?us-ascii?Q?NmDtF4WmXCL1VTfYAs6/IYXFOZlyojMmqbUSYLPZd7GUwvJn4DPAUyORn0ec?=
- =?us-ascii?Q?MlNZDEAqYfcJ2rLwwHWUmmIZp2CDf9b3sZdUWIbUvSclGCisoPI0fG6rCFKe?=
- =?us-ascii?Q?+FRI+0b/ZRyUCSoOrGMEYB02/+tSUVzDyxURkNAJAA/YYNX/ynW0HpfVya8E?=
- =?us-ascii?Q?p4YWK/e2N5InyxIr4vtTn8t4zoVziZGOJEz5rUbWT7xTyRE/rqDnw+/5ZBRn?=
- =?us-ascii?Q?VqKqu69UXniXX9QcXCZLynHuAw5mBPIjqmv0oNBAolByPWTlGTaMTeFYeZtO?=
- =?us-ascii?Q?vIOf9zBVj/xIZlCSkRG4uSsOUuTBU9VlBrZTm/NcSvrymgClkj9/Y18hLHG5?=
- =?us-ascii?Q?pSIAY7nw/gjgWXCyLS2YxYeZD9GLmJXv4MRyooOZJZbl0lWfbk+V5ZCHbN0i?=
- =?us-ascii?Q?YUfSv+X7kPVBELldkqbSqP8wKEmUFJ+wwvlao8JDeKykivbc5Ih3zlXTQJQs?=
- =?us-ascii?Q?7iWjcovRUSJilUJU+dUy/BgrZxmrd1c1qT/BbUyKvR7GIVGwdB3/GQMqsMNd?=
- =?us-ascii?Q?CqoBXpQpyw=3D=3D?=
-X-OriginatorOrg: smu.edu.sg
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9f313fe8-f327-4fc8-7477-08dee188f42b
-X-MS-Exchange-CrossTenant-AuthSource: KUXPR01MB7791.apcprd01.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2026 09:19:06.5410
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: c98a79ca-5a9a-4791-a243-f06afd67464d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sJwE+ygbK4fERQjSaUNFNLgbh4lu0NOXzWuienbZ9FSMl+uXxh0e/KG1M2/BzYg8x1WaI9el8qoYl1bIinjIuw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SG2PPFA603A64E4
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.34 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[smu.edu.sg,quarantine];
-	R_DKIM_ALLOW(-0.20)[smu.edu.sg:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-39020-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-39021-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:linux-wireless@vger.kernel.org,m:matthias.bgg@gmail.com,m:rex.lu@mediatek.com,m:linux-mediatek@lists.infradead.org,m:angelogioacchino.delregno@collabora.com,m:linux-arm-kernel@lists.infradead.org,m:petr.wozniak@gmail.com,m:matthiasbgg@gmail.com,m:petrwozniak@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[petrwozniak@gmail.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[mediatek.com,vger.kernel.org,gmail.com,lists.infradead.org,collabora.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[hhhuang@smu.edu.sg,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:hhhuang@smu.edu.sg,m:ajay.kathat@microchip.com,m:claudiu.beznea@tuxon.dev,m:netdev@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hhhuang@smu.edu.sg,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[smu.edu.sg:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[petrwozniak@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,smu.edu.sg:from_mime,smu.edu.sg:mid,smu.edu.sg:email,smu.edu.sg:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,get_maintainer.pl:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ADECC752C02
+X-Rspamd-Queue-Id: E6276753603
 
-wilc_parse_assoc_resp_info() computes the trailing IE length as
+On MT7996 (and other single-wiphy MLO mt76 devices) only the 2.4 GHz LED
+was ever usable: the 5/6 GHz band LEDs stayed dark and a WARN_ON() was hit
+during probe.
 
-	ies_len = buffer_len - sizeof(*res);
+Two issues are involved:
 
-without first checking that buffer_len is at least sizeof(struct
-wilc_assoc_resp) (6 bytes). buffer_len is the length reported for a
-received association response (host_int_parse_assoc_resp_info() passes
-hif_drv->assoc_resp / assoc_resp_info_len straight in) and must be
-validated before the driver accesses the fixed header.
+1. mt76_led_init() calls ieee80211_create_tpt_led_trigger() for every band,
+   but that helper supports only one trigger per ieee80211_hw and
+   WARN_ON()s + returns NULL on the second call, so the secondary bands got
+   a NULL default trigger.
 
-For a frame shorter than the 6-byte fixed header, the subtraction wraps.
-For a four-byte response the result is truncated to a u16 ies_len of
-65534, so kmemdup() then attempts to copy 65534 bytes starting at
-buffer + sizeof(*res), beyond the valid association-response data
-(CWE-125). A response shorter than four bytes can also cause an
-out-of-bounds read of res->status_code at offsets 2 and 3.
+2. mt7996 assigned the LED brightness_set/blink_set callbacks only to the
+   primary PHY, so mt76_led_init() bailed out early for the 5/6 GHz bands
+   and never registered their LED classdevs.
 
-Reject frames too short to hold the fixed header before touching the
-header or computing ies_len. Also set the connection status to a failure
-on this path: the caller falls through to a
-"conn_info->status == WLAN_STATUS_SUCCESS" check after the parser
-returns, so leaving the status untouched could let a malformed short
-response be treated as a successful association.
+Patch 1 shares the throughput trigger across all bands; patch 2 registers a
+LED classdev for every band. With both applied, all three band LEDs
+(mt76-phy0/1/2) come up and blink on their band's traffic.
 
-Fixes: c5c77ba18ea6 ("staging: wilc1000: Add SDIO/SPI 802.11 driver")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Huihui Huang <hhhuang@smu.edu.sg>
----
- drivers/net/wireless/microchip/wilc1000/hif.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Tested on a BPI-R4 (MT7996/BE14): all three per-band LEDs register at boot
+with no WARN_ON(), and each blinks on its own band's activity (verified
+with single-band and MLO clients).
 
-Confirmed on Linux v7.2-rc2 with a temporary KUnit test that calls the
-static wilc_parse_assoc_resp_info() on a 4-byte association-response frame
-(status_code zeroed, i.e. WLAN_STATUS_SUCCESS). Verbatim KUnit output
-(timestamps stripped):
+Changes in v2:
+ - Patch 1: reflow the throughput-trigger comment and wrap the
+   ieee80211_create_tpt_led_trigger() arguments to stay within 80 columns
+   (no functional change).
+ - Cc the MediaTek SoC/wireless maintainers reported by get_maintainer.pl.
+ - No code changes since v1.
 
-  before this change:
-    # wilc_assoc_resp_short_frame_test: ret=0 resp_ies=ffff888008890000 resp_ies_len=65534 (want -EINVAL / NULL / 0)
-  after this change:
-    # wilc_assoc_resp_short_frame_test: ret=-22 resp_ies=0000000000000000 resp_ies_len=0 (want -EINVAL / NULL / 0)
+v1: https://lore.kernel.org/all/20260628095313.7790-1-petr.wozniak@gmail.com/
 
-So a 4-byte frame drives a 65534-byte kmemdup() over-read before the fix,
-and is rejected with -EINVAL after it. The test also asserts the rejected
-frame does not leave conn_info->status at WLAN_STATUS_SUCCESS.
+Petr Wozniak (2):
+  wifi: mt76: share the throughput LED trigger across bands
+  wifi: mt76: mt7996: register a LED classdev for every band
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/hif.c b/drivers/net/wireless/microchip/wilc1000/hif.c
-index 009c477..60fe5f0 100644
---- a/drivers/net/wireless/microchip/wilc1000/hif.c
-+++ b/drivers/net/wireless/microchip/wilc1000/hif.c
-@@ -600,6 +600,11 @@ static s32 wilc_parse_assoc_resp_info(u8 *buffer, u32 buffer_len,
- 	u16 ies_len;
- 	struct wilc_assoc_resp *res = (struct wilc_assoc_resp *)buffer;
- 
-+	if (buffer_len < sizeof(*res)) {
-+		ret_conn_info->status = WLAN_STATUS_UNSPECIFIED_FAILURE;
-+		return -EINVAL;
-+	}
-+
- 	ret_conn_info->status = le16_to_cpu(res->status_code);
- 	if (ret_conn_info->status == WLAN_STATUS_SUCCESS) {
- 		ies = &buffer[sizeof(*res)];
+ drivers/net/wireless/mediatek/mt76/mac80211.c  | 18 +++++++++++++-----
+ .../net/wireless/mediatek/mt76/mt7996/init.c   | 18 ++++++++++++------
+ 2 files changed, 25 insertions(+), 11 deletions(-)
 
-base-commit: a0d82fb8505326cbc53dc9a0c08f97d11197bb30
 -- 
-2.50.1
+2.51.0
 
 
