@@ -1,400 +1,228 @@
-Return-Path: <linux-wireless+bounces-39123-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-39124-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MUoxGHT7VmrKDwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-39123-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 05:16:04 +0200
+	id ttL1GHsQV2ovEwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-39124-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 06:45:47 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D57F75A3CF
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 05:16:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A7F75A80E
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 06:45:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=Y97+WZNo;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=TNKi0k3B;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39123-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39123-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	dkim=none;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39124-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39124-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=live.com (policy=none);
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 82C22302E7D8
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 03:16:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EFD2F304FA55
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 04:45:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122CA274B5F;
-	Wed, 15 Jul 2026 03:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DCEE56A;
+	Wed, 15 Jul 2026 04:45:28 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD76245019
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Jul 2026 03:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A86B54723
+	for <linux-wireless@vger.kernel.org>; Wed, 15 Jul 2026 04:45:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784085359; cv=none; b=XjFb12KyCyoVxc0noARvdKw5IODeawhyMzEMlYlceJOF04NEERP2VRNqnZagEPulZVPmey/QSohQLxaKafZ3YNGJ1QV4UnFsitwgBT7KSZO30wazrhw0b0BZket9mn6oGwhmcX1raBfrJXQKnqrCYls0rrgwcZ+BsMOHXsbeN0M=
+	t=1784090728; cv=none; b=LVCWKUqlk6jAhPCF5KQEohm1RZvyo9CvolMmKsw8UOZfIew0TulxokFw7YIOHHR6t2GGKlnooW/CJ70ELaToz2RFqHyXkLtiT9518WFHrn5Imj7zOvlUJpnNTLhbiIxLXmK3p8EQJ2D6cDARtJrAtUfwZ929UnQn0BG6oqxP1JY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784085359; c=relaxed/simple;
-	bh=yURs3R/X6zfDVBSe5EB9d9wyeV9Vpx7Z7ayKRaWIoeA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o2QgJaQOonLKXv2AOHpokyv/ZTcuhpukdEPsnYErDDLzT55ksET1fkCjAb2Ox5w9SayY8TW1/JK2QoL3a94IWWcjwBFVRCXGgsDFsXZw2Eiz850BE0L6+50/pophORK466sLgt1KnGUwKWhmdRMbk7YEQlmTDyapcsBXFA5WyW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Y97+WZNo; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TNKi0k3B; arc=none smtp.client-ip=205.220.168.131
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66F0I0jr2222558
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Jul 2026 03:15:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	59dtjn3uigWcqD04FKFVloeTaBJk83JWYja0Nk1JPpA=; b=Y97+WZNoYirbt+yU
-	Dmgjh2qwKrggfixGQGRCQckh72F2BOR2Vi4k1BOBouCPewvPKol8pC9w4/VRnn0a
-	MW5WCUFtcat8PwimEgRCLW1HstzdZBFPlSO7CsJ/gGGLggpxMGbsw4Q2qxuu0dMs
-	6SB5QDKI1O4qNscZuEBIXwq7E0X71GlKOia3G7ukIXKyAJI+ZczCVjZO5oh/bogf
-	/L/VTfEKteCs4eMZUnhy/yJVURbGhRWl9mlKv/R4Rp3/K1jNCwlQp0A+dAcrUFys
-	xw7gF5IMk+Bq6qAFsXM/E5UE6S6cXY3uW14zNkDhrZEwI8T68OIz9Az36v8yc8bZ
-	I+5SiA==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fdnnutre5-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Jul 2026 03:15:56 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-37fca5f21b1so273544a91.0
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 20:15:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1784085356; x=1784690156; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=59dtjn3uigWcqD04FKFVloeTaBJk83JWYja0Nk1JPpA=;
-        b=TNKi0k3BOoa5PjbxIsZMoBFtwyuug4Fz+Nfy1PViCSonRfr3va+F8+454Y8uhmrLw0
-         4YkLmAjjkAjcEKi0i+8WZtbGQHKsYh8BBeLEzDsLUBTCFYpYUeNK7xslgsq8z9Q4YDBn
-         vrltGYi+oCDNUwG8KBxJ1Z47mk0U0S9sDeYzHJbjmWqTHqS4h8Nd4718eK79b5a7lIl8
-         8CH53bYw3fD8rBGrdqmu8r3ceLmuxStymVDz1pKsbVL4iKRUYi3Tl/aPygvlOQJIyppi
-         AHzNfoa0yiyUfymEWqmKS7daCO7Cm+L1Lwr0Qg59goKsIYQ379UKDis5pnRp6EGfFpMG
-         T+3Q==
+	s=arc-20240116; t=1784090728; c=relaxed/simple;
+	bh=0SKVwV/l8v7isum5HYv9wLdmuhlQpIQnBAHQWV69h9A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c047OurTpG9ljCTFT4Ha9uXSOXhogvJbkH59PZbsDGjz1wnIIFkoRiPu1CD9Ee7VJIXKN19qbodOR5UeTnlxSGBTy1HVopdez8dHXJfYxK1Im7Vjyln8iOZtOwesTiIH8WY1JE81+zoaGUe6XfhGwBHkXH/R5zhYPOaXq90JI7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=live.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.224.54
+Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-668005ba03cso2413974d50.2
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 21:45:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784085356; x=1784690156;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1784090726; x=1784695526;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=59dtjn3uigWcqD04FKFVloeTaBJk83JWYja0Nk1JPpA=;
-        b=V0Xxvcx4999oRB6xf3Cs1l0hWZ7jU0wT6PIGP/8mEFL9R3ssPYug69OsnSxwmbU5Nt
-         F6SLVSzgM5IZF9uR6HR1mUGh1wrKO7ZSQ5pzpJ8GoTllS3FcJGgZ/rQSaFW5eU7x3tCw
-         SvVhQzbmDFFO1jWdH1WeBUNPfPBmuHFAHBqFnBhqCHzAlziRZVrPS1Wiao8/inCcWs6X
-         /lvabYhFB1j3i5hL6DpGlDjFhsvCJggB9kApiDy0CInQtqnEBb2LzhHBcTWVLXieJ0gL
-         K38J5we3Fi8jxGP+FWTVd+l/wZJ5qptqYCf+boe3TbLDRNMHIReAs0urRATxLvRefsrT
-         JWbg==
-X-Gm-Message-State: AOJu0YwXdhL9sLYi0bT4Gf1K4qvSSpBdJgWZG9TVj2+Wu/KYOBlGBj+Q
-	1iLd6QekLmTdhyRaRyM8SQNuQVU0Ja1kFZwoAjRI0cmruojzQETyRTIZkPmgYT4myrBunirjx9T
-	i6x5XwB2ijxUC63SCmngpRmcPtYg6hfN84Z3udnSpP8V+1isCApkV7e5Vlrxo2YnVv5dmYe6O0X
-	jjGRDT
-X-Gm-Gg: AfdE7cmQSiDG3wIeCv998cl9HbYxmrTFsPbCPbztkDpJhSnhBRwRUfHr53QBsnlBgUM
-	xQ43v3oDdbvkWNh+A+jfwQwW5zoPke3XznCynIg97++DUtcrYRyfhYaJn7A0sekh7NKEyQosKSU
-	mYVE84rtPL/Xt+wFSHfute7EQfyrys4QviZLlCWIxmaoZSOI21zXxtTYnZtCUXXaLJAOQ8xlF8Z
-	orZG5GLpcz8nWFue+VTCLVyGeABo3Z1kmVs7c0ims7TbUFT1BS1YWefsbk93+d6X8ThSitIFKy5
-	p5yK0Q/QOpYwRSaVEkWAOSu4EkqN+wCYArcZmOt84QD6YQh6DbytkYZjC+flmJ7h2DP1VtuMgFa
-	0kyk9PDCjR7cBEhi3U/409Eick8IAjXZGcKahJ2zeWaQsuUWuzX5ZViMyeJ9becw3zzAixn6Bp0
-	nEs45GCjY=
-X-Received: by 2002:a17:90b:2248:b0:37f:fd70:6790 with SMTP id 98e67ed59e1d1-38dc81c1b09mr11421806a91.9.1784085355768;
-        Tue, 14 Jul 2026 20:15:55 -0700 (PDT)
-X-Received: by 2002:a17:90b:2248:b0:37f:fd70:6790 with SMTP id 98e67ed59e1d1-38dc81c1b09mr11421788a91.9.1784085355202;
-        Tue, 14 Jul 2026 20:15:55 -0700 (PDT)
-Received: from [10.133.33.98] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e1745a86esm2287488a91.16.2026.07.14.20.15.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jul 2026 20:15:54 -0700 (PDT)
-Message-ID: <3c67115f-5aea-402a-987b-c3092e0c3386@oss.qualcomm.com>
-Date: Wed, 15 Jul 2026 11:15:51 +0800
+        bh=JWW74AmImRLmdesZdoy1+m1+TdvbqosVmdq9Fea4fTA=;
+        b=m9AB2/KWN8+btD95UqB65PUYdmy1B6aFrB1yHH4aiZnFB+4sdX0wOX/zJ8XMaFCkfj
+         WddDDr1w2JhKjMeSazFo8dBX6em3fpez5NztlcE00vcA8uMG0MzyM9mrtnRfIKm9CS3u
+         rX6sXcqg2J5S5AnMiS4XHs6FTIbRJoeS5ILdLhADkBia4xlEfJoppnehukhc4BTwQ8mC
+         HIlYzvfzHH3xolijMb/dyFmf4SgErqbWnK3oQ7ftw7Iv7cB3qk5HYKW8H6/MMi6VbM0+
+         iZkrzavotvgkcaRCEmfLgGcnsNpPp8EWBmhfTu5H3/rPJGwHkBMh+RtkyXPPNdyY2Tdc
+         SmiA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp8q6z4wJgfXVKyvYuUqK6j0cXtpV6KnXHk29r8nhk+p9dMfZbCqOYnafdTS3Dc+cVL4mcGQP/bAwJio1McQA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcevTCrbmIydr3QiVrGZMHaWufHnVm6lud8wyP2hyzHO9Qs6sn
+	2hup6q35JKw1QgkcHlIy5yTAIlkDouNtZOT1cyJGJSKnxyry/FwhgDS6
+X-Gm-Gg: AfdE7ck/JnUEdjVC7K37XBnRDpEyQARllE9lfEBUiz44DzTpy38RBXl5wycg+rxM5aN
+	OF6LPCfW3YwIVr0dpupQ6GgkFoBiNl2hd/83hyplBhuyEApB5F0oeBULaF4i+ozHgKGdiHuySAS
+	VZ2zrU0ihUaar+T+NeeA9Z+g8ntufkh/BrCb+BiZJtlTEuzKcrqHhCEqE77YALhGYDZ7pDDgDqm
+	yHgZNR0wJrhLxB+/5LzOqk5Yb6nNqveiW24hrVqeSKDpT172U54+856+8Y+a9EM/UZE0pVj604f
+	FraL6b0rsiPjGmdo17g8cCMMRnFCfJD2DOprnLfmLN9u6t9CxVTVsVPpbgmh3Zc9zHwd6harV+h
+	j01m1F8mtWAGzfGurSqm9AvefTLWmQgjbm02rWcwKLgBZTcop6nojGO3jRJHEfCqZQEZDa/QdWz
+	UYZW6AFVZZh0RDKRY=
+X-Received: by 2002:a05:690e:440c:b0:660:a41d:d180 with SMTP id 956f58d0204a3-668029bb4c1mr3288750d50.21.1784090725993;
+        Tue, 14 Jul 2026 21:45:25 -0700 (PDT)
+Received: from Mateus-Laptop ([2804:7f3:4a10:896d:88ce:72d6:47ee:a87d])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-667874c2d15sm17941180d50.0.2026.07.14.21.45.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 21:45:25 -0700 (PDT)
+From: "Mateus B. Cassiano" <mbc07@live.com>
+To: nbd@nbd.name
+Cc: lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	"Mateus B. Cassiano" <mbc07@live.com>
+Subject: [PATCH] wifi: mt76: pass LED define via ccflags-y in driver submodules
+Date: Wed, 15 Jul 2026 00:44:32 -0400
+Message-ID: <20260715044431.1207-2-mbc07@live.com>
+X-Mailer: git-send-email 2.55.0.windows.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: ath11k: fix resource leak on error in ext IRQ
- setup
-To: ZhaoJinming <zhaojinming@uniontech.com>,
-        Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-References: <e94de910-0a15-4b82-b006-03da98305e9b@oss.qualcomm.com>
- <20260713105912.20095-1-zhaojinming@uniontech.com>
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20260713105912.20095-1-zhaojinming@uniontech.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: dHzWBpo7K_b5uVoAMFoBz9jTCXyobx9o
-X-Authority-Analysis: v=2.4 cv=E+v9Y6dl c=1 sm=1 tr=0 ts=6a56fb6c cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=iHwBjlyiAAAA:8 a=EOvvyNets2oEhnj6SMYA:9 a=QEXdDO2ut3YA:10
- a=iS9zxrgQBfv6-_F4QbHw:22 a=uNSKXYNwxGiU6LD0JREI:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE1MDAyOCBTYWx0ZWRfX/9NABhz/20CG
- LfhsAgG62dmSdx5c8Cb+lXUMNtZ9eydh4nzsUFQKMJSclmFZtu/Y5yalIjOiDhbqH6NaGaSPE1g
- 7aleVYvDqXOY5Gzdok+9bWY98Y/pIy/8JJldexGyReqgPJlK3qtEvKogi+GqNGDEEL1dr/c8yW6
- XxeEH0V0glVel5pYovdzFoeW4tujov6R1cHotvVgy0rUv4OVpvBO/Y1KYMUqOE7VP0rdwoHwYFX
- 53NYV6yavb4j2y+JtgLfwOPRvUA5bNEeoUiCn7zmCHhiRACM8bcPn2zlULHHRxgUtPYt63YlGK3
- ysAYB4xDKmY1AQXZJI09coKWP+arOpUSP4Qpq0WmAJm5cIZsmsoja+L6EL0dRNVbNRSHnkkgM9U
- ONp7Fxq6rJB0RxPIZUD5AaU/z8Irnr6rNMYU6DFc39E6Ukh4og4mMDrGk3xJqAxXaCHVuNirGV5
- AEtItVhOtT//K9yJbIQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE1MDAyOCBTYWx0ZWRfX/ElgxCmMPsBz
- HOU1BxWnM0OlXotLs2/9Y8xF3h4OoCwvMW74NZQiBe8wxy+1U+Pb01ewlQydhU6qfXa0tMQuGkY
- Y95e26IutwWjglVViZkcB2w6v5EqeCw=
-X-Proofpoint-GUID: dHzWBpo7K_b5uVoAMFoBz9jTCXyobx9o
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-15_01,2026-07-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0
- adultscore=0 clxscore=1015 bulkscore=0 phishscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607150028
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.14 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[live.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-39123-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,m:mbc07@live.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-39124-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:zhaojinming@uniontech.com,m:jjohnson@kernel.org,m:linux-wireless@vger.kernel.org,m:ath11k@lists.infradead.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[baochen.qiang@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oss.qualcomm.com:from_mime,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,qualcomm.com:dkim,uniontech.com:email];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[baochen.qiang@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER(0.00)[mbc07@live.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,mediatek.com,vger.kernel.org,lists.infradead.org,live.com];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mbc07@live.com,linux-wireless@vger.kernel.org];
+	ALIAS_RESOLVED(0.00)[];
+	R_DKIM_NA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[live.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,live.com:from_mime,live.com:email,live.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9D57F75A3CF
+X-Rspamd-Queue-Id: D3A7F75A80E
 
+Commit d2b01fbc329b ("mt76: pass LED define via ccflags-y")
+converted the top-level Makefile from the deprecated EXTRA_CFLAGS
+to ccflags-y so that -DCONFIG_MT76_LEDS keeps working now that
+kbuild no longer honours EXTRA_CFLAGS.
 
+However, ccflags-y (like EXTRA_CFLAGS before it) only applies to
+the kbuild makefile it is set in and is not inherited by
+subdirectories pulled in via obj-y/obj-m. The mt7603, mt7615 and
+mt7915 driver subdirectories each set their own
+"EXTRA_CFLAGS += ... -DCONFIG_MT76_LEDS", which is now a silent
+no-op. As a result, CONFIG_MT76_LEDS is undefined when building
+mt7603/init.c, mt7615/init.c, mt7615/pci_init.c and mt7915/init.c,
+the IS_ENABLED(CONFIG_MT76_LEDS) blocks are compiled out, and the
+mt76-* LED class devices are never registered for these drivers.
 
-On 7/13/2026 6:59 PM, ZhaoJinming wrote:
-> In ath11k_ahb_config_irq(), when a CE request_irq() fails, the function
-> returns the error immediately without freeing the CE IRQs that were
-> successfully registered in previous loop iterations. The probe error
-> path does not call ath11k_ahb_free_irq() either, so the previously
-> registered CE IRQ handlers remain attached to the interrupt lines and
-> are never released.
-> 
-> In ath11k_ahb_config_ext_irq(), when an external request_irq() fails,
-> the error is only logged and the loop continues. The function then
-> returns 0 indicating success, leaving the device in a partially
-> configured state where some external IRQs are not registered. This
-> causes enable_irq()/disable_irq()/free_irq() to be called on
-> unregistered IRQs during runtime and remove/shutdown, triggering
-> WARN_ON(!desc->action), and missing interrupt handlers lead to data
-> loss.
-> 
-> Additionally, if alloc_netdev_dummy() fails for a later IRQ group, the
-> function returns -ENOMEM without freeing the ext IRQs and napi_ndev
-> that were successfully set up for earlier groups.
-> 
-> Fix all three issues: propagate the error up to the caller and unwind
-> all successfully registered IRQs and allocated resources on failure.
-> 
-> Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
-> ---
-> 
-> Changes in v2:
-> - Move `irq_grp` declaration from for-loop body to function scope to fix
->   compile error in err_request_irq error path.
-> - Set ret = -ENOMEM before goto err_request_irq on alloc_netdev_dummy()
->   failure to avoid returning uninitialized value.
-> - When ath11k_ahb_config_ext_irq() fails, unwind the already-registered
->   CE IRQs via a shared err_ce_irq cleanup path to avoid leaking them.
-> 
->  drivers/net/wireless/ath/ath11k/ahb.c | 48 ++++++++++++++++++++++++++--
->  1 file changed, 44 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
-> index f566d699d074..11bafbd94aff 100644
-> --- a/drivers/net/wireless/ath/ath11k/ahb.c
-> +++ b/drivers/net/wireless/ath/ath11k/ahb.c
-> @@ -524,20 +524,24 @@ static irqreturn_t ath11k_ahb_ext_interrupt_handler(int irq, void *arg)
->  static int ath11k_ahb_config_ext_irq(struct ath11k_base *ab)
->  {
->  	struct ath11k_hw_params *hw = &ab->hw_params;
-> +	struct ath11k_ext_irq_grp *irq_grp;
->  	int i, j;
->  	int irq;
->  	int ret;
->  
->  	for (i = 0; i < ATH11K_EXT_IRQ_GRP_NUM_MAX; i++) {
-> -		struct ath11k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
-> +		irq_grp = &ab->ext_irq_grp[i];
->  		u32 num_irq = 0;
+Convert these subdirectory Makefiles to ccflags-y as well.
 
-declaration after statement. better to have num_irq declaration at the beginning of the
-for loop.
+mt7996/Makefile never carried the define at all, even though
+mt7996/init.c has the same IS_ENABLED(CONFIG_MT76_LEDS) checks for
+its LED callbacks and GPIO mux setup. Add ccflags-y there too so
+mt7996 LED support is enabled consistently with the other drivers.
 
->  
->  		irq_grp->ab = ab;
->  		irq_grp->grp_id = i;
->  
->  		irq_grp->napi_ndev = alloc_netdev_dummy(0);
-> -		if (!irq_grp->napi_ndev)
-> -			return -ENOMEM;
-> +		if (!irq_grp->napi_ndev) {
-> +			ret = -ENOMEM;
-> +			irq_grp->num_irq = 0;
+mt76x0, mt76x2, mt7921 and mt7925 contain no CONFIG_MT76_LEDS
+references and are left untouched.
 
-the ath12k_base is allocated by kzalloc, so the ext_irq_grp array, as a member of
-ath12k_base, is already zero'ed, hence this re-initialization is redundant. But I am OK
-with it since it improves code readability.
+Fixes: d2b01fbc329b ("mt76: pass LED define via ccflags-y")
+Link: https://github.com/openwrt/mt76/issues/1077
+Signed-off-by: Mateus B. Cassiano <mbc07@live.com>
+---
+Notes for reviewers (not for the commit message):
 
-> +			goto err_request_irq;
-> +		}
->  
->  		netif_napi_add(irq_grp->napi_ndev, &irq_grp->napi,
->  			       ath11k_ahb_ext_grp_napi_poll);
-> @@ -600,11 +604,25 @@ static int ath11k_ahb_config_ext_irq(struct ath11k_base *ab)
->  			if (ret) {
->  				ath11k_err(ab, "failed request_irq for %d\n",
->  					   irq);
-> +				irq_grp->num_irq = j;
+Previously submitted as https://github.com/openwrt/mt76/pull/1090
+before I noticed that PRs on the GitHub mirror don't seem to be
+reviewed.
 
-with this forcing to the number of successful irq request ...
+Tested on a D-Link DIR-882 A1 (dual MT7615 radios) by building
+OpenWrt at commit e4c35c2eec66 with this change applied to the mt76
+package: the mt76-* LED class devices appeared again under
+/sys/class/leds. The same result was reported on different MT7615
+hardware in
+https://github.com/openwrt/mt76/issues/1077#issuecomment-4557037203
 
-> +				goto err_request_irq;
->  			}
->  		}
->  	}
->  
->  	return 0;
-> +
-> +err_request_irq:
-> +	for ( ; i >= 0; i--) {
+The mt7603 and mt7915 hunks are the same fix applied for consistency,
+but I don't have that hardware to test.
 
-then with the index starting from the failed loop ...
+mt7996 in particular enables IS_ENABLED(CONFIG_MT76_LEDS) code paths
+that appear to have never been built with the define before, so it
+would be good if someone with mt7996 hardware could confirm nothing
+regresses. I'm happy to drop the mt7996 hunk and keep only the others
+if preferred.
+ mt7603/Makefile | 2 +-
+ mt7615/Makefile | 2 +-
+ mt7915/Makefile | 2 +-
+ mt7996/Makefile | 1 +
+ 4 files changed, 4 insertions(+), 3 deletions(-)
 
-> +		irq_grp = &ab->ext_irq_grp[i];
-> +		for (j = irq_grp->num_irq - 1; j >= 0; j--)
-> +			free_irq(ab->irq_num[irq_grp->irqs[j]], irq_grp);
-> +		if (irq_grp->napi_ndev) {
-
-and with the guard ...
-
-> +			netif_napi_del(&irq_grp->napi);
-> +			free_netdev(irq_grp->napi_ndev);
-> +		}
-> +	}
-
-at the cost of above three, the centralized err handling is working. Yeah this simplifies
-the code, but makes it hard to understand.
-
-what about:
-
-1. refactor the existing ath11k_ahb_free_ext_irq():
-
-ath11k_ahb_free_ext_irq_grp()
-{
-	for (j = 0; j < irq_grp->num_irq; j++)
-		free_irq(ab->irq_num[irq_grp->irqs[j]], irq_grp);
-
-	netif_napi_del(&irq_grp->napi);
-	free_netdev(irq_grp->napi_ndev);
-}
-
-then we can have
-
-ath11k_ahb_free_ext_irq()
-{
-	for (i = 0; i < ATH11K_EXT_IRQ_GRP_NUM_MAX; i++)
-		ath11k_ahb_free_ext_irq_grp(irq_grp)
-}
-
-and the complete err handling of ext irq can be
-
-ath11k_ahb_config_ext_irq()
-{
-	for (i = 0; i < ATH11K_EXT_IRQ_GRP_NUM_MAX; i++) {
-
-		irq_grp->napi_ndev = alloc_netdev_dummy(0);
-		if (!irq_grp->napi_ndev) {
-			ret = -ENOMEM;
-			irq_grp->num_irq = 0;
-			goto err_request_irq;
-		}
-
-		...
-
-		for (j = 0; j < num_irq; j++) {
-			ret = request_irq();
-			if (ret) {
-				irq_grp->num_irq = j;
-				ath11k_ahb_free_ext_irq_grp(irq_grp);
-				goto err_request_irq;
-			}
-		}
-
-		irq_grp->num_irq = num_irq;
-	}
-
-err_request_irq:
-	for ( i--; i >= 0; i--) {
-		irq_grp = &ab->ext_irq_grp[i];
-		ath11k_ahb_free_ext_irq_grp(irq_grp);
-	}
-
-	return ret;
-}
-	
-> +	return ret;
->  }
->  
->  static int ath11k_ahb_config_irq(struct ath11k_base *ab)
-> @@ -629,15 +647,30 @@ static int ath11k_ahb_config_irq(struct ath11k_base *ab)
->  		ret = request_irq(irq, ath11k_ahb_ce_interrupt_handler,
->  				  IRQF_TRIGGER_RISING, irq_name[irq_idx],
->  				  ce_pipe);
-> -		if (ret)
-> -			return ret;
-> +		if (ret) {
-> +			ath11k_err(ab, "failed request_irq for %d\n", irq);
-> +			goto err_ce_irq;
-> +		}
->  
->  		ab->irq_num[irq_idx] = irq;
->  	}
->  
->  	/* Configure external interrupts */
->  	ret = ath11k_ahb_config_ext_irq(ab);
-> +	if (ret) {
-> +		ath11k_err(ab, "failed to configure ext irq: %d\n", ret);
-> +		goto err_ce_irq;
-> +	}
-> +
-> +	return 0;
->  
-> +err_ce_irq:
-> +	for (i--; i >= 0; i--) {
-> +		if (ath11k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
-> +			continue;
-> +		free_irq(ab->irq_num[ATH11K_IRQ_CE0_OFFSET + i],
-> +			 &ab->ce.ce_pipe[i]);
-> +	}
-
-this is also a duplication of the CE part of ath11k_ahb_free_irq(), consider refactoring
-the exsiting helper and reuse it.
-
->  	return ret;
->  }
->  
+diff --git a/mt7603/Makefile b/mt7603/Makefile
+index 57d28591..5e7ab30f 100644
+--- a/mt7603/Makefile
++++ b/mt7603/Makefile
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: BSD-3-Clause-Clear
+-EXTRA_CFLAGS += -Werror -DCONFIG_MT76_LEDS
++ccflags-y += -Werror -DCONFIG_MT76_LEDS
+ obj-m += mt7603e.o
+ 
+ mt7603e-y := \
+diff --git a/mt7615/Makefile b/mt7615/Makefile
+index 9274c006..8b8eff3f 100644
+--- a/mt7615/Makefile
++++ b/mt7615/Makefile
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+-EXTRA_CFLAGS += -DCONFIG_MT76_LEDS
++ccflags-y += -DCONFIG_MT76_LEDS
+ obj-$(CONFIG_MT7615_COMMON) += mt7615-common.o
+ obj-$(CONFIG_MT7615E) += mt7615e.o
+ obj-$(CONFIG_MT7663_USB_SDIO_COMMON) += mt7663-usb-sdio-common.o
+diff --git a/mt7915/Makefile b/mt7915/Makefile
+index 6b0058ca..7ea5b05c 100644
+--- a/mt7915/Makefile
++++ b/mt7915/Makefile
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+-EXTRA_CFLAGS += -DCONFIG_MT76_LEDS
++ccflags-y += -DCONFIG_MT76_LEDS
+ obj-$(CONFIG_MT7915E) += mt7915e.o
+ 
+ mt7915e-y := pci.o init.o dma.o eeprom.o main.o mcu.o mac.o \
+diff --git a/mt7996/Makefile b/mt7996/Makefile
+index 69d2d4bb..28ecee3c 100644
+--- a/mt7996/Makefile
++++ b/mt7996/Makefile
+@@ -1,5 +1,6 @@
+ # SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
++ccflags-y += -DCONFIG_MT76_LEDS
+ obj-$(CONFIG_MT7996E) += mt7996e.o
+ 
+ mt7996e-y := pci.o init.o dma.o eeprom.o main.o mcu.o mac.o \
+-- 
+2.43.0
 
 
