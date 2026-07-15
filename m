@@ -1,278 +1,350 @@
-Return-Path: <linux-wireless+bounces-39145-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-39146-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5JVrGYKGV2oOWQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-39145-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 15:09:22 +0200
+	id czBmE5KGV2oUWQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-39146-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 15:09:38 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6C575E7C2
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 15:09:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D43975E7CC
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 15:09:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AS4dnpjh;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39145-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39145-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b="EJRNuAX/";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39146-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39146-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AAE4E300D901
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 12:54:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 980B931BC8C7
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 13:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49B0C47DFAA;
-	Wed, 15 Jul 2026 12:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640FB42046E;
+	Wed, 15 Jul 2026 13:02:39 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6534921B3
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Jul 2026 12:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E368D420462
+	for <linux-wireless@vger.kernel.org>; Wed, 15 Jul 2026 13:02:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784119864; cv=none; b=HZfwvSZrfBUwP4KAZhJRFAR9Lm8Gz0oiyejCJLyYL/Nsbb8QZLswabAQwPBaki/zqNBuCK5L5EBnwKrJzXpf7PoJMvXllTswuLbBe5V36ZmGwX+qWvyBOIZXvEDT9IlVkGkT4ga1vC6c92nZIITPUdCVxq0PscWgb7O44u4ZtH0=
+	t=1784120559; cv=none; b=mzjtn0ZRmUx2vr2gn60/Jn/Y4fxGAar/vh524mEuoIm9QpSJ3QKyZThe3QoV1LBTZ9G15lHBEhNrumkz9OgOznkSeEGyTVKQjumT5ySLGbquIR+Egv+KhZU54YaC2eT5DkAOxcAfUCyFTjZkOA8HRj+JdlLxkxoZaga5pzC4u5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784119864; c=relaxed/simple;
-	bh=GyKuxCsnrg84ZDjgCeHJpb6FXmNkP+hkGiUaRMN7ohs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OqNTAlKjLF7ogXSi3XkS7KvAxV2FRZ7HJI7c6CQ6kP4wWj9P6ELU8fXIpo+DUR669jS5eZDXWu79wCDyIBgZZP4QINyxcY2uDmZCV0iqLJp23kLF7ub9M+x7Cukawn2Fzmw5Y/DgluRvDO1q1IjW4hkL1eIrDfDAbcxow582ORs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AS4dnpjh; arc=none smtp.client-ip=170.10.129.124
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784119851;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KxnkyzJDoAKMDhHYsJea70mstN7dUKPust/4lleKlEU=;
-	b=AS4dnpjhRRGfO0zm1ADdJY0+bIrZxeFrF3ooJPFBWlx+lkaaWpIwp6EL/UiAGPdH5lLo0h
-	0gwl9GDydUJKyq1hGIxbGMBoiVTsrk7u2DpYxQWbTa+8p9IIxOzdIvNmb5Yn5HgU+nZVxH
-	rQZozKHt8xle333ohcAEMgx8ku7R4NI=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-17-7y5kdcVgMn6KesJOpEYI3Q-1; Wed,
- 15 Jul 2026 08:50:48 -0400
-X-MC-Unique: 7y5kdcVgMn6KesJOpEYI3Q-1
-X-Mimecast-MFC-AGG-ID: 7y5kdcVgMn6KesJOpEYI3Q_1784119847
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5CF021955F22;
-	Wed, 15 Jul 2026 12:50:47 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.44.48.52])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 458D818004D4;
-	Wed, 15 Jul 2026 12:50:45 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: jjohnson@kernel.org
-Cc: ath11k@lists.infradead.org,
-	ath12k@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Subject: [PATCH v2 3/3] wifi: ath12k: implement custom wake_tx_queue with flow control
-Date: Wed, 15 Jul 2026 14:50:16 +0200
-Message-ID: <20260715125017.277242-4-jtornosm@redhat.com>
-In-Reply-To: <20260715125017.277242-1-jtornosm@redhat.com>
-References: <20260715125017.277242-1-jtornosm@redhat.com>
+	s=arc-20240116; t=1784120559; c=relaxed/simple;
+	bh=Z0d1G8GrvD2+2VzGAcV1LS9mEP1NUU/Brga8ddE23aA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CMqewxhI7SVjJgWFvlXARqrMWyaeuAVOf3TFQ9fGWiDVeTF/u+lGcUiHPTOxOgk+fLRVAzTsJOUkPK2RmHPUfPv/j2T2fjEO4LmLJj/+cQdJvps5IAVXxj7mtMoyZ6Mrb+Of001DV92IUpp1Ebo8kbrEZK5PCQ7frfqVav1Y9xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EJRNuAX/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A431F00A3A
+	for <linux-wireless@vger.kernel.org>; Wed, 15 Jul 2026 13:02:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784120557;
+	bh=2GU5mNOJ6dY84gWEImx+k/RkgTiLhJWQYHqbIZUDsCo=;
+	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc;
+	b=EJRNuAX/TvysSyBxgLj9fTtx3Xz82aY4a2l67hNXJdikqzn5cvggBgMaxV7M8sdka
+	 wpfMzJLAECeuPrU3wagRQ8G6qbX+DNibI5QZ0nzqI/eL8Fup8eMQlcYoWtmO5UEGa6
+	 2OtNey6u+03FRi6Yw7viAhbqXLDIJZ48jJvn6iBLu8Pydtq9njHVLCAlcFx/iNzYJF
+	 al1c/8Jhzih7wiYL3SuIP5DBQqLVxiWxDxD58VXqgAZH3rRM/huHGRxSh56+pDJJYs
+	 vyU9JxR284xTxbtZ47+vCflVYcHUQnwyrAmctzhMPgS+cGaOphweeTUYdBfLpDDHWd
+	 vU+P2/XTq7rvQ==
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-81e9d8f3289so29460987b3.1
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Jul 2026 06:02:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RosdGkYRe6LnMEy2WicKt8jiYYnCRafsoNa6KBvhDWnUr4z0WAKKWtdVaJ1yEprZz90A/aaLRXWEp6hO3diDw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+GCxsHo/r41RSrTxhnQVqC+Gu//EJ305HGVvR4hglxv4SNeCz
+	lfoCb63yHPyh8pDWE12w5wUplKejg5RqiJtX/ZC5BqrUZgPgsfpyQ+8toHA47n3ckNWln8R/y4B
+	6NRzKZgfXEGAUgiGXN/0g0wgFrzHJUVU=
+X-Received: by 2002:a05:690c:e298:20b0:81e:d792:a019 with SMTP id
+ 00721157ae682-81ed792a286mr5323857b3.6.1784120556647; Wed, 15 Jul 2026
+ 06:02:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Spamd-Result: default: False [-0.66 / 15.00];
+References: <20260707044618.2476204-1-lachlan.hodges@morsemicro.com>
+In-Reply-To: <20260707044618.2476204-1-lachlan.hodges@morsemicro.com>
+From: Josh Boyer <jwboyer@kernel.org>
+Date: Wed, 15 Jul 2026 09:02:24 -0400
+X-Gmail-Original-Message-ID: <CA+5PVA7sOz2Uzt0NjK1HJgu0RCgHcipESYe1ksoz5T-tfaRWRQ@mail.gmail.com>
+X-Gm-Features: AUfX_mzrnba4QNsYMuyxLUbL0qxzweafuSo019AecYFN_v9Yv1FeCKtI08euFWE
+Message-ID: <CA+5PVA7sOz2Uzt0NjK1HJgu0RCgHcipESYe1ksoz5T-tfaRWRQ@mail.gmail.com>
+Subject: Re: [PATCH] morsemicro: add firmware for mm8108 support
+To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Cc: linux-firmware@kernel.org, linux-wireless@vger.kernel.org, 
+	arien.judge@morsemicro.com, dan.callaghan@morsemicro.com, 
+	ayman.grais@morsemicro.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-39145-lists,linux-wireless=lfdr.de];
+	R_DKIM_REJECT(0.00)[kernel.org:s=k20260515];
+	TAGGED_FROM(0.00)[bounces-39146-lists,linux-wireless=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:jjohnson@kernel.org,m:ath11k@lists.infradead.org,m:ath12k@lists.infradead.org,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:jtornosm@redhat.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[jwboyer@kernel.org,linux-wireless@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[jtornosm@redhat.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:lachlan.hodges@morsemicro.com,m:linux-firmware@kernel.org,m:linux-wireless@vger.kernel.org,m:arien.judge@morsemicro.com,m:dan.callaghan@morsemicro.com,m:ayman.grais@morsemicro.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[redhat.com:+];
+	DKIM_TRACE(0.00)[kernel.org:-];
 	MISSING_XM_UA(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jtornosm@redhat.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jwboyer@kernel.org,linux-wireless@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CC6C575E7C2
+X-Rspamd-Queue-Id: 8D43975E7CC
 X-Rspamd-Action: no action
 
-Under heavy traffic, ath12k can hang and experiences -ENOMEM errors
-("failed to transmit frame -12") when the hardware TCL ring fills up.
-This issue is more commonly observed in VMs with PCIe passthrough but
-also occurs on bare metal systems.
+On Tue, Jul 7, 2026 at 12:47=E2=80=AFAM Lachlan Hodges
+<lachlan.hodges@morsemicro.com> wrote:
+>
+> Add firmware and board files for the mm8108 chipset to be used
+> with the mm81x Wi-Fi driver.
+>
+> Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+> ---
+>  LICENSES/LICENCE.morsemicro                 | 125 ++++++++++++++++++++
 
-Implement a custom wake_tx_queue operation that:
+This is problematic and we can't accept this firmware under this
+license.  Please see LICENSE-CRITERIA.md in the repo.  More comments
+below.
 
-1. Checks hardware ring space before dequeuing packets from mac80211
-2. Uses per-ring locking to serialize ring access and prevent races
-3. Syncs with hardware state to get accurate free slot count
-4. Uses ieee80211_tx_peek() to determine the exact target ring via
-   get_ring_selector(), matching dp_tx on all platforms
-5. Returns early during firmware crash in the same way as other
-   tx paths
+josh
 
-This approach follows the pattern used in the iwlwifi driver, adapted
-for ath12k's hardware ring architecture.
+>  WHENCE                                      |  14 +++
+>  morsemicro/mm81x/v56/bcf_aw_hm677.bin       | Bin 0 -> 2124 bytes
+>  morsemicro/mm81x/v56/bcf_mm8108_mf15457.bin | Bin 0 -> 2124 bytes
+>  morsemicro/mm81x/v56/mm8108.bin             | Bin 0 -> 479624 bytes
+>  5 files changed, 139 insertions(+)
+>  create mode 100644 LICENSES/LICENCE.morsemicro
+>  create mode 100644 morsemicro/mm81x/v56/bcf_aw_hm677.bin
+>  create mode 100644 morsemicro/mm81x/v56/bcf_mm8108_mf15457.bin
+>  create mode 100644 morsemicro/mm81x/v56/mm8108.bin
+>
+> diff --git a/LICENSES/LICENCE.morsemicro b/LICENSES/LICENCE.morsemicro
+> new file mode 100644
+> index 000000000000..adf90750d1af
+> --- /dev/null
+> +++ b/LICENSES/LICENCE.morsemicro
+> @@ -0,0 +1,125 @@
+> +                                  MORSE MICRO
+> +                     BINARY DISTRIBUTION LICENSE AGREEMENT
+> +
+> +1. Parties.
+> +This Software License Agreement (SLA) is between Morse Micro Pty. Ltd. a=
+nd the
+> +user of the Software set forth (=E2=80=9Cyou=E2=80=9D, =E2=80=9Cuser=E2=
+=80=9D, =E2=80=9Ccustomer=E2=80=9D), and is effective as
+> +of the date of first access or download of the software by you. Morse Mi=
+cro is
+> +licensing this software to you free of charge upon the condition that yo=
+u
+> +accept all the terms of this SLA and only use this Software in conjuncti=
+on with
+> +Morse Micro products. ANY USE, REPRODUCTION, OR DISTRIBUTION OF THE SOFT=
+WARE
+> +CONSTITUTES YOUR ACCEPTANCE OF THIS AGREEMENT.
+> +
+> +2. Definitions.
+> +"Software" means any binary or source code that you have received from M=
+orse
+> +Micro or its authorized licensees and/or those portions of such software
 
-This prevents hangs, eliminates -ENOMEM errors, and improves throughput
-by optimizing resource usage and preventing unnecessary packet drops.
+A random user downloading the firmware from the linux-firmware
+repository will not have received it from Morse Micro directly, nor is
+the linux-firmware repo an authorized licensee.
 
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
----
-v2: Address feedback from Zhi-Jun You:
-    - Add ieee80211_tx_peek() API in mac80211 to peek at the next frame
-      without dequeuing, enabling accurate ring selection before dequeue
-    - Use get_ring_selector() on the peeked skb to determine the exact
-      target ring matching dp_tx, fixing ring mismatch on multi-ring
-      platforms (ipq8074, wcn6750, qcn9274, wcn7850)
-    Address feedback from Tamizh Chelvam Raja:
-    - Fix ath12k radio assignment: obtain ar from txq->vif through the
-      arvif chain instead of ah->radio flexible array
-    Move CRASH_FLUSH check inside the TX loop
-v1: https://lore.kernel.org/all/20260710155443.1761760-3-jtornosm@redhat.com/
+> +produced by Program=E2=80=99s code within the Software, as well as any o=
+ther machine
+> +readable materials (including, but not limited to, libraries, source fil=
+es,
+> +header files, and data files), any updates or error corrections provided=
+ by
+> +Morse Micro, and any user manuals, programming guides and other document=
+ation
+> +provided to you by Morse Micro under this SLA.
+> +
+> +3. License and Restrictions.
+> +Morse Micro grants you a non-exclusive, non-transferable, limited licens=
+e
+> +without license fees to:
+> +
+> +    a. use the software solely with a hardware product that includes one=
+ of the
+> +    Morse Micro Wi-Fi HaLow chips, including
+> +    wireless modules or evaluation kits;
+> +
+> +    b. to reproduce and distribute the Software complete, unmodified, an=
+d as
+> +    provided by Morse Micro, solely for use with a hardware product that
+> +    includes one of the Morse Micro Wi-Fi HaLow chips, including wireles=
+s
+> +    modules or evaluation kits.
 
- drivers/net/wireless/ath/ath12k/dp.c       |  1 +
- drivers/net/wireless/ath/ath12k/dp.h       |  2 +
- drivers/net/wireless/ath/ath12k/hal.c      |  1 +
- drivers/net/wireless/ath/ath12k/wifi7/hw.c | 65 +++++++++++++++++++++-
- 4 files changed, 68 insertions(+), 1 deletion(-)
+The distribution restriction here prohibits normal distribution of the
+firmware for basically every Linux distributor, where they would
+normally include all firmware files on installation media regardless
+of the hardware the OS is being installed on.  It also prohibits
+normal distribution via git repos, because we have no control on who
+downloads the firmware and for what purpose.
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
-index af5f11fc1d84..3d46cfbf0a1c 100644
---- a/drivers/net/wireless/ath/ath12k/dp.c
-+++ b/drivers/net/wireless/ath/ath12k/dp.c
-@@ -1539,6 +1539,7 @@ static int ath12k_dp_setup(struct ath12k_base *ab)
- 	}
- 
- 	for (i = 0; i < ab->hw_params->max_tx_ring; i++) {
-+		spin_lock_init(&dp->tx_ring[i].wake_tx_lock);
- 		dp->tx_ring[i].tcl_data_ring_id = i;
- 
- 		dp->tx_ring[i].tx_status_head = 0;
-diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
-index f8cfc7bb29dd..68d2020be9b8 100644
---- a/drivers/net/wireless/ath/ath12k/dp.h
-+++ b/drivers/net/wireless/ath/ath12k/dp.h
-@@ -58,6 +58,8 @@ struct dp_tx_ring {
- 	u8 tcl_data_ring_id;
- 	struct dp_srng tcl_data_ring;
- 	struct dp_srng tcl_comp_ring;
-+	/* Serializes wake_tx_queue operations for this ring */
-+	spinlock_t wake_tx_lock;
- 	struct hal_wbm_completion_ring_tx *tx_status;
- 	int tx_status_head;
- 	int tx_status_tail;
-diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/hal.c
-index a164563fff28..c1c656e4550b 100644
---- a/drivers/net/wireless/ath/ath12k/hal.c
-+++ b/drivers/net/wireless/ath/ath12k/hal.c
-@@ -390,6 +390,7 @@ int ath12k_hal_srng_src_num_free(struct ath12k_base *ab, struct hal_srng *srng,
- 	else
- 		return ((srng->ring_size - hp + tp) / srng->entry_size) - 1;
- }
-+EXPORT_SYMBOL(ath12k_hal_srng_src_num_free);
- 
- void *ath12k_hal_srng_src_next_peek(struct ath12k_base *ab,
- 				    struct hal_srng *srng)
-diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hw.c b/drivers/net/wireless/ath/ath12k/wifi7/hw.c
-index d9fdd2fc8298..306d51da3ea1 100644
---- a/drivers/net/wireless/ath/ath12k/wifi7/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/wifi7/hw.c
-@@ -1100,9 +1100,72 @@ static void ath12k_wifi7_mac_op_tx(struct ieee80211_hw *hw,
- 	}
- }
- 
-+static void ath12k_wifi7_mac_op_wake_tx_queue(struct ieee80211_hw *hw,
-+					      struct ieee80211_txq *txq)
-+{
-+	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(txq->vif);
-+	struct ath12k_link_vif *arvif = &ahvif->deflink;
-+	struct ieee80211_tx_control control = {
-+		.sta = txq->sta,
-+	};
-+	const struct sk_buff *peek_skb;
-+	struct dp_tx_ring *tx_ring;
-+	struct hal_srng *tcl_ring;
-+	struct ath12k_dp *dp;
-+	struct sk_buff *skb;
-+	struct ath12k *ar;
-+	u32 ring_selector;
-+	int num_free;
-+	u8 ring_id;
-+
-+	ar = arvif->ar;
-+	if (!ar)
-+		return;
-+
-+	dp = ar->ab->dp;
-+
-+	while (1) {
-+		if (unlikely(test_bit(ATH12K_FLAG_CRASH_FLUSH,
-+				      &ar->ab->dev_flags)))
-+			break;
-+
-+		peek_skb = ieee80211_tx_peek(hw, txq);
-+		if (!peek_skb)
-+			break;
-+
-+		ring_selector = dp->hw_params->hw_ops->get_ring_selector(
-+					(struct sk_buff *)peek_skb);
-+		ring_id = ring_selector % dp->hw_params->max_tx_ring;
-+
-+		tx_ring = &dp->tx_ring[ring_id];
-+		tcl_ring = &dp->hal->srng_list[tx_ring->tcl_data_ring.ring_id];
-+
-+		spin_lock_bh(&tx_ring->wake_tx_lock);
-+
-+		spin_lock(&tcl_ring->lock);
-+		num_free = ath12k_hal_srng_src_num_free(ar->ab, tcl_ring, true);
-+		spin_unlock(&tcl_ring->lock);
-+
-+		if (num_free == 0) {
-+			spin_unlock_bh(&tx_ring->wake_tx_lock);
-+			break;
-+		}
-+
-+		skb = ieee80211_tx_dequeue(hw, txq);
-+		if (!skb) {
-+			spin_unlock_bh(&tx_ring->wake_tx_lock);
-+			break;
-+		}
-+
-+		ath12k_wifi7_mac_op_tx(hw, &control, skb);
-+
-+		spin_unlock_bh(&tx_ring->wake_tx_lock);
-+	}
-+}
-+
- static const struct ieee80211_ops ath12k_ops_wifi7 = {
- 	.tx				= ath12k_wifi7_mac_op_tx,
--	.wake_tx_queue			= ieee80211_handle_wake_tx_queue,
-+	.wake_tx_queue			= ath12k_wifi7_mac_op_wake_tx_queue,
- 	.start                          = ath12k_mac_op_start,
- 	.stop                           = ath12k_mac_op_stop,
- 	.reconfig_complete              = ath12k_mac_op_reconfig_complete,
--- 
-2.54.0
+> +4. Reservation of Rights.
+> +You should distribute Software with a copy of this SLA. Software is
+> +copyrighted. Title to Software and all associated intellectual property =
+rights
+> +is retained by Morse Micro. Except as expressly provided herein, no lice=
+nse or
+> +right, express or implied, is hereby conveyed or granted to you by Morse=
+ Micro.
+> +You must retain all copyright notices on all Software, derivative works =
+and
+> +documentation. The intellectual property and proprietary rights of whate=
+ver
+> +nature in the Software and derivative works are and will remain the excl=
+usive
+> +property of Morse Micro or its suppliers. Nothing in this Agreement shou=
+ld be
+> +construed as transferring any aspects of such rights to you or any third=
+ party.
+> +Morse Micro and its suppliers reserve any and all rights not expressly g=
+ranted
+> +in this Agreement. You may not sell, assign, sublicense, lease, or other=
+wise
+> +transfer any part of this license. You must not:
+> +
+> +    a. use, license, sell or otherwise distribute the Software except as
+> +    provided in this SLA;
+> +
+> +    b. attempt to modify in any way, reverse engineer, decompile or disa=
+ssemble
+> +    any portion of the Software;
+> +
+> +    c. use the Software or other material in violation of any applicable=
+ law or
+> +    regulation, including but not limited to any regulatory agency.
+> +
+> +5. Ownership.
+> +The Software is licensed and not sold.  Title to and ownership of the So=
+ftware,
+> +including all intellectual property rights thereto, and any portion ther=
+eof
+> +remain with Morse Micro or its licensors. You hereby covenant that you w=
+ill not
+> +assert any claim that the Software created by or for Morse Micro infring=
+e any
+> +intellectual property right owned or controlled by you.
+> +
+> +6. Termination.
+> +This SLA will terminate immediately without notice from Morse Micro if y=
+ou fail
+> +to comply with any of its provisions, including the export laws provisio=
+ns and
+> +Section 10 that may govern the export of the Software from certain
+> +jurisdictions, including technical data.
 
+This is effectively either unenforceable after including it in the
+linux-firmware repo, or prohibitive enough that we can't include it at
+all.
+
+> +7. Disclaimer and Limitation of Liability.
+> +THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. MORSE MIC=
+RO
+> +FURTHER DISCLAIMS ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING WITHOUT
+> +LIMITATION, ANY IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PAR=
+TICULAR
+> +PURPOSE OR NON-INFRINGEMENT. IN NO EVENT SHALL MORSE MICRO BE LIABLE FOR=
+ ANY
+> +INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE OR CONSEQUENTIAL DAMAGES, OR DAM=
+AGES
+> +FOR LOSS OF PROFITS, REVENUE, DATA OR DATA USE, INCURRED BY YOU OR ANY T=
+HIRD
+> +PARTY, WHETHER IN AN ACTION IN CONTRACT OR TORT, EVEN IF MORSE MICRO HAS=
+ BEEN
+> +ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. THE SOFTWARE IS NOT INTENDED=
+ FOR
+> +USE IN ENVIRONMENTS OR APPLICATIONS WHERE EXTRAORDINARILY HIGH LEVELS OF
+> +QUALITY, RELIABILITY, AND FAILURE TOLERANCE ARE DEMANDED, AND/OR WHERE A
+> +MALFUNCTION OR FAILURE COULD LEAD TO SIGNIFICANT HARM TO LIFE, HEALTH,
+> +PROPERTY, OR RESULT IN SEVERE SOCIETAL REPERCUSSIONS ("CRITICAL APPLICAT=
+IONS").
+> +CRITICAL APPLICATIONS ENCOMPASS, BUT ARE NOT LIMITED TO, EQUIPMENT UTILI=
+ZED IN
+> +NUCLEAR FACILITIES, AVIATION AND SPACE EQUIPMENT, MEDICAL DEVICES, AUTOM=
+OTIVE,
+> +TRAIN, MARINE, AND OTHER TRANSPORTATION EQUIPMENT, DEVICES INVOLVED IN
+> +CONTROLLING COMBUSTION OR EXPLOSIONS, SAFETY DEVICES, ELEVATORS AND ESCA=
+LATORS,
+> +DEVICES ASSOCIATED WITH ELECTRIC POWER, AND EQUIPMENT USED IN FINANCE-RE=
+LATED
+> +FIELDS.
+> +
+> +8. Survival.
+> +Sections 4, 5, 6, 7 and 10 will survive termination or expiration of thi=
+s SLA.
+> +
+> +9. Privacy.
+> +Some features of the Software, if activated, may transmit a limited amou=
+nt of
+> +data to Morse Micro (or its service provider) about the status of the sy=
+stem
+> +before a crash event. Morse Micro does not associate the data with perso=
+nally
+> +identifiable information.
+> +
+> +10. Export Laws.
+> +YOU UNDERSTAND AND AGREE THAT THE SOFTWARE IS SUBJECT TO ALL APPLICABLE =
+EXPORT-
+> +RELATED LAWS AND REGULATIONS AND THAT YOU MAY NOT EXPORT, RE-EXPORT OR T=
+RANSFER
+> +THE SOFTWARE OR ANY DIRECT PRODUCT OF THE SOFTWARE EXCEPT AS PERMITTED U=
+NDER
+> +THOSE LAWS. WITHOUT LIMITING THE FOREGOING, EXPORT, RE-EXPORT, OR TRANSF=
+ER OF
+> +THE SOFTWARE TO CUBA, IRAN, NORTH KOREA, SUDAN, AND SYRIA IS PROHIBITED.
+> +
+> +11. Governing Law.
+> +The laws of New South Wales, Australia, govern all matters arising out o=
+f or
+> +relating to this SLA without giving effect to any conflict of law princi=
+ples.
+> +If any provision of this SLA is held to be unenforceable, this SLA will =
+remain
+> +in effect with the provision omitted, unless omission would frustrate th=
+e
+> +intent of the parties, in which case this Agreement will immediately ter=
+minate.
+> +
+> +12. Entire Agreement.
+> +This Agreement constitutes the entire agreement between the parties and
+> +supersedes all prior and contemporaneous agreements, proposals or
+> +representations, written or oral, concerning its subject matter. No
+> +modification, amendment, or waiver of any provision of this Agreement wi=
+ll be
+> +effective unless in writing and either signed or accepted electronically=
+ by the
+> +party against whom the modification, amendment or waiver is to be assert=
+ed. A
+> +waiver of any breach under this Agreement does not constitute a waiver o=
+f any
+> +other breach or future breach.
+> +
+> +
+> +MORSE MICRO
+>
 
