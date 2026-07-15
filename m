@@ -1,350 +1,168 @@
-Return-Path: <linux-wireless+bounces-39146-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-39147-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id czBmE5KGV2oUWQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-39146-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 15:09:38 +0200
+	id drQKES6KV2pBWgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-39147-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 15:25:02 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D43975E7CC
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 15:09:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 816B175EA58
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 15:25:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b="EJRNuAX/";
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39146-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39146-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=dolcini.it header.s=default header.b=IXZs7Fkh;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39147-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39147-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=dolcini.it;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 980B931BC8C7
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 13:02:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8AE223057EDD
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 13:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640FB42046E;
-	Wed, 15 Jul 2026 13:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0335C478E41;
+	Wed, 15 Jul 2026 13:22:57 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E368D420462
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Jul 2026 13:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6433438BD;
+	Wed, 15 Jul 2026 13:22:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784120559; cv=none; b=mzjtn0ZRmUx2vr2gn60/Jn/Y4fxGAar/vh524mEuoIm9QpSJ3QKyZThe3QoV1LBTZ9G15lHBEhNrumkz9OgOznkSeEGyTVKQjumT5ySLGbquIR+Egv+KhZU54YaC2eT5DkAOxcAfUCyFTjZkOA8HRj+JdlLxkxoZaga5pzC4u5Q=
+	t=1784121776; cv=none; b=sfnSKXSTdVdvS5B5Ntl7ekPLTxRpDYRduPH6XGcIhnkYB2QdRF2WmvSYxK78hM7QEswKBbFxlfyQYKOCUJcrzSy3uuSHH+D+znuahDM/NHpoNX12H7PtT2kepP4OmaH1gO6I3e0N/fbiH20CaY/nMCgb5FyHqcVoF5nnvu3tjJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784120559; c=relaxed/simple;
-	bh=Z0d1G8GrvD2+2VzGAcV1LS9mEP1NUU/Brga8ddE23aA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CMqewxhI7SVjJgWFvlXARqrMWyaeuAVOf3TFQ9fGWiDVeTF/u+lGcUiHPTOxOgk+fLRVAzTsJOUkPK2RmHPUfPv/j2T2fjEO4LmLJj/+cQdJvps5IAVXxj7mtMoyZ6Mrb+Of001DV92IUpp1Ebo8kbrEZK5PCQ7frfqVav1Y9xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EJRNuAX/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A431F00A3A
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Jul 2026 13:02:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784120557;
-	bh=2GU5mNOJ6dY84gWEImx+k/RkgTiLhJWQYHqbIZUDsCo=;
-	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc;
-	b=EJRNuAX/TvysSyBxgLj9fTtx3Xz82aY4a2l67hNXJdikqzn5cvggBgMaxV7M8sdka
-	 wpfMzJLAECeuPrU3wagRQ8G6qbX+DNibI5QZ0nzqI/eL8Fup8eMQlcYoWtmO5UEGa6
-	 2OtNey6u+03FRi6Yw7viAhbqXLDIJZ48jJvn6iBLu8Pydtq9njHVLCAlcFx/iNzYJF
-	 al1c/8Jhzih7wiYL3SuIP5DBQqLVxiWxDxD58VXqgAZH3rRM/huHGRxSh56+pDJJYs
-	 vyU9JxR284xTxbtZ47+vCflVYcHUQnwyrAmctzhMPgS+cGaOphweeTUYdBfLpDDHWd
-	 vU+P2/XTq7rvQ==
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-81e9d8f3289so29460987b3.1
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Jul 2026 06:02:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RosdGkYRe6LnMEy2WicKt8jiYYnCRafsoNa6KBvhDWnUr4z0WAKKWtdVaJ1yEprZz90A/aaLRXWEp6hO3diDw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+GCxsHo/r41RSrTxhnQVqC+Gu//EJ305HGVvR4hglxv4SNeCz
-	lfoCb63yHPyh8pDWE12w5wUplKejg5RqiJtX/ZC5BqrUZgPgsfpyQ+8toHA47n3ckNWln8R/y4B
-	6NRzKZgfXEGAUgiGXN/0g0wgFrzHJUVU=
-X-Received: by 2002:a05:690c:e298:20b0:81e:d792:a019 with SMTP id
- 00721157ae682-81ed792a286mr5323857b3.6.1784120556647; Wed, 15 Jul 2026
- 06:02:36 -0700 (PDT)
+	s=arc-20240116; t=1784121776; c=relaxed/simple;
+	bh=MMbHIEN+MKb6ESCBAJk0WKdZs9rfTrbWxqixkvhY/cY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MSetnvismJ2ARJF0F7BwA8xJGDSQg0vJDaTHGORZc3cLCjxoYLj8GtPkDVaPOSvsqPkVqih/dO7QkEbdN7ArD80N7LhmbueIwe1NYmrS9uYN2bEzTQYEM9L5KSrKr09z17zd6l+QTDoQGAXJn2nsPKbMQ27qQ4xPmxvjTrSz3bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=IXZs7Fkh; arc=none smtp.client-ip=217.194.8.81
+Received: from francesco-nb (xcpe-178-82-120-96.dyn.res.sunrise.net [178.82.120.96])
+	by mail11.truemail.it (Postfix) with ESMTPA id 8DBAA22BE7;
+	Wed, 15 Jul 2026 15:22:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1784121763;
+	bh=vV+F/Q2g+z1JgERi+3Itnnnx3B2OLvvKCZXJVebmC1I=; h=From:To:Subject;
+	b=IXZs7Fkh3JO2pEOchw7bljx9Jv3Zzudtieei/Fmw5S88xfggYTCKrUV2Pl1VIULWg
+	 5WX6krKPbqmQ/2odhuWBIhkISQpr28nn72ADHqCNQXz/LFLoRXy52nthPj/VqpH+9y
+	 LTgtsn+fJ+uvUvpO1mKcKfiX6h7TuvmvzAxt4fZoVY05NmNY6C61msR+xGoybRGTZe
+	 WI91OuJouxDJ7jDEWsQO8/VQ9EW37X9ef+PJl/kW5V6ZdPUMvhkWqMO4GW28gHHxrH
+	 uPw2v13XQzaqM1TNRCx2d0/g7AQ67/WZ2RpKd+v3bYN4Q+1oD2J+MN75GQGUsuovY8
+	 9P33EW2JYkF7w==
+Date: Wed, 15 Jul 2026 15:22:34 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: HE WEI =?utf-8?B?KOOCruOCq+OCryk=?= <skyexpoc@gmail.com>
+Cc: Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Kalle Valo <kvalo@kernel.org>, Kees Cook <kees@kernel.org>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wifi: mwifiex: bound uAP association event IEs to the
+ event buffer
+Message-ID: <20260715132234.GA56330@francesco-nb>
+References: <20260629120333.94222-1-skyexpoc@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260707044618.2476204-1-lachlan.hodges@morsemicro.com>
-In-Reply-To: <20260707044618.2476204-1-lachlan.hodges@morsemicro.com>
-From: Josh Boyer <jwboyer@kernel.org>
-Date: Wed, 15 Jul 2026 09:02:24 -0400
-X-Gmail-Original-Message-ID: <CA+5PVA7sOz2Uzt0NjK1HJgu0RCgHcipESYe1ksoz5T-tfaRWRQ@mail.gmail.com>
-X-Gm-Features: AUfX_mzrnba4QNsYMuyxLUbL0qxzweafuSo019AecYFN_v9Yv1FeCKtI08euFWE
-Message-ID: <CA+5PVA7sOz2Uzt0NjK1HJgu0RCgHcipESYe1ksoz5T-tfaRWRQ@mail.gmail.com>
-Subject: Re: [PATCH] morsemicro: add firmware for mm8108 support
-To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Cc: linux-firmware@kernel.org, linux-wireless@vger.kernel.org, 
-	arien.judge@morsemicro.com, dan.callaghan@morsemicro.com, 
-	ayman.grais@morsemicro.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-1.96 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260629120333.94222-1-skyexpoc@gmail.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[dolcini.it,none];
+	R_DKIM_ALLOW(-0.20)[dolcini.it:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	R_DKIM_REJECT(0.00)[kernel.org:s=k20260515];
-	TAGGED_FROM(0.00)[bounces-39146-lists,linux-wireless=lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[jwboyer@kernel.org,linux-wireless@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:lachlan.hodges@morsemicro.com,m:linux-firmware@kernel.org,m:linux-wireless@vger.kernel.org,m:arien.judge@morsemicro.com,m:dan.callaghan@morsemicro.com,m:ayman.grais@morsemicro.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:skyexpoc@gmail.com,m:briannorris@chromium.org,m:francesco@dolcini.it,m:miriam.rachel.korenblit@intel.com,m:johannes.berg@intel.com,m:kvalo@kernel.org,m:kees@kernel.org,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-39147-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:-];
+	FORGED_SENDER(0.00)[francesco@dolcini.it,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jwboyer@kernel.org,linux-wireless@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[francesco@dolcini.it,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[dolcini.it:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[linux-wireless];
+	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,francesco-nb:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8D43975E7CC
+X-Rspamd-Queue-Id: 816B175EA58
 X-Rspamd-Action: no action
 
-On Tue, Jul 7, 2026 at 12:47=E2=80=AFAM Lachlan Hodges
-<lachlan.hodges@morsemicro.com> wrote:
->
-> Add firmware and board files for the mm8108 chipset to be used
-> with the mm81x Wi-Fi driver.
->
-> Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+On Mon, Jun 29, 2026 at 09:03:33PM +0900, HE WEI (ギカク) wrote:
+> mwifiex_process_uap_event() handles EVENT_UAP_STA_ASSOC by exposing the
+> (re)association request IEs that the firmware copies into the event:
+> 
+> 	sinfo->assoc_req_ies = &event->data[len];
+> 	len = (u8 *)sinfo->assoc_req_ies - (u8 *)&event->frame_control;
+> 	sinfo->assoc_req_ies_len = le16_to_cpu(event->len) - (u16)len;
+> 
+> event->len is supplied by the device firmware and is never validated,
+
+Why not validating event->len instead, when we receive an MWIFIEX_TYPE_EVENT
+from the firmware? we could just add a new, validated, u16 event_len, in struct
+mwifiex_adapter and after that we can just use it in the code.
+
+and we reject invalid events as soon as possible in the software.
+
+
+> Fixes: e568634ae7ac ("mwifiex: add AP event handling framework")
+> Signed-off-by: HE WEI (ギカク) <skyexpoc@gmail.com>
 > ---
->  LICENSES/LICENCE.morsemicro                 | 125 ++++++++++++++++++++
+>  .../net/wireless/marvell/mwifiex/uap_event.c   | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/marvell/mwifiex/uap_event.c b/drivers/net/wireless/marvell/mwifiex/uap_event.c
+> index 679fdae0f001..adca7da29f0f 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/uap_event.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/uap_event.c
+> @@ -126,6 +126,24 @@ int mwifiex_process_uap_event(struct mwifiex_private *priv)
+>  				sinfo->assoc_req_ies = &event->data[len];
+>  				len = (u8 *)sinfo->assoc_req_ies -
+>  				      (u8 *)&event->frame_control;
+> +
+> +				/*
+> +				 * event->len is reported by the device firmware and is not
+> +				 * otherwise validated.  Reject a length that underflows the
+> +				 * header, or that would place the association request IEs
+> +				 * outside the fixed-size event_body[] buffer the event was
+> +				 * copied into; otherwise the IE walk in
+> +				 * mwifiex_set_sta_ht_cap() reads past event_body and out
+> +				 * of the adapter slab object.
+> +				 */
+> +				if (le16_to_cpu(event->len) < len ||
+> +				    (u8 *)&event->frame_control + le16_to_cpu(event->len) >
+> +				    adapter->event_body + MAX_EVENT_SIZE) {
+> +					mwifiex_dbg(adapter, ERROR,
+> +						    "invalid STA assoc event length\n");
+> +					kfree(sinfo);
+> +					return -1;
+> +				}
 
-This is problematic and we can't accept this firmware under this
-license.  Please see LICENSE-CRITERIA.md in the repo.  More comments
-below.
+In case we want to keep the change here, I would ask you to make the
+code slighly more compact.
 
-josh
+just define a
 
->  WHENCE                                      |  14 +++
->  morsemicro/mm81x/v56/bcf_aw_hm677.bin       | Bin 0 -> 2124 bytes
->  morsemicro/mm81x/v56/bcf_mm8108_mf15457.bin | Bin 0 -> 2124 bytes
->  morsemicro/mm81x/v56/mm8108.bin             | Bin 0 -> 479624 bytes
->  5 files changed, 139 insertions(+)
->  create mode 100644 LICENSES/LICENCE.morsemicro
->  create mode 100644 morsemicro/mm81x/v56/bcf_aw_hm677.bin
->  create mode 100644 morsemicro/mm81x/v56/bcf_mm8108_mf15457.bin
->  create mode 100644 morsemicro/mm81x/v56/mm8108.bin
->
-> diff --git a/LICENSES/LICENCE.morsemicro b/LICENSES/LICENCE.morsemicro
-> new file mode 100644
-> index 000000000000..adf90750d1af
-> --- /dev/null
-> +++ b/LICENSES/LICENCE.morsemicro
-> @@ -0,0 +1,125 @@
-> +                                  MORSE MICRO
-> +                     BINARY DISTRIBUTION LICENSE AGREEMENT
-> +
-> +1. Parties.
-> +This Software License Agreement (SLA) is between Morse Micro Pty. Ltd. a=
-nd the
-> +user of the Software set forth (=E2=80=9Cyou=E2=80=9D, =E2=80=9Cuser=E2=
-=80=9D, =E2=80=9Ccustomer=E2=80=9D), and is effective as
-> +of the date of first access or download of the software by you. Morse Mi=
-cro is
-> +licensing this software to you free of charge upon the condition that yo=
-u
-> +accept all the terms of this SLA and only use this Software in conjuncti=
-on with
-> +Morse Micro products. ANY USE, REPRODUCTION, OR DISTRIBUTION OF THE SOFT=
-WARE
-> +CONSTITUTES YOUR ACCEPTANCE OF THIS AGREEMENT.
-> +
-> +2. Definitions.
-> +"Software" means any binary or source code that you have received from M=
-orse
-> +Micro or its authorized licensees and/or those portions of such software
+evt_len = le16_to_cpu(event->len)
 
-A random user downloading the firmware from the linux-firmware
-repository will not have received it from Morse Micro directly, nor is
-the linux-firmware repo an authorized licensee.
+and use it.
 
-> +produced by Program=E2=80=99s code within the Software, as well as any o=
-ther machine
-> +readable materials (including, but not limited to, libraries, source fil=
-es,
-> +header files, and data files), any updates or error corrections provided=
- by
-> +Morse Micro, and any user manuals, programming guides and other document=
-ation
-> +provided to you by Morse Micro under this SLA.
-> +
-> +3. License and Restrictions.
-> +Morse Micro grants you a non-exclusive, non-transferable, limited licens=
-e
-> +without license fees to:
-> +
-> +    a. use the software solely with a hardware product that includes one=
- of the
-> +    Morse Micro Wi-Fi HaLow chips, including
-> +    wireless modules or evaluation kits;
-> +
-> +    b. to reproduce and distribute the Software complete, unmodified, an=
-d as
-> +    provided by Morse Micro, solely for use with a hardware product that
-> +    includes one of the Morse Micro Wi-Fi HaLow chips, including wireles=
-s
-> +    modules or evaluation kits.
-
-The distribution restriction here prohibits normal distribution of the
-firmware for basically every Linux distributor, where they would
-normally include all firmware files on installation media regardless
-of the hardware the OS is being installed on.  It also prohibits
-normal distribution via git repos, because we have no control on who
-downloads the firmware and for what purpose.
-
-> +4. Reservation of Rights.
-> +You should distribute Software with a copy of this SLA. Software is
-> +copyrighted. Title to Software and all associated intellectual property =
-rights
-> +is retained by Morse Micro. Except as expressly provided herein, no lice=
-nse or
-> +right, express or implied, is hereby conveyed or granted to you by Morse=
- Micro.
-> +You must retain all copyright notices on all Software, derivative works =
-and
-> +documentation. The intellectual property and proprietary rights of whate=
-ver
-> +nature in the Software and derivative works are and will remain the excl=
-usive
-> +property of Morse Micro or its suppliers. Nothing in this Agreement shou=
-ld be
-> +construed as transferring any aspects of such rights to you or any third=
- party.
-> +Morse Micro and its suppliers reserve any and all rights not expressly g=
-ranted
-> +in this Agreement. You may not sell, assign, sublicense, lease, or other=
-wise
-> +transfer any part of this license. You must not:
-> +
-> +    a. use, license, sell or otherwise distribute the Software except as
-> +    provided in this SLA;
-> +
-> +    b. attempt to modify in any way, reverse engineer, decompile or disa=
-ssemble
-> +    any portion of the Software;
-> +
-> +    c. use the Software or other material in violation of any applicable=
- law or
-> +    regulation, including but not limited to any regulatory agency.
-> +
-> +5. Ownership.
-> +The Software is licensed and not sold.  Title to and ownership of the So=
-ftware,
-> +including all intellectual property rights thereto, and any portion ther=
-eof
-> +remain with Morse Micro or its licensors. You hereby covenant that you w=
-ill not
-> +assert any claim that the Software created by or for Morse Micro infring=
-e any
-> +intellectual property right owned or controlled by you.
-> +
-> +6. Termination.
-> +This SLA will terminate immediately without notice from Morse Micro if y=
-ou fail
-> +to comply with any of its provisions, including the export laws provisio=
-ns and
-> +Section 10 that may govern the export of the Software from certain
-> +jurisdictions, including technical data.
-
-This is effectively either unenforceable after including it in the
-linux-firmware repo, or prohibitive enough that we can't include it at
-all.
-
-> +7. Disclaimer and Limitation of Liability.
-> +THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. MORSE MIC=
-RO
-> +FURTHER DISCLAIMS ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING WITHOUT
-> +LIMITATION, ANY IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PAR=
-TICULAR
-> +PURPOSE OR NON-INFRINGEMENT. IN NO EVENT SHALL MORSE MICRO BE LIABLE FOR=
- ANY
-> +INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE OR CONSEQUENTIAL DAMAGES, OR DAM=
-AGES
-> +FOR LOSS OF PROFITS, REVENUE, DATA OR DATA USE, INCURRED BY YOU OR ANY T=
-HIRD
-> +PARTY, WHETHER IN AN ACTION IN CONTRACT OR TORT, EVEN IF MORSE MICRO HAS=
- BEEN
-> +ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. THE SOFTWARE IS NOT INTENDED=
- FOR
-> +USE IN ENVIRONMENTS OR APPLICATIONS WHERE EXTRAORDINARILY HIGH LEVELS OF
-> +QUALITY, RELIABILITY, AND FAILURE TOLERANCE ARE DEMANDED, AND/OR WHERE A
-> +MALFUNCTION OR FAILURE COULD LEAD TO SIGNIFICANT HARM TO LIFE, HEALTH,
-> +PROPERTY, OR RESULT IN SEVERE SOCIETAL REPERCUSSIONS ("CRITICAL APPLICAT=
-IONS").
-> +CRITICAL APPLICATIONS ENCOMPASS, BUT ARE NOT LIMITED TO, EQUIPMENT UTILI=
-ZED IN
-> +NUCLEAR FACILITIES, AVIATION AND SPACE EQUIPMENT, MEDICAL DEVICES, AUTOM=
-OTIVE,
-> +TRAIN, MARINE, AND OTHER TRANSPORTATION EQUIPMENT, DEVICES INVOLVED IN
-> +CONTROLLING COMBUSTION OR EXPLOSIONS, SAFETY DEVICES, ELEVATORS AND ESCA=
-LATORS,
-> +DEVICES ASSOCIATED WITH ELECTRIC POWER, AND EQUIPMENT USED IN FINANCE-RE=
-LATED
-> +FIELDS.
-> +
-> +8. Survival.
-> +Sections 4, 5, 6, 7 and 10 will survive termination or expiration of thi=
-s SLA.
-> +
-> +9. Privacy.
-> +Some features of the Software, if activated, may transmit a limited amou=
-nt of
-> +data to Morse Micro (or its service provider) about the status of the sy=
-stem
-> +before a crash event. Morse Micro does not associate the data with perso=
-nally
-> +identifiable information.
-> +
-> +10. Export Laws.
-> +YOU UNDERSTAND AND AGREE THAT THE SOFTWARE IS SUBJECT TO ALL APPLICABLE =
-EXPORT-
-> +RELATED LAWS AND REGULATIONS AND THAT YOU MAY NOT EXPORT, RE-EXPORT OR T=
-RANSFER
-> +THE SOFTWARE OR ANY DIRECT PRODUCT OF THE SOFTWARE EXCEPT AS PERMITTED U=
-NDER
-> +THOSE LAWS. WITHOUT LIMITING THE FOREGOING, EXPORT, RE-EXPORT, OR TRANSF=
-ER OF
-> +THE SOFTWARE TO CUBA, IRAN, NORTH KOREA, SUDAN, AND SYRIA IS PROHIBITED.
-> +
-> +11. Governing Law.
-> +The laws of New South Wales, Australia, govern all matters arising out o=
-f or
-> +relating to this SLA without giving effect to any conflict of law princi=
-ples.
-> +If any provision of this SLA is held to be unenforceable, this SLA will =
-remain
-> +in effect with the provision omitted, unless omission would frustrate th=
-e
-> +intent of the parties, in which case this Agreement will immediately ter=
-minate.
-> +
-> +12. Entire Agreement.
-> +This Agreement constitutes the entire agreement between the parties and
-> +supersedes all prior and contemporaneous agreements, proposals or
-> +representations, written or oral, concerning its subject matter. No
-> +modification, amendment, or waiver of any provision of this Agreement wi=
-ll be
-> +effective unless in writing and either signed or accepted electronically=
- by the
-> +party against whom the modification, amendment or waiver is to be assert=
-ed. A
-> +waiver of any breach under this Agreement does not constitute a waiver o=
-f any
-> +other breach or future breach.
-> +
-> +
-> +MORSE MICRO
->
 
