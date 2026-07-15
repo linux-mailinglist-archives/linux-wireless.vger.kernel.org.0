@@ -1,228 +1,201 @@
-Return-Path: <linux-wireless+bounces-39124-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-39125-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ttL1GHsQV2ovEwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-39124-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 06:45:47 +0200
+	id EHnDCtAQV2o9EwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-39125-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 06:47:12 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A7F75A80E
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 06:45:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F6A375A835
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 06:47:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39124-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39124-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=live.com (policy=none);
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=n5ZCNZje;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=EHti3kjv;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39125-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39125-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EFD2F304FA55
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 04:45:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9D287301FB25
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 04:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DCEE56A;
-	Wed, 15 Jul 2026 04:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF0C355803;
+	Wed, 15 Jul 2026 04:47:08 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A86B54723
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Jul 2026 04:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F432459D1
+	for <linux-wireless@vger.kernel.org>; Wed, 15 Jul 2026 04:47:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784090728; cv=none; b=LVCWKUqlk6jAhPCF5KQEohm1RZvyo9CvolMmKsw8UOZfIew0TulxokFw7YIOHHR6t2GGKlnooW/CJ70ELaToz2RFqHyXkLtiT9518WFHrn5Imj7zOvlUJpnNTLhbiIxLXmK3p8EQJ2D6cDARtJrAtUfwZ929UnQn0BG6oqxP1JY=
+	t=1784090828; cv=none; b=PRRdxm8KoBifRzOHKjy/xBq9g5KrutwFfg/jI2mAw9YfYzG6OkzSuBYNtb+XxP5QEXPmHsBuO4XGjb/a5QrY2qX3wdwl47r/AfjXWPerutkSBKuGKMkgn/MVEiAnHszcwIPW2Sa2XizgUvlmPFB5bhMKzAhIGgV2Ky3oQp0K2y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784090728; c=relaxed/simple;
-	bh=0SKVwV/l8v7isum5HYv9wLdmuhlQpIQnBAHQWV69h9A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c047OurTpG9ljCTFT4Ha9uXSOXhogvJbkH59PZbsDGjz1wnIIFkoRiPu1CD9Ee7VJIXKN19qbodOR5UeTnlxSGBTy1HVopdez8dHXJfYxK1Im7Vjyln8iOZtOwesTiIH8WY1JE81+zoaGUe6XfhGwBHkXH/R5zhYPOaXq90JI7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=live.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.224.54
-Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-668005ba03cso2413974d50.2
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 21:45:26 -0700 (PDT)
+	s=arc-20240116; t=1784090828; c=relaxed/simple;
+	bh=r6ZuurDGK6UwF5g8/AftJ7m633AyRIHmPTqn4G6VrM0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=HCO7MCn1IuWqxUrmUjZbqhQ+ma+JGb1ZYCXeSD9VXJPblfbKlIMeGAjCfBWgdbBalaoFLLuMOtZn6eX7cS5eBBZTM69mrlxBxHkwdd5LuNr4n3f771DPX36klftKeVdbdvefCUiqqdZuROiYAi2TKCcV7c3KGXvyNNSmJ/PzLwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=n5ZCNZje; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=EHti3kjv; arc=none smtp.client-ip=205.220.168.131
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66F3l9Im2269664
+	for <linux-wireless@vger.kernel.org>; Wed, 15 Jul 2026 04:47:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	jHLyLy9xJ9opQ7XzFo2f42ngzaMXGxPCwphpvbA63nc=; b=n5ZCNZjel4lcXrk4
+	1F/5Rx2sk7fLwooYlb4VBOJyPAigQi6sErTPzf/h9xZMPXAcrM+MeGE7nVNml+SM
+	jsb26nvcGgu0dMKNdySuAWUnzAKk4bauivC7N6+OQKQPn5iOFneYICPoWAqmUht5
+	G/H4AX3PtcGPpVlBNls/1s7xyJNPmf5vwVHteDDgqkjRbao/at7vk0T776fylM1X
+	88+yBGES/EPEMf4RfZflIbA5QsyzFjkY/c4rZWQgDSpNAhqbcrOuqoH3nY2v5Lj6
+	YdS+VYQ5gOCCAMjAk4ZL/mUtzFG1c63CCC3Fkyjx/doXotMSq4VkHO2VN7uzpAs3
+	IAy4YQ==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fds9mhx3m-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 15 Jul 2026 04:47:06 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-5174a23afcbso19501481cf.3
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 21:47:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1784090825; x=1784695625; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jHLyLy9xJ9opQ7XzFo2f42ngzaMXGxPCwphpvbA63nc=;
+        b=EHti3kjv6iG6TA6LMNGPUWv4MpIGnPeiQnoedHh6dsyLIlfumGwl7pcQb/8AZPock5
+         qewWHZUsv6QUNyS7oJG4C8pKjEaAE5zONHMq9F772eMu3svsLmEXqtyiXrcjRfbc10WW
+         u9u2sjSG0ua0YH9HKtSGgrKd5SbMq4rgdl8psJRSNprkTMdBEkZDP5swxRGnB/XSr6Gs
+         Uno45q1uP4+8xSnXcLR2SAdl5qZKbwcovoQ7Un6OFZyRRC1x3lQ854dh/LEwFpBwqVXf
+         bFjiW13GA+pkcfWMeY49HLmTG104g6JzixGWCzvebpl5jVinzhBzZxTExZHYYr5L9hx2
+         RgIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784090726; x=1784695526;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JWW74AmImRLmdesZdoy1+m1+TdvbqosVmdq9Fea4fTA=;
-        b=m9AB2/KWN8+btD95UqB65PUYdmy1B6aFrB1yHH4aiZnFB+4sdX0wOX/zJ8XMaFCkfj
-         WddDDr1w2JhKjMeSazFo8dBX6em3fpez5NztlcE00vcA8uMG0MzyM9mrtnRfIKm9CS3u
-         rX6sXcqg2J5S5AnMiS4XHs6FTIbRJoeS5ILdLhADkBia4xlEfJoppnehukhc4BTwQ8mC
-         HIlYzvfzHH3xolijMb/dyFmf4SgErqbWnK3oQ7ftw7Iv7cB3qk5HYKW8H6/MMi6VbM0+
-         iZkrzavotvgkcaRCEmfLgGcnsNpPp8EWBmhfTu5H3/rPJGwHkBMh+RtkyXPPNdyY2Tdc
-         SmiA==
-X-Forwarded-Encrypted: i=1; AHgh+Rp8q6z4wJgfXVKyvYuUqK6j0cXtpV6KnXHk29r8nhk+p9dMfZbCqOYnafdTS3Dc+cVL4mcGQP/bAwJio1McQA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcevTCrbmIydr3QiVrGZMHaWufHnVm6lud8wyP2hyzHO9Qs6sn
-	2hup6q35JKw1QgkcHlIy5yTAIlkDouNtZOT1cyJGJSKnxyry/FwhgDS6
-X-Gm-Gg: AfdE7ck/JnUEdjVC7K37XBnRDpEyQARllE9lfEBUiz44DzTpy38RBXl5wycg+rxM5aN
-	OF6LPCfW3YwIVr0dpupQ6GgkFoBiNl2hd/83hyplBhuyEApB5F0oeBULaF4i+ozHgKGdiHuySAS
-	VZ2zrU0ihUaar+T+NeeA9Z+g8ntufkh/BrCb+BiZJtlTEuzKcrqHhCEqE77YALhGYDZ7pDDgDqm
-	yHgZNR0wJrhLxB+/5LzOqk5Yb6nNqveiW24hrVqeSKDpT172U54+856+8Y+a9EM/UZE0pVj604f
-	FraL6b0rsiPjGmdo17g8cCMMRnFCfJD2DOprnLfmLN9u6t9CxVTVsVPpbgmh3Zc9zHwd6harV+h
-	j01m1F8mtWAGzfGurSqm9AvefTLWmQgjbm02rWcwKLgBZTcop6nojGO3jRJHEfCqZQEZDa/QdWz
-	UYZW6AFVZZh0RDKRY=
-X-Received: by 2002:a05:690e:440c:b0:660:a41d:d180 with SMTP id 956f58d0204a3-668029bb4c1mr3288750d50.21.1784090725993;
-        Tue, 14 Jul 2026 21:45:25 -0700 (PDT)
-Received: from Mateus-Laptop ([2804:7f3:4a10:896d:88ce:72d6:47ee:a87d])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-667874c2d15sm17941180d50.0.2026.07.14.21.45.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 21:45:25 -0700 (PDT)
-From: "Mateus B. Cassiano" <mbc07@live.com>
-To: nbd@nbd.name
-Cc: lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	"Mateus B. Cassiano" <mbc07@live.com>
-Subject: [PATCH] wifi: mt76: pass LED define via ccflags-y in driver submodules
-Date: Wed, 15 Jul 2026 00:44:32 -0400
-Message-ID: <20260715044431.1207-2-mbc07@live.com>
-X-Mailer: git-send-email 2.55.0.windows.2
+        d=1e100.net; s=20251104; t=1784090825; x=1784695625;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=jHLyLy9xJ9opQ7XzFo2f42ngzaMXGxPCwphpvbA63nc=;
+        b=X2axi42vOcBcR96N1RdHq9LCPFAn3RnjqXI0J+YGQL4SQjk48HmMvCX4mSyYxvKXyz
+         MIZVUPhYyp7w7v5sPZcLfAXPu7y7xhVO3ODyqo8LN1KQGVQZ2QVbPwMHEmboCIWrLjDy
+         5jdbbwLQqQxIAcOoQeHbWGahyAXbRVj3db2N3/elaOo8vB9qfzQcjw2tVwGFBJ1XfiLG
+         dAGDQ4pvlnw14goyFKEK2XENUIEVv9GCFD41hN+ChCR/JIcMuZRLj1R4GNhxxdm5BPMX
+         Zb3/Dgog4aNNLvZRNglk6be9kxf2Eeq5dw8CpP9XHdb26yYVGiXGoUovTidcvUrzTS/Y
+         XoIQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoqZ+CKgUPvODOgXLpYHGqHB7fSPK5s73LGzJ+rb35CGlYRNCyQ7xSgTDHQq+8xWU9e/7h6S9s3WF4R1EtiGw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4qYUdavMYTZlC5UjR2cWfF1zesbHSfg33/JzbeHrprQ6qBF4o
+	F+T9Io2Kbi8/q4S++6C1vtEXx7QPmsv7+0Tbkgp+TFWeEjSQ/XSho5dWyFCB0U6oQBC2PkQqHzU
+	90LBQX5pvFtVoCNwDoFD+l/6TriAfDuW2YDkOuCN24RHtjWg7NwZ7F/rfZVqSlgharcclnKUfzN
+	CJpg==
+X-Gm-Gg: AfdE7ckkFdl1VIf6otXgDLPevrkpelym38g3d7CNdyyivCNKSmBCIoTQcqIGtu9h3LO
+	kSIwUFMf9SjubKH5MhMohudPrkl0ll3agsloYkI30WspVVmpilSNEELOAdIIJHGtKAHZYObQ2kk
+	OgK979OXGZ2JMIxYlaUzfFbPyDJPwUc51qBIZ6rfEdJKXX9HyshPjd3qeZQQk/ty0szhY7O0XEM
+	Bo5+32ckuni8oszBXrV8wZv4j/4Bs65I3uZAW/j1tEOAvc4iMqPXWSstEZ+eTsuE/k4W+hT55R7
+	HyxRT3gNtfB3aRR7zBFUEZSHxVZbjzb/F098boR6XSCWSRfxRXNgDsnKTRMcSTEbSx/DjKAZUyJ
+	7O8dzgHdGVHIAVMoCsgQe2at+OChgkS9YBeb2/XZ7
+X-Received: by 2002:a05:622a:346:b0:51c:857f:9bfd with SMTP id d75a77b69052e-51cbf21096amr147710721cf.41.1784090825340;
+        Tue, 14 Jul 2026 21:47:05 -0700 (PDT)
+X-Received: by 2002:a05:622a:346:b0:51c:857f:9bfd with SMTP id d75a77b69052e-51cbf21096amr147710621cf.41.1784090824912;
+        Tue, 14 Jul 2026 21:47:04 -0700 (PDT)
+Received: from [192.168.1.110] ([178.197.223.174])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4950a322dc6sm129267505e9.10.2026.07.14.21.47.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jul 2026 21:47:04 -0700 (PDT)
+Message-ID: <5cb62eb8-f8e7-4425-9e2c-2ae400bee031@oss.qualcomm.com>
+Date: Wed, 15 Jul 2026 06:47:02 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath10k: Drop redundant NULL check on devm_clk_get()
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+        Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260705172405.119084-2-krzysztof.kozlowski@oss.qualcomm.com>
+ <75ef4371-b66a-486a-8555-e3a3f6ee5d88@oss.qualcomm.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <75ef4371-b66a-486a-8555-e3a3f6ee5d88@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE1MDA0MSBTYWx0ZWRfX+WV6SV4ZNYgN
+ FdF0L3mNOJEvLDr8BYze7/CHudW4EhWJQqbR+GSjhiBeLbiA3KrWyQyhxsRRFHwJ+l+4i3coQC7
+ IPt9TQ6vvwxSF9BGjAcJqcUV5KzIckAq8atEItRbve7cdRIBXZHB/0oQ8TsmC28imczeU93jhdb
+ s+XIFDm3tbpOx1vOBvOQsyfzkGVWdh3R4X8vws7FFx6zgVqQFcmc+nWWzIgfNdUhmup31IFXOk4
+ bkSEqTWt8+NlTBkt6uAo0517eYd97DMhAadwPoRb1+IYkzU7qJv4n3aDb9qYSq+Q3QvOAq/mIi9
+ hYmHerj6QTWjFNPftYbph6Hz6Y4fIg5l/fMjpS1jscbBLzy+ko3yu3wmGoaMJ3a4RyDnusi9QHj
+ CYGbrfsdjFUCqODhOk1oBy3dxMBr/KQ2KZoJB1lVcHWPHScWI9d0BajN9MmDaAXfG0RB2OaItlg
+ n6IlgMzw56c1f2UJb8A==
+X-Proofpoint-ORIG-GUID: mYU0gzOAZNM1mN1HkKSCuF4ACN5eVNAn
+X-Proofpoint-GUID: mYU0gzOAZNM1mN1HkKSCuF4ACN5eVNAn
+X-Authority-Analysis: v=2.4 cv=E+79Y6dl c=1 sm=1 tr=0 ts=6a5710ca cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=N6niishs+lR9UBL1FN3Qrw==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
+ a=WNKottax_SZD0szvUdcA:9 a=QEXdDO2ut3YA:10 a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE1MDA0MSBTYWx0ZWRfX/UHXiWixdv5s
+ N7UqfD3o9nLftd+3nqV7NWVmVQDYRxZxjiWtYqtBcz5ZhQw27hu+UkZcMvHhxBA/ftUuIak09Ys
+ pzNLMIHNsBwgCjhI7x8MIqSwXIuQz60=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-15_02,2026-07-14_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 clxscore=1015
+ lowpriorityscore=0 spamscore=0 impostorscore=0 adultscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607150041
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.14 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[live.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,m:mbc07@live.com,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-39124-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER(0.00)[mbc07@live.com,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-39125-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,mediatek.com,vger.kernel.org,lists.infradead.org,live.com];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mbc07@live.com,linux-wireless@vger.kernel.org];
-	ALIAS_RESOLVED(0.00)[];
-	R_DKIM_NA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:jeff.johnson@oss.qualcomm.com,m:jjohnson@kernel.org,m:linux-wireless@vger.kernel.org,m:ath10k@lists.infradead.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[krzysztof.kozlowski@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oss.qualcomm.com:from_mime,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[krzysztof.kozlowski@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[live.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,live.com:from_mime,live.com:email,live.com:mid]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D3A7F75A80E
+X-Rspamd-Queue-Id: 8F6A375A835
 
-Commit d2b01fbc329b ("mt76: pass LED define via ccflags-y")
-converted the top-level Makefile from the deprecated EXTRA_CFLAGS
-to ccflags-y so that -DCONFIG_MT76_LEDS keeps working now that
-kbuild no longer honours EXTRA_CFLAGS.
+On 14/07/2026 00:31, Jeff Johnson wrote:
+> On 7/5/2026 10:24 AM, Krzysztof Kozlowski wrote:
+>> devm_clk_get() does not return NULL (only valid clock or ERR pointer),
+>> so simplify the code to drop redundant IS_ERR_OR_NULL().
+> 
+> FWIW my AI review agent says:
+> Under !CONFIG_HAVE_CLK (x86 COMPILE_TEST), devm_clk_get() returns NULL;
+> IS_ERR(NULL) is false so clock_init() returns 0 with NULL clocks stored
+> 
+> Perhaps the stub function in include/linux/clk.h should be updated to return
+> an ERR_PTR() instead of NULL?
+> 
 
-However, ccflags-y (like EXTRA_CFLAGS before it) only applies to
-the kbuild makefile it is set in and is not inherited by
-subdirectories pulled in via obj-y/obj-m. The mt7603, mt7615 and
-mt7915 driver subdirectories each set their own
-"EXTRA_CFLAGS += ... -DCONFIG_MT76_LEDS", which is now a silent
-no-op. As a result, CONFIG_MT76_LEDS is undefined when building
-mt7603/init.c, mt7615/init.c, mt7615/pci_init.c and mt7915/init.c,
-the IS_ENABLED(CONFIG_MT76_LEDS) blocks are compiled out, and the
-mt76-* LED class devices are never registered for these drivers.
 
-Convert these subdirectory Makefiles to ccflags-y as well.
+Yes, that's on my todo list.
 
-mt7996/Makefile never carried the define at all, even though
-mt7996/init.c has the same IS_ENABLED(CONFIG_MT76_LEDS) checks for
-its LED callbacks and GPIO mux setup. Add ccflags-y there too so
-mt7996 LED support is enabled consistently with the other drivers.
-
-mt76x0, mt76x2, mt7921 and mt7925 contain no CONFIG_MT76_LEDS
-references and are left untouched.
-
-Fixes: d2b01fbc329b ("mt76: pass LED define via ccflags-y")
-Link: https://github.com/openwrt/mt76/issues/1077
-Signed-off-by: Mateus B. Cassiano <mbc07@live.com>
----
-Notes for reviewers (not for the commit message):
-
-Previously submitted as https://github.com/openwrt/mt76/pull/1090
-before I noticed that PRs on the GitHub mirror don't seem to be
-reviewed.
-
-Tested on a D-Link DIR-882 A1 (dual MT7615 radios) by building
-OpenWrt at commit e4c35c2eec66 with this change applied to the mt76
-package: the mt76-* LED class devices appeared again under
-/sys/class/leds. The same result was reported on different MT7615
-hardware in
-https://github.com/openwrt/mt76/issues/1077#issuecomment-4557037203
-
-The mt7603 and mt7915 hunks are the same fix applied for consistency,
-but I don't have that hardware to test.
-
-mt7996 in particular enables IS_ENABLED(CONFIG_MT76_LEDS) code paths
-that appear to have never been built with the define before, so it
-would be good if someone with mt7996 hardware could confirm nothing
-regresses. I'm happy to drop the mt7996 hunk and keep only the others
-if preferred.
- mt7603/Makefile | 2 +-
- mt7615/Makefile | 2 +-
- mt7915/Makefile | 2 +-
- mt7996/Makefile | 1 +
- 4 files changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/mt7603/Makefile b/mt7603/Makefile
-index 57d28591..5e7ab30f 100644
---- a/mt7603/Makefile
-+++ b/mt7603/Makefile
-@@ -1,5 +1,5 @@
- # SPDX-License-Identifier: BSD-3-Clause-Clear
--EXTRA_CFLAGS += -Werror -DCONFIG_MT76_LEDS
-+ccflags-y += -Werror -DCONFIG_MT76_LEDS
- obj-m += mt7603e.o
- 
- mt7603e-y := \
-diff --git a/mt7615/Makefile b/mt7615/Makefile
-index 9274c006..8b8eff3f 100644
---- a/mt7615/Makefile
-+++ b/mt7615/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: BSD-3-Clause-Clear
- 
--EXTRA_CFLAGS += -DCONFIG_MT76_LEDS
-+ccflags-y += -DCONFIG_MT76_LEDS
- obj-$(CONFIG_MT7615_COMMON) += mt7615-common.o
- obj-$(CONFIG_MT7615E) += mt7615e.o
- obj-$(CONFIG_MT7663_USB_SDIO_COMMON) += mt7663-usb-sdio-common.o
-diff --git a/mt7915/Makefile b/mt7915/Makefile
-index 6b0058ca..7ea5b05c 100644
---- a/mt7915/Makefile
-+++ b/mt7915/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: BSD-3-Clause-Clear
- 
--EXTRA_CFLAGS += -DCONFIG_MT76_LEDS
-+ccflags-y += -DCONFIG_MT76_LEDS
- obj-$(CONFIG_MT7915E) += mt7915e.o
- 
- mt7915e-y := pci.o init.o dma.o eeprom.o main.o mcu.o mac.o \
-diff --git a/mt7996/Makefile b/mt7996/Makefile
-index 69d2d4bb..28ecee3c 100644
---- a/mt7996/Makefile
-+++ b/mt7996/Makefile
-@@ -1,5 +1,6 @@
- # SPDX-License-Identifier: BSD-3-Clause-Clear
- 
-+ccflags-y += -DCONFIG_MT76_LEDS
- obj-$(CONFIG_MT7996E) += mt7996e.o
- 
- mt7996e-y := pci.o init.o dma.o eeprom.o main.o mcu.o mac.o \
--- 
-2.43.0
-
+Best regards,
+Krzysztof
 
