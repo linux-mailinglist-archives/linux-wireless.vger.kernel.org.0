@@ -1,262 +1,177 @@
-Return-Path: <linux-wireless+bounces-39118-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-39119-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tpjLBwrjVmq5CQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-39118-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 03:31:54 +0200
+	id HBcpI6nmVmqvCgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-39119-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 03:47:21 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0690759E4F
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 03:31:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F365B759F3B
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 03:47:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39118-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39118-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BkADfyjV;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-39119-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-39119-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2BAC63016668
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 01:31:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0648D3014C7D
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jul 2026 01:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE66B13790B;
-	Wed, 15 Jul 2026 01:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68AA986341;
+	Wed, 15 Jul 2026 01:47:19 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E61342BC2D;
-	Wed, 15 Jul 2026 01:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289D3EAC7
+	for <linux-wireless@vger.kernel.org>; Wed, 15 Jul 2026 01:47:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784079110; cv=none; b=SJFA0LOPp+hnB6Eb2R4MmuEGAKAXCaILR1bTcZcn0htVgjuDn+9z4TBYPe1XezBC9Mu8pO2+ooB9qCNvYXvq6/wr51l72t02XoT2axXCslEikmqLux3E8yA66dCWTZUnnw5+yp76D1bV4DH261/kC43bQEtwTc0cyvDodq5OenA=
+	t=1784080039; cv=none; b=MvqSHuUZTpO4Gvln6+CCrwgaqKT5k+CGDwdDFZnoD1VPU04P6U19xcxXyqi2f0REZqaQl5H8O21r0IjZnBmmFrFCjbV8v6Z5+wR+LTXSGgwFR4aH5BDfNdwjSe8pphk9L9Oc5VZ5FhynY/Ge1Wp1BruKXoUkQT+U2leTbyejKLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784079110; c=relaxed/simple;
-	bh=JolINCmfYn2E7e7jQpQVb8AT4gX2d5879Tl7fkZpYDo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BvuZXvFhWsrpnU9UQC9q9KmEONr0CFqCF+Eiw57+GSQPrDAq8ScZi9RI9Oe5E2noy0MuLXdb4Pj0B+X/S9QH7K9KW9ghlkzhBj+tJ6o9Xorhe35uaNwv8Wiw6hmWdB4ZIW9E6tlYOgMDTkq1YXArK9D4u5qPIgZr2jHKK6eNw/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-X-UUID: ef2f05047fec11f1aa26b74ffac11d73-20260715
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:33fab99c-e2d0-42db-bf54-18643809bb07,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:681d94a704a6d08e0fd9a6deed779929,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|865|898,TC:nil,Content:0
-	|15|50,EDM:-3,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:
-	0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: ef2f05047fec11f1aa26b74ffac11d73-20260715
-X-User: liujiajia@kylinos.cn
-Received: from nature [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <liujiajia@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1654905911; Wed, 15 Jul 2026 09:31:42 +0800
-Date: Wed, 15 Jul 2026 09:31:40 +0800
-From: Jiajia Liu <liujiajia@kylinos.cn>
-To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
-Cc: "Berg, Benjamin" <benjamin.berg@intel.com>,
-	"Berg, Johannes" <johannes.berg@intel.com>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] wifi: iwlwifi: use unique thermal zone type
-Message-ID: <albi_EA_RuiEQ8kK@nature>
-References: <20260312014043.13361-1-liujiajia@kylinos.cn>
- <DS0PR11MB7880D6838D23BBE2A821FF1BA3F92@DS0PR11MB7880.namprd11.prod.outlook.com>
+	s=arc-20240116; t=1784080039; c=relaxed/simple;
+	bh=VzpdxuHb8maKJVpJ29m1XvNr/HeU5CaERW0oz/1NJgY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VXtUq+TXhCHz0w/EuxxMYtwenEJl7gcoLT2CQB+ScXKLssybBd/GZoELtQMf5ayaqJNJHLwNXRxuw3IfrLRdyp0jdqdKqRLTonpNrE5x+XuXZOfC1ct6y3gD+aGgqJJ3xkKUoZ5KhrPJTf6drjIjM3CYY1/PfKhtjw8C6sxkj/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BkADfyjV; arc=none smtp.client-ip=209.85.214.181
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cc7e86e7aeso16240345ad.2
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Jul 2026 18:47:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784080037; x=1784684837; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1G5U81Dkih/D0CAkNBfSOxVYZXTH2mys99woWjtS4JI=;
+        b=BkADfyjVLjqY4YphKcLBlCBa6Vf7gbTT4Sk9qjFfxuPcysyOym0+7DiKcKrxpOX7va
+         HiOImalvfWLfkCHyQLNLzn52XX3UPFpoAoEF1EnknDE3/12jHNNuLSNGrkP070c1JtIB
+         k0SyMWNUyo4eCp934OOjRYX4gDd/5LnVF53Jz0fvplscaE4dWq1I/QbzGw+TUJOh6Q2d
+         iVw/ZwDmGzI3oLbTGYBgZdM2IPTp+YXTI44G7uScZbYpiAieU8q2gh6QQVTx+Rwggj+e
+         uoGfLs25K063xvjnVIGeoNV0iGrWXR7S8HR6Q1fK37j6lxWalNCt7fhGhPPrtsD5yvjP
+         nYhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784080037; x=1784684837;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1G5U81Dkih/D0CAkNBfSOxVYZXTH2mys99woWjtS4JI=;
+        b=qXRnR3i3saYlUCU3j0O8GDRggBMA8v5kvdggj8g8fhWtZJzP9+xudW0EwhH3DQcsnB
+         fSOFsL9Y3qX1aIhEA3Pw3M0LLDkhbOVzKEQTWinGMENgxiAraNjTmpwXOrgGBKY8jK3n
+         w5HA9yrb+98S+t0yUldgwDfRbC5bqyfMkdQAno+A0MrwH/8+6QoDwsM9DybLpAAboPbz
+         /DTcmc6rFACI3S2KJte7zfWWFv+lfwYvlbMHHMkbN3u+/fUw5FCEMP0XK1AEekzlPJbG
+         Z/zXbI+357N3hc1Z+5XtdAyf8/Glf6WIK36le6xfGxfbFvXHgzj8i15KUnDDziKpS4Iz
+         SDqA==
+X-Gm-Message-State: AOJu0Yw9fV568QOobfkOR5eSQEcuL9r1MfRAFDNhKP2y+e9tj5XDWD+o
+	DpmbR2gsVIEozlSDxE6t24H2v2qf+WSYbyaFESVivL1cBk80AAdPcfJQOyVK8Q==
+X-Gm-Gg: AfdE7cljUqNfnjmXLUcqR2CF7xLrUAAKB8/RGtgC0iHv7FczKSxM78RDYR5tKFXDmgZ
+	2iQO0Mh2fqyZIlbN+NmgSmWNMMEZYt1Cb8/RNx/0xYhjOj78Cj7fWwTdNiuqrtuA81htY/a9os/
+	VOJGOrF573ypW50Sfi+BKLAy39/oG7H9CTg0kIti+hnSXQrgTWnPASXE4h+Mle2Xdd+4HXxU0wW
+	Bm4sABMVq4tGQEFKyppQ9GA1MtJIYfSMyrOlBo6rD5VErzX+aS8XQSCqVmnf9NkTDxriDdTp25n
+	xg9OjMp9vISaZ0iWdpm4eOyPOAcTDFoeThdlain8A80YpMzek9EDmGeWM7EGdBo/q9xnSUEx5zb
+	0Ny2dm+mbXs3csWwLkMFGuylu82Wx8MvsZGsh2Z36aT9LvVsXc/s4aayIAUBqWM5YyFhPbHjLvW
+	DBDGq1z0lhs+DIzIFJRjX4/Snb6tvO+i5V7vAnwlPtsRrt/3YhbPGeFZ19iBKgzNYI+M1r22ezQ
+	ok/jjS08QUSjuipgC5ZllRCSxlMR+da4JyUMOmvaGzTRxQilgdJHaMCoLTqXhI4xQ==
+X-Received: by 2002:a05:6a21:6803:b0:3b5:52b4:87a7 with SMTP id adf61e73a8af0-3c110776462mr17879764637.6.1784080037488;
+        Tue, 14 Jul 2026 18:47:17 -0700 (PDT)
+Received: from ryzen.lan ([2601:644:8000:7a86::e34])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-311a6115e61sm70110084eec.22.2026.07.14.18.47.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 18:47:16 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	"John W. Linville" <linville@tuxdriver.com>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH wireless] mac80211: stop tpt LED trigger timer before freeing trigger
+Date: Tue, 14 Jul 2026 18:47:15 -0700
+Message-ID: <20260715014715.1416183-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DS0PR11MB7880D6838D23BBE2A821FF1BA3F92@DS0PR11MB7880.namprd11.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.96 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:miriam.rachel.korenblit@intel.com,m:benjamin.berg@intel.com,m:johannes.berg@intel.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[kylinos.cn];
-	FORGED_SENDER(0.00)[liujiajia@kylinos.cn,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-39119-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:johannes@sipsolutions.net,m:linville@tuxdriver.com,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[liujiajia@kylinos.cn,linux-wireless@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-39118-lists,linux-wireless=lfdr.de];
-	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_FIVE(0.00)[5];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,kylinos.cn:email,kylinos.cn:from_mime,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B0690759E4F
+X-Rspamd-Queue-Id: F365B759F3B
 
-On Tue, Jul 14, 2026 at 06:58:40PM +0000, Korenblit, Miriam Rachel wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Jiajia Liu <liujiajia@kylinos.cn>
-> > Sent: Thursday, March 12, 2026 3:41 AM
-> > To: Korenblit, Miriam Rachel <miriam.rachel.korenblit@intel.com>; Berg,
-> > Benjamin <benjamin.berg@intel.com>; Berg, Johannes
-> > <johannes.berg@intel.com>; linux-wireless@vger.kernel.org; linux-
-> > kernel@vger.kernel.org
-> > Cc: Jiajia Liu <liujiajia@kylinos.cn>
-> > Subject: [PATCH] wifi: iwlwifi: use unique thermal zone type
-> > 
-> > Unloading iwlmld or iwlmvm can trigger hung task when two devices using
-> > iwlmvm and iwlmld respectively on one setup. Their thermal zones have the
-> > same type and share the same hwmon device created by the first zone. The
-> > second zone indirectly holds the first zone through hwmon and prevents the first
-> > zone from unregistering.
-> > Tested with AX211 (8086:7af0) and BE200 (8086:272b).
-> > 
-> > INFO: task modprobe:5295 blocked for more than 120 seconds.
-> >       Not tainted 7.0.0-rc2-up1 #2
-> > Call Trace:
-> >  __schedule+0x4df/0xfd0
-> >  schedule+0x27/0xd0
-> >  schedule_timeout+0xbd/0x100
-> >  __wait_for_common+0x97/0x1b0
-> >  ? __pfx_schedule_timeout+0x10/0x10
-> >  thermal_zone_device_unregister+0x173/0x1c0
-> >  iwl_mld_thermal_exit+0xbb/0xd0 [iwlmld]
-> >  iwl_op_mode_mld_stop+0x37/0x120 [iwlmld]
-> >  iwl_opmode_deregister+0xc0/0x160 [iwlwifi]
-> >  __do_sys_delete_module+0x1b5/0x320
-> > 
-> > Signed-off-by: Jiajia Liu <liujiajia@kylinos.cn>
-> > ---
-> >  drivers/net/wireless/intel/iwlwifi/iwl-utils.c   | 10 ++++++++++
-> >  drivers/net/wireless/intel/iwlwifi/iwl-utils.h   |  4 ++++
-> >  drivers/net/wireless/intel/iwlwifi/mld/thermal.c |  4 ++--
-> >  drivers/net/wireless/intel/iwlwifi/mvm/tt.c      |  6 ++++--
-> >  4 files changed, 20 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-utils.c
-> > b/drivers/net/wireless/intel/iwlwifi/iwl-utils.c
-> > index d503544fda40..fe5fa5e59664 100644
-> > --- a/drivers/net/wireless/intel/iwlwifi/iwl-utils.c
-> > +++ b/drivers/net/wireless/intel/iwlwifi/iwl-utils.c
-> > @@ -193,3 +193,13 @@ s8 iwl_average_neg_dbm(const u8 *neg_dbm_values,
-> > u8 len)
-> >  	return clamp(average_magnitude - i, -128, 0);  }
-> > IWL_EXPORT_SYMBOL(iwl_average_neg_dbm);
-> > +
-> > +#ifdef CONFIG_THERMAL
-> > +u8 iwl_thermal_zone_get_id(void)
-> > +{
-> > +	static atomic_t counter = ATOMIC_INIT(0);
-> > +
-> > +	return atomic_inc_return(&counter) & 0xFF; }
-> > +IWL_EXPORT_SYMBOL(iwl_thermal_zone_get_id);
-> > +#endif
-> > diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-utils.h
-> > b/drivers/net/wireless/intel/iwlwifi/iwl-utils.h
-> > index 5172035e4d26..84a4543fd290 100644
-> > --- a/drivers/net/wireless/intel/iwlwifi/iwl-utils.h
-> > +++ b/drivers/net/wireless/intel/iwlwifi/iwl-utils.h
-> > @@ -55,4 +55,8 @@ u32 iwl_find_ie_offset(u8 *beacon, u8 eid, u32 frame_size)
-> > 
-> >  s8 iwl_average_neg_dbm(const u8 *neg_dbm_values, u8 len);
-> > 
-> > +#ifdef CONFIG_THERMAL
-> > +u8 iwl_thermal_zone_get_id(void);
-> > +#endif
-> > +
-> >  #endif /* __iwl_utils_h__ */
-> > diff --git a/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
-> > b/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
-> > index f8a8c35066be..500028a4dbd3 100644
-> > --- a/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
-> > +++ b/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
-> > @@ -5,6 +5,7 @@
-> >  #ifdef CONFIG_THERMAL
-> >  #include <linux/sort.h>
-> >  #include <linux/thermal.h>
-> > +#include "iwl-utils.h"
-> >  #endif
-> > 
-> >  #include "fw/api/phy.h"
-> > @@ -243,7 +244,6 @@ static void iwl_mld_thermal_zone_register(struct
-> > iwl_mld *mld)  {
-> >  	int ret;
-> >  	char name[16];
-> > -	static atomic_t counter = ATOMIC_INIT(0);
-> >  	struct thermal_trip trips[IWL_MAX_DTS_TRIPS] = {
-> >  		[0 ... IWL_MAX_DTS_TRIPS - 1] = {
-> >  			.temperature = THERMAL_TEMP_INVALID, @@ -254,7
-> > +254,7 @@ static void iwl_mld_thermal_zone_register(struct iwl_mld *mld)
-> > 
-> >  	BUILD_BUG_ON(ARRAY_SIZE(name) >= THERMAL_NAME_LENGTH);
-> > 
-> > -	sprintf(name, "iwlwifi_%u", atomic_inc_return(&counter) & 0xFF);
-> Any reason not to have iwlmld (and iwlmvm in mvm) instead of a shared counter?
+The throughput (tpt) LED trigger timer is only stopped in
+ieee80211_stop_tpt_led_trig(), which is reached via ieee80211_stop_device()
+when the interface is brought down. On a hot unplug, the device is torn down
+through ieee80211_unregister_hw() without ever going through
+ieee80211_do_stop(), so the timer is never stopped.
 
-I was not sure if it would break user space.
+ieee80211_led_exit() then frees local->tpt_led_trigger (which embeds the
+timer) without cancelling it. The still-armed timer keeps firing and
+dereferences the freed tpt_trig, walking local->tpt_led's LED list in
+led_trigger_blink() -> led_blink_set_nosleep() on the freed wifi LED class
+device, causing a use-after-free page fault in interrupt context.
 
-This issue is fixed by thermal hwmon at
+Call ieee80211_stop_tpt_led_trig() in ieee80211_led_exit(), before
+unregistering the trigger and freeing the struct, so the timer is always
+stopped and can never run after the trigger/LEDs are torn down.
 
-https://lore.kernel.org/linux-pm/6017595.DvuYhMxLoT@rafael.j.wysocki/
+Fixes: e1e540685437 ("mac80211: add throughput based LED blink trigger")
+Assisted-by: opencode:hy3-free
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ net/mac80211/led.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-with commit d6323469bcfb ("thermal: hwmon: Register a hwmon device for each thermal zone") in v7.2-rc1.
+diff --git a/net/mac80211/led.c b/net/mac80211/led.c
+index b5600d223452..5a7747dfbfb1 100644
+--- a/net/mac80211/led.c
++++ b/net/mac80211/led.c
+@@ -9,6 +9,8 @@
+ #include <linux/export.h>
+ #include "led.h"
+ 
++static void ieee80211_stop_tpt_led_trig(struct ieee80211_local *local);
++
+ void ieee80211_led_assoc(struct ieee80211_local *local, bool associated)
+ {
+ 	if (!atomic_read(&local->assoc_led_active))
+@@ -206,6 +208,7 @@ void ieee80211_led_exit(struct ieee80211_local *local)
+ 		led_trigger_unregister(&local->rx_led);
+ 
+ 	if (local->tpt_led_trigger) {
++		ieee80211_stop_tpt_led_trig(local);
+ 		led_trigger_unregister(&local->tpt_led);
+ 		kfree(local->tpt_led_trigger);
+ 	}
+-- 
+2.55.0
 
-> 
-> > +	sprintf(name, "iwlwifi_%u", iwl_thermal_zone_get_id());
-> >  	mld->tzone =
-> >  		thermal_zone_device_register_with_trips(name, trips,
-> >  							IWL_MAX_DTS_TRIPS,
-> > diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> > b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> > index 53bab21ebae2..ea8e616174db 100644
-> > --- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> > +++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> > @@ -7,6 +7,9 @@
-> >  #include <linux/sort.h>
-> > 
-> >  #include "mvm.h"
-> > +#ifdef CONFIG_THERMAL
-> > +#include "iwl-utils.h"
-> > +#endif
-> > 
-> >  #define IWL_MVM_NUM_CTDP_STEPS		20
-> >  #define IWL_MVM_MIN_CTDP_BUDGET_MW	150
-> > @@ -652,7 +655,6 @@ static void iwl_mvm_thermal_zone_register(struct
-> > iwl_mvm *mvm)  {
-> >  	int i, ret;
-> >  	char name[16];
-> > -	static atomic_t counter = ATOMIC_INIT(0);
-> > 
-> >  	if (!iwl_mvm_is_tt_in_fw(mvm)) {
-> >  		mvm->tz_device.tzone = NULL;
-> > @@ -662,7 +664,7 @@ static void iwl_mvm_thermal_zone_register(struct
-> > iwl_mvm *mvm)
-> > 
-> >  	BUILD_BUG_ON(ARRAY_SIZE(name) >= THERMAL_NAME_LENGTH);
-> > 
-> > -	sprintf(name, "iwlwifi_%u", atomic_inc_return(&counter) & 0xFF);
-> > +	sprintf(name, "iwlwifi_%u", iwl_thermal_zone_get_id());
-> >  	/*
-> >  	 * 0 is a valid temperature,
-> >  	 * so initialize the array with S16_MIN which invalid temperature
-> > --
-> > 2.53.0
-> 
 
